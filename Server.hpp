@@ -16,22 +16,27 @@ public:
 	Server(int port, char *password );
 	~Server( void );
 
-	void	socket( void );
 	void	launch( void );
-	void	accept( void );
-	void	receive( void );
-	void	send( void );
+	void	get_addrinfo( void );
+	void	socket( void );
+	void	bind( void );
+	void	listen( void );
+//	void	accept( void );
+//	void	receive( void );
+//	void	send( void );
 
+
+	std::string get_error_msg( std::string const error_msg1, char const * error_msg2 ) const;
 
 	class ServerException : public std::exception {
 
 	private:
-		std::string			_error_msg1;
-		char *				_error_msg2;
+		const char *				_error_msg;
 
 	public:
-		ServerException(std::string error_msg1, char *error_msg2);
+		ServerException( const char *error_msg );
 		virtual const char *what() const throw();
+	};
 };
 
 #endif

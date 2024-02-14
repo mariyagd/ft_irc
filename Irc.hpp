@@ -7,8 +7,8 @@
 # include <stdio.h>				// for strerror
 # include <strings.h> 			// for bzero
 # include <netinet/in.h>		// for struct sockaddr_in
-# include <sys/types.h>			// for getaddrinfo
-# include <netdb.h>				// for getaddrinfo
+# include <sys/types.h>			// for getaddrinfo, gai_strerror
+# include <netdb.h>				// for getaddrinfo, gai_strerror
 # include <stdexcept>			// for std::exception
 # include <unistd.h>			// for close
 

@@ -40,7 +40,7 @@ void	Server::get_addrinfo()
 	int	status = getaddrinfo(NULL, std::to_string(_port).c_str(), _hints, &_servinfo);
 	if (status != 0)
 	{
-		std::string error_msg = get_error_msg("Getaddrinfo error: ", strerror(errno) );
+		std::string error_msg = get_error_msg("Getaddrinfo error: ", gai_strerror(status) );
 		throw ServerException( error_msg.c_str() );
 	}
 }

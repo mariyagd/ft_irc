@@ -26,14 +26,12 @@ public:
 	class ServerException : public std::exception {
 
 	private:
-		char *			_error_message;
+		std::string			_error_msg1;
+		char *				_error_msg2;
 
 	public:
-		ServerException(char *error_message) : _error_message(error_message) {};
-		virtual const char *what() const throw() {
-			return _error_message;
-		};
-	};
+		ServerException(std::string error_msg1, char *error_msg2);
+		virtual const char *what() const throw();
 };
 
 #endif

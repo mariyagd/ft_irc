@@ -1,7 +1,7 @@
 
 #include "Server.hpp"
 
-// Coplien's form
+// Coplien's form --------------------------------------------------------------------------------------------------------
 
 Server::Server(int port, char *password) : _port(port), _password(password)
 {
@@ -16,18 +16,18 @@ Server::~Server()
 //	freeaddrinfo(_servinfo);
 }
 
-// socket
+// Socket ---------------------------------------------------------------------------------------------------------------
 
 void	Server::socket()
 {
 	_socket_fd = ::socket(AF_INET, SOCK_STREAM, 0 );
 	if (_socket_fd < 0)
 	{
-		throw ServerException(strerror(errno));
+		throw ServerException("Socket error: ",strerror(errno));
 	}
 }
 
-// launch
+// Launch ---------------------------------------------------------------------------------------------------------------
 
 void	Server::launch()
 {
@@ -41,12 +41,26 @@ void	Server::launch()
 	int	ret = bind(_socket_fd, (struct sockaddr *)&_server_address, sizeof(_server_address));
 	if (ret < 0)
 	{
-		throw ServerException(strerror(errno));
+		throw ServerException("Binding error: " ,strerror(errno));
 	}
 
 	ret = listen( _socket_fd, 10 );
 	if (ret < 0)
 	{
-		throw ServerException(strerror(errno));
+		throw ServerException("Listen error: ",strerror(errno));
 	}
+}
+
+// Exception handling-----------------------------------------------------------------------------------------------------
+
+Server::ServerException::ServerException(std::string error_msg1, char *error_msg2) : _error_msg1(error_msg1), _error_msg2(error_msg2) {
+
+	return;
+};
+
+
+const char *Server::ServerException::what() const throw()
+{
+	_error_msg1 += std::string (_error_msg2 );
+	return _error_msg1.c_str();
 }

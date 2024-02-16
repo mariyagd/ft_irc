@@ -1,6 +1,8 @@
 #ifndef IRC_HPP
 # define IRC_HPP
 
+# define MAX_CONNECTIONS 10
+
 # include <iostream>
 # include <sys/socket.h>
 # include <errno.h>				// for strerror
@@ -13,5 +15,6 @@
 # include <stdexcept>			// for std::exception
 # include <unistd.h>			// for close
 # include <arpa/inet.h>			// for inet_addr
+# include <sys/select.h>		// for select
 
 #endif

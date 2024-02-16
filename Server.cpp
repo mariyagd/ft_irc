@@ -6,7 +6,8 @@
 Server::Server(int port, char *password) : _port(port), _password(password)
 {
 	(void)_password;
-	_socket_fd = 0;
+	_servSock = 0;
+	memset( &_server_address, 0, sizeof( _server_address ) );	// make sure the struct is empty (i.e. all zeros
 	bzero( &_hints, sizeof( struct addrinfo ) );			// make sure the struct is empty
 	_servinfo = 0;
 }
@@ -15,7 +16,7 @@ Server::~Server()
 {
 	int ret = 0;
 
-	ret = close(_socket_fd);
+	ret = close(_servSock);
 	if (ret < 0)
 	{
 		std::cerr << "Error while closing socket: " << strerror(errno) << std::endl;
@@ -61,14 +62,14 @@ void	Server::get_addrinfo()
 void	Server::socket()
 {
 
-	_socket_fd = ::socket( PF_INET, SOCK_STREAM, 0 );
-	if (_socket_fd < 0)
+	_servSock = ::socket( PF_INET, SOCK_STREAM, 0 );
+	if (_servSock < 0)
 	{
 		std::string error_msg = "Socket error: " + std::string( strerror(errno) );
 		throw ServerException( error_msg.c_str() );
 	}
 
-	std::cout << "Socket fd " << _socket_fd << " created successfully " << std::endl;
+	std::cout << "Socket fd " << _servSock << " created successfully " << std::endl;
 }
 
 // Bind ---------------------------------------------------------------------------------------------------------------
@@ -81,14 +82,14 @@ void	Server::bind()
 
 	bzero( _server_address.sin_zero, sizeof(_server_address.sin_zero ) );
 
-	int	status = ::bind( _socket_fd, ( struct sockaddr * )&_server_address, sizeof( _server_address ) );
+	int	status = ::bind( _servSock, ( struct sockaddr * )&_server_address, sizeof( _server_address ) );
 	if (status < 0)
 	{
 		std::string error_msg = "Bind error: " + std::string( strerror(errno) );
 		throw ServerException( error_msg.c_str() );
 	}
 
-	std::cout	<< "Socket fd " << _socket_fd << " bound successfully."
+	std::cout	<< "Socket fd " << _servSock << " bound successfully."
 				<< " Familly "
 				<< getProtocolFamilyName(_server_address.sin_family)
 				<< " Port "
@@ -102,14 +103,14 @@ void	Server::bind()
 void	Server::listen()
 {
 
-	int	status = ::listen( _socket_fd, 10 );
+	int	status = ::listen( _servSock, 10 );
 	if (status < 0)
 	{
 		std::string error_msg = "Listen error: " + std::string( strerror(errno) );
 		throw ServerException( error_msg.c_str() );
 	}
 
-	std::cout << "Socket fd " << _socket_fd << " is listening" << std::endl;
+	std::cout << "Socket fd " << _servSock << " is listening" << std::endl;
 }
 
 
@@ -126,57 +127,105 @@ const char *Server::ServerException::what() const throw()
 	return _error_msg;
 }
 
+
 // Accept ---------------------------------------------------------------------------------------------------------------
 
 void	Server::accept()
 {
-	int							client_socket_fd;
-	struct sockaddr_storage		client_address;
-	socklen_t					client_len;
+	int				ret_val, i;
+	const int		DATA_BUFFER =  5000;
+	char			buf[DATA_BUFFER];
 
-	client_len = sizeof( client_address );
-	client_socket_fd = ::accept( _socket_fd, ( struct sockaddr * )&client_address, &client_len );
-	if (client_socket_fd < 0)
+	/* Initialize all_connections and set the first entry to server fd */
+	for ( i = 0; i < MAX_CONNECTIONS; ++i ) 
 	{
-		std::string error_msg = "Accept error: " + std::string( strerror(errno ) );
-		throw ServerException( error_msg.c_str() );
+		all_connections[i] = -1;
 	}
+	all_connections[0] = _servSock;
 
-	std::cout	<< "Server: got connection from "
-				<< inet_ntoa( ( ( struct sockaddr_in * )&client_address )->sin_addr )
-				<< " on socket fd " << client_socket_fd
-				<< " Familly " << getProtocolFamilyName( ( ( struct sockaddr_in * )&client_address )->sin_family )
-				<< std::endl;
-
-
-	const char *password_request = "Please enter a password: \n";
-	send( client_socket_fd, password_request, strlen( password_request ), 0);
-
-	while ( true )
+	while (1)
 	{
-		char buffer[100];
-		int bytesRead = 0;
-		bytesRead = recv( client_socket_fd, buffer, 100, 0 );
-		if ( bytesRead <= 0 )
+		FD_ZERO( &read_fd_set );
+		/* Set the fd_set before passing it to the select call */
+		for ( i = 0; i < MAX_CONNECTIONS; ++i )
 		{
-			std::cerr << "Error while reading from socket: " << strerror(errno) << std::endl;
-			break;
+			if ( all_connections[i] >= 0 )
+			{
+				FD_SET(all_connections[i], &read_fd_set);
+			}
 		}
-		std::cout << "bytes  read: " << bytesRead << std::endl;
-		buffer[ bytesRead - 1 ] = '\0';
-		std::cout << "Got: " << buffer << std::endl;
-		std::cout << "password expected: " << _password << std::endl;
-		if ( strcmp( const_cast<char *>( buffer ) ,  _password ) == 0 )
-		{
-//			std::cout << "Connection established" << std::endl;
-			send( client_socket_fd, "Connection established\n", strlen( "Connection established\n"), 0);
 
-		}
-		else
-		{
-//			std::cout << "Wrong password" << std::endl;
-			send( client_socket_fd, "Wrong password\n", strlen( "Wrong password\n"), 0);
+		/* Invoke select() and then wait! */
+		printf("\nUsing select() to listen for incoming events\n");
 
+		ret_val = ::select( FD_SETSIZE, &read_fd_set, NULL, NULL, NULL );
+
+		/* select() woke up. Identify the fd that has events */
+		if (ret_val >= 0 )
+		{
+			printf("Select returned with %d\n", ret_val);
+			/* Check if the fd with event is the server fd */
+			if ( FD_ISSET( _servSock, &read_fd_set ) )
+			{
+				/* accept the new connection */
+				printf("Returned fd is %d (server's fd)\n", _servSock);
+				new_fd = ::accept( _servSock, ( struct sockaddr * )&new_addr, &addrlen );
+				if (new_fd >= 0)
+				{
+					printf("Accepted a new connection with fd: %d\n", new_fd);
+					for ( i = 0; i < MAX_CONNECTIONS; i++ )
+					{
+						if (all_connections[i] < 0)
+						{
+							all_connections[i] = new_fd;
+							break;
+						}
+					}
+				}
+				else
+				{
+					fprintf(stderr, "accept failed [%s]\n", strerror(errno));
+				}
+				ret_val--;
+				if ( !ret_val ) continue;
+			}
+
+			/* Check if the fd with event is a non-server fd */
+			for ( i = 1; i < MAX_CONNECTIONS; ++i )
+			{
+				if ( ( all_connections[i] > 0 ) && ( FD_ISSET( all_connections[i], &read_fd_set ) ) )
+				{
+					/* read incoming data */
+					printf("Returned fd is %d [index, i: %d]\n", all_connections[i], i);
+					ret_val = recv( all_connections[i], buf, DATA_BUFFER, 0 );
+					if ( ret_val == 0 )
+					{
+						printf("Closing connection for fd:%d\n", all_connections[i]);
+						close( all_connections[i] );
+						all_connections[i] = -1; /* Connection is now closed */
+					}
+					if (ret_val > 0)
+					{
+						printf("Received data (len %d bytes, fd: %d): %s\n", ret_val, all_connections[i], buf);
+					}
+					if (ret_val == -1)
+					{
+						printf("recv() failed for fd: %d [%s]\n", all_connections[i], strerror(errno));
+						break;
+					}
+				}
+				ret_val--;
+				if ( !ret_val ) continue;
+			} /* for-loop */
+		} /* (ret_val >= 0) */
+	} /* while(1) */
+
+	/* Last step: Close all the sockets */
+	for (i = 0; i < MAX_CONNECTIONS; ++i)
+	{
+		if (all_connections[i] > 0)
+		{
+			close(all_connections[i]);
 		}
 	}
 }

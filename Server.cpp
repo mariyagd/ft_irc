@@ -6,14 +6,20 @@
 Server::Server(int port, char *password) : _port(port), _password(password)
 {
 	(void)_password;
+<<<<<<< HEAD
 	_servSock = 0;
 	memset( &_server_address, 0, sizeof( _server_address ) );	// make sure the struct is empty (i.e. all zeros
 	bzero( &_hints, sizeof( struct addrinfo ) );			// make sure the struct is empty
+=======
+	_sockfd = 0;
+	bzero(&_hints, sizeof( struct addrinfo ) );			// make sure the struct is empty
+>>>>>>> ce0180308779777814eb3ef086c337f07222ad47
 	_servinfo = 0;
 }
 
 Server::~Server()
 {
+<<<<<<< HEAD
 	int ret = 0;
 
 	for (int i = 0; i < MAX_CONNECTIONS; ++i)
@@ -36,6 +42,10 @@ Server::~Server()
 		std::cout << "Server socket closed successfully" << std::endl;
 	if (_servinfo)
 		freeaddrinfo(_servinfo);
+=======
+	close(_sockfd);
+//	freeaddrinfo(_servinfo);
+>>>>>>> ce0180308779777814eb3ef086c337f07222ad47
 }
 
 // Launch ---------------------------------------------------------------------------------------------------------------
@@ -49,18 +59,29 @@ void	Server::launch()
 	bind();
 	listen();
 	accept();
+<<<<<<< HEAD
+=======
+	// freeaddrinfo(_servinfo);
+>>>>>>> ce0180308779777814eb3ef086c337f07222ad47
 }
 
 // Get addrinfo ----------------------------------------------------------------------------------------------------------
 
 void	Server::get_addrinfo()
 {
+<<<<<<< HEAD
 
 	bzero( &_hints, sizeof( struct addrinfo ) );			// make sure the struct is empty
 	_hints.ai_family = AF_UNSPEC;						// don't care IPv4 or IPv6
 	_hints.ai_socktype = SOCK_STREAM;					// TCP stream sockets
 	_hints.ai_flags = AI_PASSIVE;						// fill in my IP for me
 
+=======
+	_hints.ai_family = AF_UNSPEC;						// don't care IPv4 or IPv6
+	_hints.ai_socktype = SOCK_STREAM;					// TCP stream sockets
+	_hints.ai_flags = AI_PASSIVE;						// fill in my IP for me
+
+>>>>>>> ce0180308779777814eb3ef086c337f07222ad47
 	int	status = getaddrinfo(NULL, std::to_string(_port).c_str(), &_hints, &_servinfo);
 	if (status != 0)
 	{
@@ -74,9 +95,14 @@ void	Server::get_addrinfo()
 
 void	Server::socket()
 {
+<<<<<<< HEAD
 
 	_servSock = ::socket( PF_INET, SOCK_STREAM, 0 );
 	if (_servSock < 0)
+=======
+	_sockfd = ::socket(AF_INET, SOCK_STREAM, 0 );
+	if (_sockfd < 0)
+>>>>>>> ce0180308779777814eb3ef086c337f07222ad47
 	{
 		std::string error_msg = "Socket error: " + std::string( strerror(errno) );
 		throw ServerException( error_msg.c_str() );
@@ -89,6 +115,7 @@ void	Server::socket()
 
 void	Server::bind()
 {
+<<<<<<< HEAD
 	_server_address.sin_family = AF_INET;						// for IPv4
 	_server_address.sin_addr.s_addr = htonl( INADDR_ANY );
 	_server_address.sin_port = htons( _port );
@@ -96,6 +123,16 @@ void	Server::bind()
 	bzero( _server_address.sin_zero, sizeof(_server_address.sin_zero ) );
 
 	int	status = ::bind( _servSock, ( struct sockaddr * )&_server_address, sizeof( _server_address ) );
+=======
+ 	// bind a socket
+	_sockaddr.sin_family = AF_INET;						// for IPv4
+	_sockaddr.sin_addr.s_addr = INADDR_ANY;
+	_sockaddr.sin_port = htons(_port);
+
+	bzero(_sockaddr.sin_zero, sizeof(_sockaddr.sin_zero));
+
+	int	status = ::bind(_sockfd, (struct sockaddr *)&_sockaddr, sizeof(_sockaddr));
+>>>>>>> ce0180308779777814eb3ef086c337f07222ad47
 	if (status < 0)
 	{
 		std::string error_msg = "Bind error: " + std::string( strerror(errno) );
@@ -115,13 +152,55 @@ void	Server::bind()
 
 void	Server::listen()
 {
+<<<<<<< HEAD
 
 	int	status = ::listen( _servSock, 10 );
+=======
+	int	status = ::listen( _sockfd, 10 );
+>>>>>>> ce0180308779777814eb3ef086c337f07222ad47
 	if (status < 0)
 	{
 		std::string error_msg = "Listen error: " + std::string( strerror(errno) );
 		throw ServerException( error_msg.c_str() );
 	}
+<<<<<<< HEAD
+=======
+}
+
+// accept ---------------------------------------------------------------------------------------------------------------
+
+// Grab a connection from the queue
+void	Server:: accept()
+{
+  socklen_t addrlen = sizeof(sockaddr);
+  int connection = ::accept(_sockfd, (struct sockaddr*)&_sockaddr, (socklen_t*)&addrlen);
+  if (connection < 0) {
+    std::cout << "Failed to grab connection. errno: " << errno << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
+  while (true) {
+	
+	// Read from the connection
+	char buffer[100];
+	read(connection, buffer, 100);
+	std::cout << "The message was: " << buffer;
+
+	if (strcmp(buffer, "EXIT\n") == 0) {
+		std::cout << "EXIT received" << std::endl;
+		break;
+	}
+
+	// Send a message to the connection
+	std::string response = "Good talking to you\n";
+	send(connection, response.c_str(), response.size(), 0);
+
+  }
+
+}
+
+// Get error message -----------------------------------------------------------------------------------------------------
+>>>>>>> ce0180308779777814eb3ef086c337f07222ad47
 
 	std::cout << "Socket fd " << _servSock << " is listening" << std::endl;
 }

@@ -7,10 +7,10 @@ class Server {
 
 private:
 	int						_port;
-	char *					_password;
+	const char *					_password;
 	int						_socket_fd;				// for socket()
 	struct sockaddr_in		_server_address;		// for bind()
-	struct addrinfo 		*_hints, *_servinfo;	// for getaddrinfo()
+	struct addrinfo 		_hints, *_servinfo;	// for getaddrinfo()
 
 public:
 	Server(int port, char *password );
@@ -21,13 +21,12 @@ public:
 	void	socket( void );
 	void	bind( void );
 	void	listen( void );
-//	void	accept( void );
+	void	accept( void );
 //	void	receive( void );
 //	void	send( void );
 
 
-	std::string get_error_msg( std::string const error_msg1, char const * error_msg2 ) const;
-
+	std::string		getProtocolFamilyName(int family);
 	class ServerException : public std::exception {
 
 	private:

@@ -10,11 +10,7 @@ int	main( int ac, char **av )
 	}
 	try
 	{
-<<<<<<< HEAD
 		Server	server(atoi(av[1]), av[2]);
-=======
-		Server server(atoi(av[1]), av[2]);
->>>>>>> ce0180308779777814eb3ef086c337f07222ad47
 		server.launch();
 	}
 	catch (Server::ServerException &e)

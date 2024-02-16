@@ -7,7 +7,6 @@ class Server {
 
 private:
 	int						_port;
-<<<<<<< HEAD
 	const char *			_password;
 	int						_servSock;				// for socket()
 	struct sockaddr_in		_server_address;		// for bind()
@@ -18,12 +17,6 @@ private:
 	int						new_fd;
 	struct sockaddr_storage	new_addr;
 	socklen_t				addrlen;
-=======
-	char *					_password;
-	int						_sockfd;				// for socket()
-	struct sockaddr_in		_sockaddr;		// for bind()
-	struct addrinfo 		_hints, *_servinfo;	// for getaddrinfo()
->>>>>>> ce0180308779777814eb3ef086c337f07222ad47
 
 public:
 	Server(int port, char *password );
@@ -34,10 +27,7 @@ public:
 	void	socket( void );
 	void	bind( void );
 	void	listen( void );
-<<<<<<< HEAD
 	void	select( void );
-=======
->>>>>>> ce0180308779777814eb3ef086c337f07222ad47
 	void	accept( void );
 //	void	receive( void );
 //	void	send( void );

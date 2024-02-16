@@ -16,11 +16,24 @@ Server::~Server()
 {
 	int ret = 0;
 
+	for (int i = 0; i < MAX_CONNECTIONS; ++i)
+	{
+		if (all_connections[i] > 0)
+		{
+			ret = close(all_connections[i]);
+			if (ret < 0)
+				std::cerr << "Error while closing socket: " << strerror(errno) << std::endl;
+			else
+				std::cout << "Connection " << i << " closed successfully" << std::endl;
+
+		}
+	}
+
 	ret = close(_servSock);
 	if (ret < 0)
-	{
 		std::cerr << "Error while closing socket: " << strerror(errno) << std::endl;
-	}
+	else
+		std::cout << "Server socket closed successfully" << std::endl;
 	if (_servinfo)
 		freeaddrinfo(_servinfo);
 }
@@ -221,13 +234,7 @@ void	Server::accept()
 	} /* while(1) */
 
 	/* Last step: Close all the sockets */
-	for (i = 0; i < MAX_CONNECTIONS; ++i)
-	{
-		if (all_connections[i] > 0)
-		{
-			close(all_connections[i]);
-		}
-	}
+
 }
 
 

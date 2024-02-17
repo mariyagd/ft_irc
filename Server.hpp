@@ -18,15 +18,12 @@ private:
 	struct sockaddr_storage			new_addr;
 	socklen_t						addrlen;
 
-	static Server 					*server_instance ;
-
 public:
 
 	// signal handling
 	static volatile std::sig_atomic_t 	_shutdown_server;
-	static void	handler(int sig_code);
-
-	void	sig_handler( void );
+	static void		handler(int sig_code);
+	void			sig_handler( void );
 
 	Server(int port, char *password );
 	~Server( void );

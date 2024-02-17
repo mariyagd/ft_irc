@@ -3,6 +3,8 @@
 
 // Coplien's form --------------------------------------------------------------------------------------------------------
 
+volatile sig_atomic_t 	Server::_shutdown_server = false;   // <------ static member initialization for signal handling
+
 Server::Server(int port, char *password) : _port(port), _password(password)
 {
 	(void)_password;
@@ -37,11 +39,65 @@ Server::~Server()
 		freeaddrinfo(_servinfo);
 }
 
+
+void Server::shutdown()
+{
+	int ret = 0;
+
+	for (int i = 0; i < MAX_CONNECTIONS; ++i)
+	{
+		if (all_connections[i] > 0)
+		{
+			ret = close( all_connections[i] );
+			if (ret < 0)
+				std::cerr << "Error while closing socket: " << strerror(errno) << std::endl;
+			else
+				std::cout << "Connection fd " << all_connections[i]  << " closed successfully" << std::endl;
+
+		}
+	}
+	if (_servinfo)
+		freeaddrinfo(_servinfo);
+	std::cout << "Exit Server" << std::endl;
+	exit(0);
+}
+
+// Signal handling ------------------------------------------------------------------------------------------------------
+
+void	Server::handler(int sig_code)
+{
+	if (sig_code == SIGINT)
+	{
+		std::cout << std::endl << "Received SIGINT." << std::endl;
+		_shutdown_server = true;
+	}
+}
+
+void	Server::sig_handler( void )
+{
+	struct sigaction	act;
+
+	memset(&act, 0, sizeof(struct sigaction));
+	sigemptyset(&act.sa_mask);
+	sigaddset(&act.sa_mask, SIGQUIT);	/* Ctrl-\ */
+	sigaddset(&act.sa_mask, SIGINT);	// Ctrl-C
+	sigaddset(&act.sa_mask, SIGTSTP);	// Ctrl-Z
+	act.sa_handler = SIG_IGN;			// ignore Ctrl-\, and Ctrl-Z
+	sigaction(SIGQUIT, &act, 0);
+	sigaction(SIGTSTP, &act, 0);
+	act.sa_handler = &handler;			// handle Ctrl-C
+	sigaction(SIGINT, &act, 0);
+}
+
+
 // Launch ---------------------------------------------------------------------------------------------------------------
 
 void	Server::launch()
 {
 	std::cout << "Launching server on port " << _port << std::endl;
+
+	// signal handling
+	sig_handler();
 
 	get_addrinfo();
 	socket();
@@ -155,7 +211,7 @@ void	Server::accept()
 	}
 	all_connections[0] = _servSock;
 
-	while (1)
+	while ( _shutdown_server == false )		// <------------------------ while there no SIGINT
 	{
 		FD_ZERO( &read_fd_set );
 		/* Set the fd_set before passing it to the select call */

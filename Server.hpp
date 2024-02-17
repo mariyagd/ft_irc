@@ -6,21 +6,32 @@
 class Server {
 
 private:
-	int						_port;
-	const char *			_password;
-	int						_servSock;				// for socket()
-	struct sockaddr_in		_server_address;		// for bind()
-	struct addrinfo 		_hints, *_servinfo;	// for getaddrinfo()
+	int								_port;
+	const char *					_password;
+	int								_servSock;				// for socket()
+	struct sockaddr_in				_server_address;		// for bind()
+	struct addrinfo 				_hints, *_servinfo;	// for getaddrinfo()
 
-	int						all_connections[MAX_CONNECTIONS];
-	fd_set					read_fd_set;
-	int						new_fd;
-	struct sockaddr_storage	new_addr;
-	socklen_t				addrlen;
+	int								all_connections[MAX_CONNECTIONS];
+	fd_set							read_fd_set;
+	int								new_fd;
+	struct sockaddr_storage			new_addr;
+	socklen_t						addrlen;
+
+	static Server 					*server_instance ;
 
 public:
+
+	// signal handling
+	static volatile sig_atomic_t 	_shutdown_server;
+	static void	handler(int sig_code);
+
+	void	sig_handler( void );
+
 	Server(int port, char *password );
 	~Server( void );
+
+	void	shutdown( void );
 
 	void	launch( void );
 	void	get_addrinfo( void );

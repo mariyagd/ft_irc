@@ -3,7 +3,7 @@
 
 // Coplien's form --------------------------------------------------------------------------------------------------------
 
-volatile sig_atomic_t 	Server::_shutdown_server = false;   // <------ static member initialization for signal handling
+volatile std::sig_atomic_t 	Server::_shutdown_server = false;   // <------ static member initialization for signal handling
 
 Server::Server(int port, char *password) : _port(port), _password(password)
 {
@@ -26,7 +26,12 @@ Server::~Server()
 			if (ret < 0)
 				std::cerr << "Error while closing socket: " << strerror(errno) << std::endl;
 			else
-				std::cout << "Connection fd " << all_connections[i]  << " closed successfully" << std::endl;
+			{
+				if (all_connections[i] == _servSock)
+					std::cout << "Server socket closed successfully" << std::endl;
+				else
+					std::cout << "Connection fd " << all_connections[i]  << " closed successfully" << std::endl;
+			}
 
 		}
 	}

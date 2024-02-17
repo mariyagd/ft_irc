@@ -23,7 +23,7 @@ private:
 public:
 
 	// signal handling
-	static volatile sig_atomic_t 	_shutdown_server;
+	static volatile std::sig_atomic_t 	_shutdown_server;
 	static void	handler(int sig_code);
 
 	void	sig_handler( void );

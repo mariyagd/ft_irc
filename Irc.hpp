@@ -16,8 +16,8 @@
 # include <unistd.h>			// for close
 # include <arpa/inet.h>			// for inet_addr
 # include <sys/select.h>		// for select
-# include <signal.h>			// for signal
-
+# include <signal.h>			// for signal				<-------
+# include <csignal>				// for std::sig_atomic_t	<-------
 
 
 #endif

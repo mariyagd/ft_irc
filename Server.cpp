@@ -274,12 +274,12 @@ void	Server::accept()
 						close( all_connections[i] );
 						all_connections[i] = -1; /* Connection is now closed */
 					}
-					if (ret_val > 0)
+					if (ret_val > 0)															// <----------- ^D handling
 					{
 						buf[ret_val] = '\0';
 						std::cout << "Received data \"" << buf << "\" from fd " << all_connections[i] << " ( len " << strlen(buf) << ")" << std::endl;
 
-						if ( strchr( buf, '\n' ) == NULL )
+						if ( strchr( buf, '\n' ) == NULL )		// if there is no \n, there is ^D
 						{
 							std::cout << "Keep data in memory" << std::endl;
 							result += std::string( buf );
@@ -290,13 +290,13 @@ void	Server::accept()
 							if ( result.empty() )
 							{
 								result = std::string( buf );
-//								size_t pos = result.find( '\n' );				// <----------------------- to erase \n
+//								size_t pos = result.find( '\n' );	// to erase the final \n
 //								result.erase(pos, 1);
 
 							}
 							else
 							{
-								if ( strlen(buf) > 0 )
+								if ( strlen(buf) > 0 )				// if we have text^D(enter) we receive a '\0'
 									result += std::string( buf );
 							}
 							std::cout << "Output data: (len " << result.size() << ") \"" << result << "\"" << std::endl;

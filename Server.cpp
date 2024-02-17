@@ -208,6 +208,7 @@ void	Server::accept()
 	int				ret_val, i;
 	const int		DATA_BUFFER =  5000;
 	char			buf[DATA_BUFFER];
+	char *			keep_buf = NULL;
 
 	/* Initialize all_connections and set the first entry to server fd */
 	for ( i = 0; i < MAX_CONNECTIONS; ++i ) 
@@ -280,12 +281,43 @@ void	Server::accept()
 					if (ret_val > 0)
 					{
 						buf[ret_val] = '\0';
-						printf("Received data (len %d bytes, fd: %d): %s\n", ret_val, all_connections[i], buf);
-						if ( strcmp( buf, "exit\n" ) == 0 )
+
+
+						if ( strchr( buf, '\n' ) == NULL )
 						{
-							std::cout << "Received exit command. Exiting..." << std::endl;
-							return;
+							std::cout << "Data received. Found newline for ^D. Keep data for reconstitution " << std::endl;
+							if (!keep_buf)
+							{
+								keep_buf = strdup( buf );
+							}
+							else
+							{
+								char *tmp = strdup( keep_buf );
+								strcat( tmp, buf );
+								free( keep_buf );
+								keep_buf = strdup( tmp );
+								free( tmp );
+								tmp = NULL;
+							}
+							std::cout << "Keep in memory data \"" << keep_buf << "\"" << std::endl;
+
 						}
+						else
+						{
+							std::cout << "Data received. No newline found. Checking if there is data in memory." << std::endl;
+
+							if ( keep_buf && strlen(keep_buf) > 0 )
+							{
+								std::cout << "Found data in memory. Reconstitution process" << std::endl;
+								std::string result = std::string(keep_buf) + std::string(buf);
+								free( keep_buf );
+								keep_buf = NULL;
+								std::cout << "Data (len " << ret_val << " bytes, fd: " << all_connections[i] << "): " << result << std::endl;
+							}
+							else
+								std::cout << "Data (len " << ret_val << " bytes, fd: " << all_connections[i] << "): " << buf << std::endl;
+						}
+
 					}
 					if (ret_val == -1)
 					{

@@ -209,6 +209,8 @@ void	Server::accept()
 	const int		DATA_BUFFER =  5000;
 	char			buf[DATA_BUFFER];
 	char *			keep_buf = NULL;
+	std::string 	result = "";
+
 
 	/* Initialize all_connections and set the first entry to server fd */
 	for ( i = 0; i < MAX_CONNECTIONS; ++i ) 
@@ -282,7 +284,6 @@ void	Server::accept()
 					{
 						buf[ret_val] = '\0';
 
-
 						if ( strchr( buf, '\n' ) == NULL )
 						{
 							std::cout << "Data received. Found newline for ^D. Keep data for reconstitution " << std::endl;
@@ -312,10 +313,15 @@ void	Server::accept()
 								std::string result = std::string(keep_buf) + std::string(buf);
 								free( keep_buf );
 								keep_buf = NULL;
-								std::cout << "Data (len " << ret_val << " bytes, fd: " << all_connections[i] << "): " << result << std::endl;
 							}
 							else
-								std::cout << "Data (len " << ret_val << " bytes, fd: " << all_connections[i] << "): " << buf << std::endl;
+							{
+								result = std::string( buf );
+							}
+							std::cout << "Data (len " << ret_val << " bytes, fd: " << all_connections[i] << "): " << result << std::endl;
+							if ( result == "exit\n" )
+								return;
+							result.clear();
 						}
 
 					}

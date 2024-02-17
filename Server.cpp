@@ -307,12 +307,10 @@ void	Server::accept()
 						{
 							std::cout << "Data received. No newline found. Checking if there is data in memory." << std::endl;
 
-							if ( keep_buf && strlen(keep_buf) > 0 )
+							if ( keep_buf && buf[0] != '\0' )
 							{
 								std::cout << "Found data in memory. Reconstitution process" << std::endl;
-								std::string result = std::string(keep_buf) + std::string(buf);
-								free( keep_buf );
-								keep_buf = NULL;
+								result = std::string(keep_buf);
 							}
 							else
 							{
@@ -321,6 +319,11 @@ void	Server::accept()
 							std::cout << "Data (len " << ret_val << " bytes, fd: " << all_connections[i] << "): " << result << std::endl;
 							if ( result == "exit\n" )
 								return;
+							if ( keep_buf )
+							{
+								free( keep_buf );
+								keep_buf = NULL;
+							}
 							result.clear();
 						}
 

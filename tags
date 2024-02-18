@@ -4,51 +4,164 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
+ARCHITECTURE_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#   define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define ARCHITECTURE_ID$/;"	d	file:
+ARCHITECTURE_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define ARCHITECTURE_ID$/;"	d	file:
 BLUE	Makefile	/^BLUE = \\033[1;34m$/;"	m
+COMPILER_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_ID /;"	d	file:
+COMPILER_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_ID /;"	d	file:
+COMPILER_VERSION	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#   define COMPILER_VERSION /;"	d	file:
+COMPILER_VERSION	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define COMPILER_VERSION /;"	d	file:
+COMPILER_VERSION_INTERNAL	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#   define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL_STR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_INTERNAL_STR /;"	d	file:
+COMPILER_VERSION_INTERNAL_STR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_INTERNAL_STR /;"	d	file:
+COMPILER_VERSION_MAJOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#   define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MINOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#   define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_PATCH	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#   define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_TWEAK	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_TWEAK /;"	d	file:
+COMPILER_VERSION_TWEAK	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_TWEAK /;"	d	file:
+COMPILER_VERSION_TWEAK	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_TWEAK /;"	d	file:
+COMPILER_VERSION_TWEAK	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_TWEAK /;"	d	file:
 CPPF	Makefile	/^CPPF = c++ -Wall -Werror -Wextra -std=c++98 -g$/;"	m
+CXX_STD	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#      define CXX_STD /;"	d	file:
+CXX_STD	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#    define CXX_STD /;"	d	file:
+CXX_STD	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define CXX_STD /;"	d	file:
+C_VERSION	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define C_VERSION /;"	d	file:
+C_VERSION	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define C_VERSION$/;"	d	file:
+C_VERSION	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define C_VERSION /;"	d	file:
+DEC	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#define DEC(/;"	d	file:
+DEC	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define DEC(/;"	d	file:
 END	Makefile	/^END	 = \\033[0m$/;"	m
+HEX	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#define HEX(/;"	d	file:
+HEX	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define HEX(/;"	d	file:
+ID_VOID_MAIN	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define ID_VOID_MAIN$/;"	d	file:
 IRC_HPP	Irc.hpp	/^# define IRC_HPP$/;"	d
 MAX_CONNECTIONS	Irc.hpp	/^# define MAX_CONNECTIONS /;"	d
 NAME	Makefile	/^NAME = ircserv$/;"	m
+PLATFORM_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define PLATFORM_ID$/;"	d	file:
+PLATFORM_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define PLATFORM_ID$/;"	d	file:
+PLATFORM_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define PLATFORM_ID$/;"	d	file:
+PLATFORM_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define PLATFORM_ID$/;"	d	file:
 RM	Makefile	/^RM = rm -f$/;"	m
 SERVER_HPP	Server.hpp	/^# define SERVER_HPP$/;"	d
+SIMULATE_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_ID /;"	d	file:
+SIMULATE_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define SIMULATE_ID /;"	d	file:
+SIMULATE_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_ID /;"	d	file:
+SIMULATE_ID	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define SIMULATE_ID /;"	d	file:
+SIMULATE_VERSION_MAJOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_MAJOR /;"	d	file:
+SIMULATE_VERSION_MAJOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define SIMULATE_VERSION_MAJOR /;"	d	file:
+SIMULATE_VERSION_MAJOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_MAJOR /;"	d	file:
+SIMULATE_VERSION_MAJOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define SIMULATE_VERSION_MAJOR /;"	d	file:
+SIMULATE_VERSION_MINOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_MINOR /;"	d	file:
+SIMULATE_VERSION_MINOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define SIMULATE_VERSION_MINOR /;"	d	file:
+SIMULATE_VERSION_MINOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_MINOR /;"	d	file:
+SIMULATE_VERSION_MINOR	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define SIMULATE_VERSION_MINOR /;"	d	file:
+SIMULATE_VERSION_PATCH	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#   define SIMULATE_VERSION_PATCH /;"	d	file:
+SIMULATE_VERSION_PATCH	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_PATCH /;"	d	file:
+SIMULATE_VERSION_PATCH	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define SIMULATE_VERSION_PATCH /;"	d	file:
+SIMULATE_VERSION_PATCH	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define SIMULATE_VERSION_PATCH /;"	d	file:
+SIMULATE_VERSION_PATCH	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_PATCH /;"	d	file:
+SIMULATE_VERSION_PATCH	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define SIMULATE_VERSION_PATCH /;"	d	file:
 SRCS	Makefile	/^SRCS = main.cpp  Server.cpp$/;"	m
+STRINGIFY	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#define STRINGIFY(/;"	d	file:
+STRINGIFY	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define STRINGIFY(/;"	d	file:
+STRINGIFY_HELPER	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#define STRINGIFY_HELPER(/;"	d	file:
+STRINGIFY_HELPER	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define STRINGIFY_HELPER(/;"	d	file:
 Server	Server.cpp	/^Server::Server(int port, char *password) : _port(port), _password(password)$/;"	f	class:Server
 Server	Server.hpp	/^class Server {$/;"	c
-Server	test.cpp	/^    Server() {$/;"	f	class:Server
-Server	test.cpp	/^class Server {$/;"	c	file:
 ServerException	Server.cpp	/^Server::ServerException::ServerException( const char *error_msg ) : _error_msg(error_msg) {$/;"	f	class:Server::ServerException
 ServerException	Server.hpp	/^	class ServerException : public std::exception {$/;"	c	class:Server
+__has_include	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^#  define __has_include(/;"	d	file:
+__has_include	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define __has_include(/;"	d	file:
 _error_msg	Server.hpp	/^		const char *				_error_msg;$/;"	m	class:Server::ServerException
-_fileDescriptor	test.cpp	/^    int _fileDescriptor; \/\/ Exemple de descripteur de fichier$/;"	m	class:Server	file:
-_hints	Server.hpp	/^	struct addrinfo 		_hints, *_servinfo;	\/\/ for getaddrinfo()$/;"	m	class:Server	typeref:struct:Server::addrinfo
-_instance	test.cpp	/^    static Server* _instance;$/;"	m	class:Server	file:
-_instance	test.cpp	/^Server* Server::_instance = nullptr;$/;"	m	class:Server	file:
-_password	Server.hpp	/^	const char *			_password;$/;"	m	class:Server
-_port	Server.hpp	/^	int						_port;$/;"	m	class:Server
-_servSock	Server.hpp	/^	int						_servSock;				\/\/ for socket()$/;"	m	class:Server
-_server_address	Server.hpp	/^	struct sockaddr_in		_server_address;		\/\/ for bind()$/;"	m	class:Server	typeref:struct:Server::sockaddr_in
-_servinfo	Server.hpp	/^	struct addrinfo 		_hints, *_servinfo;	\/\/ for getaddrinfo()$/;"	m	class:Server	typeref:struct:Server::
+_hints	Server.hpp	/^	struct addrinfo 				_hints, *_servinfo;	\/\/ for getaddrinfo()$/;"	m	class:Server	typeref:struct:Server::addrinfo
+_password	Server.hpp	/^	const char *					_password;$/;"	m	class:Server
+_port	Server.hpp	/^	int								_port;$/;"	m	class:Server
+_servSock	Server.hpp	/^	int								_servSock;				\/\/ for socket()$/;"	m	class:Server
+_server_address	Server.hpp	/^	struct sockaddr_in				_server_address;		\/\/ for bind()$/;"	m	class:Server	typeref:struct:Server::sockaddr_in
+_servinfo	Server.hpp	/^	struct addrinfo 				_hints, *_servinfo;	\/\/ for getaddrinfo()$/;"	m	class:Server	typeref:struct:Server::
+_shutdown_server	Server.cpp	/^volatile std::sig_atomic_t 	Server::_shutdown_server = false;   \/\/ <------ static member initialization for signal handling$/;"	m	class:Server	file:
+_shutdown_server	Server.hpp	/^	static volatile std::sig_atomic_t 	_shutdown_server;$/;"	m	class:Server
 accept	Server.cpp	/^void	Server::accept()$/;"	f	class:Server
-addrlen	Server.hpp	/^	socklen_t				addrlen;$/;"	m	class:Server
-all_connections	Server.hpp	/^	int						all_connections[MAX_CONNECTIONS];$/;"	m	class:Server
+addrlen	Server.hpp	/^	socklen_t						addrlen;$/;"	m	class:Server
+all_connections	Server.hpp	/^	int								all_connections[MAX_CONNECTIONS];$/;"	m	class:Server
 bind	Server.cpp	/^void	Server::bind()$/;"	f	class:Server
+const	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define const$/;"	d	file:
 getProtocolFamilyName	Server.cpp	/^std::string	Server::getProtocolFamilyName(int family)$/;"	f	class:Server
 get_addrinfo	Server.cpp	/^void	Server::get_addrinfo()$/;"	f	class:Server
-handleSignal	test.cpp	/^    void handleSignal(int signum) {$/;"	f	class:Server	file:
-handler	main.cpp	/^void	handler(int sig_code)$/;"	f
+handler	Server.cpp	/^void	Server::handler(int sig_code)$/;"	f	class:Server
+info_arch	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v
+info_arch	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v
+info_compiler	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v
+info_compiler	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v
+info_cray	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^char const *info_cray = "INFO" ":" "compiler_wrapper[CrayPrgEnv]";$/;"	v
+info_cray	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const *info_cray = "INFO" ":" "compiler_wrapper[CrayPrgEnv]";$/;"	v
+info_language_extensions_default	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^const char* info_language_extensions_default = "INFO" ":" "extensions_default["$/;"	v
+info_language_extensions_default	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^const char* info_language_extensions_default = "INFO" ":" "extensions_default["$/;"	v
+info_language_standard_default	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^const char* info_language_standard_default =$/;"	v
+info_language_standard_default	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^const char* info_language_standard_default = "INFO" ":" "standard_default["$/;"	v
+info_platform	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v
+info_platform	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v
+info_simulate	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^char const* info_simulate = "INFO" ":" "simulate[" SIMULATE_ID "]";$/;"	v
+info_simulate	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_simulate = "INFO" ":" "simulate[" SIMULATE_ID "]";$/;"	v
+info_simulate_version	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^char const info_simulate_version[] = {$/;"	v
+info_simulate_version	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_simulate_version[] = {$/;"	v
+info_version	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^char const info_version[] = {$/;"	v
+info_version	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^char const* info_version = "INFO" ":" "compiler_version[" COMPILER_VERSION "]";$/;"	v
+info_version	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version[] = {$/;"	v
+info_version	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_version = "INFO" ":" "compiler_version[" COMPILER_VERSION "]";$/;"	v
+info_version_internal	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^char const info_version_internal[] = {$/;"	v
+info_version_internal	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^char const* info_version_internal = "INFO" ":" "compiler_version_internal[" COMPILER_VERSION_INTERNAL_STR "]";$/;"	v
+info_version_internal	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version_internal[] = {$/;"	v
+info_version_internal	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_version_internal = "INFO" ":" "compiler_version_internal[" COMPILER_VERSION_INTERNAL_STR "]";$/;"	v
 launch	Server.cpp	/^void	Server::launch()$/;"	f	class:Server
 listen	Server.cpp	/^void	Server::listen()$/;"	f	class:Server
+main	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^int main(argc, argv) int argc; char *argv[];$/;"	f
+main	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^void main() {}$/;"	f
+main	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^int main(int argc, char* argv[])$/;"	f
 main	main.cpp	/^int	main( int ac, char **av )$/;"	f
-main	test.cpp	/^int main() {$/;"	f
-new_addr	Server.hpp	/^	struct sockaddr_storage	new_addr;$/;"	m	class:Server	typeref:struct:Server::sockaddr_storage
-new_fd	Server.hpp	/^	int						new_fd;$/;"	m	class:Server
-read_fd_set	Server.hpp	/^	fd_set					read_fd_set;$/;"	m	class:Server
-server_instance	Server.hpp	/^	static Server *server_instance ;$/;"	m	class:Server
+maxDescriptorPlus1	Server.hpp	/^	int 							maxDescriptorPlus1;$/;"	m	class:Server
+new_addr	Server.hpp	/^	struct sockaddr_storage			new_addr;$/;"	m	class:Server	typeref:struct:Server::sockaddr_storage
+new_fd	Server.hpp	/^	int								new_fd;$/;"	m	class:Server
+qnxnto	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^char const* qnxnto = "INFO" ":" "qnxnto[]";$/;"	v
+qnxnto	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* qnxnto = "INFO" ":" "qnxnto[]";$/;"	v
+read_fd_set	Server.hpp	/^	fd_set							read_fd_set;$/;"	m	class:Server
 shutdown	Server.cpp	/^void Server::shutdown()$/;"	f	class:Server
-sig_handler	main.cpp	/^void	sig_handler( Server & server )$/;"	f
-signalHandler	test.cpp	/^    static void signalHandler(int signum) {$/;"	f	class:Server
+sig_handler	Server.cpp	/^void	Server::sig_handler( void )$/;"	f	class:Server
 socket	Server.cpp	/^void	Server::socket()$/;"	f	class:Server
-start	test.cpp	/^    void start() {$/;"	f	class:Server
+volatile	cmake-build-debug/CMakeFiles/3.26.4/CompilerIdC/CMakeCCompilerId.c	/^# define volatile$/;"	d	file:
 what	Server.cpp	/^const char *Server::ServerException::what() const throw()$/;"	f	class:Server::ServerException
 ~Server	Server.cpp	/^Server::~Server()$/;"	f	class:Server

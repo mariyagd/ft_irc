@@ -9,9 +9,15 @@ Server::Server(int port, char *password) : _port(port), _password(password)
 {
 	(void)_password;
 	_servSock = 0;
-	memset( &_server_address, 0, sizeof( _server_address ) );	// make sure the struct is empty (i.e. all zeros
-	bzero( &_hints, sizeof( struct addrinfo ) );			// make sure the struct is empty
 	_servinfo = 0;
+	memset( &_server_address, 0, sizeof( _server_address ) );	// make sure the struct is empty (i.e. all zeros
+	bzero( &_hints, sizeof( struct addrinfo ) );								// make sure the struct is empty
+
+	// initialise for select()
+	maxDescriptorPlus1 = -1;
+	// Initialize all_connections
+	for ( int i = 0; i < MAX_CONNECTIONS; ++i )
+		all_connections[i] = -1;
 }
 
 Server::~Server()
@@ -116,7 +122,7 @@ void	Server::launch()
 void	Server::get_addrinfo()
 {
 
-	bzero( &_hints, sizeof( struct addrinfo ) );			// make sure the struct is empty
+	bzero( &_hints, sizeof( struct addrinfo ) );		// make sure the struct is empty
 	_hints.ai_family = AF_UNSPEC;						// don't care IPv4 or IPv6
 	_hints.ai_socktype = SOCK_STREAM;					// TCP stream sockets
 	_hints.ai_flags = AI_PASSIVE;						// fill in my IP for me
@@ -200,52 +206,43 @@ const char *Server::ServerException::what() const throw()
 	return _error_msg;
 }
 
-
 // Accept ---------------------------------------------------------------------------------------------------------------
 
 void	Server::accept()
 {
-	int				ret_val, i;
+	int				ret, i;
 	const int		DATA_BUFFER =  5000;
 	char			buf[DATA_BUFFER];
-	std::string 	result = "";																// <------------------- for ^D
+	std::string 	result = "";
 
 
-	/* Initialize all_connections and set the first entry to server fd */
-	for ( i = 0; i < MAX_CONNECTIONS; ++i ) 
-	{
-		all_connections[i] = -1;
-	}
+	// set the first entry to server fd
 	all_connections[0] = _servSock;
 
-	while ( _shutdown_server == false )															// <----- while there no SIGINT
+	while ( _shutdown_server == false )										// while there no SIGINT
 	{
-		FD_ZERO( &read_fd_set );
-		/* Set the fd_set before passing it to the select call */
-		for ( i = 0; i < MAX_CONNECTIONS; ++i )
+		FD_ZERO( &read_fd_set );                                            // removes all descriptors from the vector
+
+		for ( i = 0; i < MAX_CONNECTIONS; ++i )                            // set fd int the read_fd_set before passing it to the select call
 		{
 			if ( all_connections[i] >= 0 )
-			{
-				FD_SET(all_connections[i], &read_fd_set);
-			}
+				FD_SET( all_connections[i], &read_fd_set );
 		}
 
-		ret_val = ::select( FD_SETSIZE, &read_fd_set, NULL, NULL, NULL );
+		ret = ::select( FD_SETSIZE, &read_fd_set, NULL, NULL, NULL );        // returns the number of connections ready to read
 
-		/* select() woke up. Identify the fd that has events */
-		if (ret_val >= 0 )
+		if ( ret >= 0 )
 		{
-			/* Check if the fd with event is the server fd */
-			if ( FD_ISSET( _servSock, &read_fd_set ) )
+			if ( FD_ISSET( _servSock, &read_fd_set ) )                        // if server is ready to read, it will be in the read_fd_se
 			{
-				/* accept the new connection */
-				new_fd = ::accept( _servSock, ( struct sockaddr * )&new_addr, &addrlen );
-				if (new_fd >= 0)
+				std::cout << "Server is ready to read" << std::endl;
+				new_fd = ::accept( _servSock, ( struct sockaddr * ) &new_addr, &addrlen );
+				if ( new_fd >= 0 )
 				{
-					std::cout << "Server accepted a new connection with fd: " << new_fd << std::endl;
-					for ( i = 0; i < MAX_CONNECTIONS; i++ )
+					std::cout << "Accepted a new connection with fd: " << new_fd << std::endl;
+					for ( i = 0; i < MAX_CONNECTIONS; i++ )                    // save the fd in the table
 					{
-						if (all_connections[i] < 0)
+						if ( all_connections[i] < 0 )
 						{
 							all_connections[i] = new_fd;
 							break;
@@ -253,76 +250,57 @@ void	Server::accept()
 					}
 				}
 				else
-				{
-					std::cerr << "Accept failed: " << strerror(errno) << std::endl;
-				}
-				ret_val--;
-				if ( !ret_val ) continue;
+					std::cerr << "Accept failed: " << strerror( errno ) << std::endl;
+				ret--;
+				if ( !ret ) continue;
 			}
 
-			/* Check if the fd with event is a non-server fd */
-			for ( i = 1; i < MAX_CONNECTIONS; ++i )
+			for ( i = 1; i < MAX_CONNECTIONS; ++i )                            // start receiving data from all connections. index 0 is _serverSock
 			{
 				if ( ( all_connections[i] > 0 ) && ( FD_ISSET( all_connections[i], &read_fd_set ) ) )
 				{
-					/* read incoming data */
-
-					ret_val = recv( all_connections[i], buf, DATA_BUFFER, 0 );
-					if ( ret_val == 0 )
+					ret = recv( all_connections[i], buf, DATA_BUFFER, 0 );
+					if ( ret == 0 )
 					{
 						std::cout << "Connection " << all_connections[i] << " closed by client" << std::endl;
 						close( all_connections[i] );
-						all_connections[i] = -1; /* Connection is now closed */
+						all_connections[i] = -1;                            // delete the connection from the table
 					}
-					if (ret_val > 0)															// <----------- ^D handling
+					if ( ret > 0 )                                          // ^D handling starts here
 					{
-						buf[ret_val] = '\0';
-						std::cout << "Received data \"" << buf << "\" from fd " << all_connections[i] << " ( len " << strlen(buf) << ")" << std::endl;
+						buf[ret] = '\0';
+						std::cout << "Received data \"" << buf << "\" from fd " << all_connections[i] << " ( len "
+								  << strlen( buf ) << ")" << std::endl;
 
-						if ( strchr( buf, '\n' ) == NULL )		// if there is no \n, there is ^D
+						if ( strchr( buf, '\n' ) == NULL )        // if there is no \n, there is ^D
 						{
 							std::cout << "Keep data in memory" << std::endl;
 							result += std::string( buf );
 						}
 						else
 						{
-							std::cout << "Data is ready to output" << std::endl;
-							if ( result.empty() )
-							{
-								result = std::string( buf );
-//								size_t pos = result.find( '\n' );	// to erase the final \n
-//								result.erase(pos, 1);
-
-							}
-							else
-							{
-								if ( strlen(buf) > 0 )				// if we have text^D(enter) we receive a '\0'
-									result += std::string( buf );
-							}
-							std::cout << "Output data: (len " << result.size() << ") \"" << result << "\"" << std::endl;
+							std::cout << "Data is ready to be outputted" << std::endl;
+							result += std::string( buf );
+//							size_t pos = result.find( '\n' );					// to erase the final \n
+//							result.erase(pos, 1);
+							std::cout << "Output data: (len " << result.size( ) << ") \"" << result << "\"" << std::endl;
 							if ( result == "exit\n" )
 								return;
-							result.clear();
+							result.clear( );
 						}
-
 					}
-					if (ret_val == -1)
-					{
-						std::cerr << "recv() failed for fd: " << all_connections[i] << ": " << strerror(errno) << std::endl;
+					if ( ret == -1 ) {
+						std::cerr << "recv() failed for fd: " << all_connections[i] << ": " << strerror( errno )
+								  << std::endl;
 						break;
 					}
 				}
-				ret_val--;
-				if ( !ret_val ) continue;
+				ret--;
+				if ( !ret ) continue;
 			} /* for-loop */
-		} /* (ret_val >= 0) */
-	} /* while(1) */
-
-	/* Last step: Close all the sockets */
-
+		}/* (ret >= 0) */
+	}/* while(1) */
 }
-
-
 
 // Helper functions ------------------------------------------------------------------------------------------------------
 

@@ -12,6 +12,7 @@ private:
 	struct sockaddr_in				_server_address;		// for bind()
 	struct addrinfo 				_hints, *_servinfo;	// for getaddrinfo()
 
+	int 							maxDescriptorPlus1;
 	int								all_connections[MAX_CONNECTIONS];
 	fd_set							read_fd_set;
 	int								new_fd;

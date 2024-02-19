@@ -97,6 +97,7 @@ void	Server::sig_handler( void )
 	act.sa_handler = SIG_IGN;			// ignore Ctrl-\, and Ctrl-Z
 	sigaction(SIGQUIT, &act, 0);
 	sigaction(SIGTSTP, &act, 0);
+	sigaction(SIGPIPE, &act, 0);
 	act.sa_handler = &handler;			// handle Ctrl-C
 	sigaction(SIGINT, &act, 0);
 }
@@ -239,7 +240,7 @@ void	Server::accept()
 			if ( FD_ISSET( _servSock, &read_fd_set ) )                        // if server is ready to read, it will be in the read_fd_se
 			{
 				std::cout << "Server is ready to read" << std::endl;
-				new_fd = ::accept( _servSock, ( struct sockaddr * ) &new_addr, &addrlen );
+				new_fd = ::accept( _servSock, reinterpret_cast<struct sockaddr *>( &new_addr ), &addrlen );
 				if ( new_fd >= 0 )
 				{
 					std::cout << "Accepted a new connection with fd: " << new_fd << std::endl;
@@ -280,13 +281,13 @@ void	Server::accept()
 						std::cout << "Received data \"" << buf << "\" from fd " << all_connections[i] << " ( len "
 								  << strlen( buf ) << ")" << std::endl;
 
-//						if ( strchr( buf, '\n' ) == NULL )        // if there is no \n, there is ^D
-//						{
-//							std::cout << "Keep data in memory" << std::endl;
-//							result += std::string( buf );
-//						}
-//						else
-//						{
+						if ( strchr( buf, '\n' ) == NULL )        // if there is no \n, there is ^D
+						{
+							std::cout << "Keep data in memory" << std::endl;
+							result += std::string( buf );
+						}
+						else
+						{
 							std::cout << "Data is ready to be outputted" << std::endl;
 							result += std::string( buf );
 //							size_t pos = result.find( '\n' );					// to erase the final \n
@@ -295,7 +296,7 @@ void	Server::accept()
 							if ( result == "exit\n" )
 								return;
 							result.clear( );
-//						}
+						}
 					}
 					if ( ret == -1 ) {
 						std::cerr << "recv() failed for fd: " << all_connections[i] << ": " << strerror( errno )

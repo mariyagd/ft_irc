@@ -259,10 +259,6 @@ void	Server::accept()
 				if ( !ret ) continue;
 			}
 
-			if ( FD_ISSET( _servSock, &write_fd_set ) )
-			{
-				send( all_connections[i], "CAP * LS :multi-prefix sasl=PLAIN,EXTERNAL", strlen("CAP * LS :multi-prefix sasl=PLAIN,EXTERNAL"),0 );
-			}
 
 			for ( i = 1; i < MAX_CONNECTIONS; ++i )                            // start receiving data from all connections. index 0 is _serverSock
 			{
@@ -296,6 +292,9 @@ void	Server::accept()
 							if ( result == "exit\n" )
 								return;
 							result.clear( );
+
+//								std::string welcomeMessage = ":localhost 001 mariyadancheva :Welcome to the IRC Network mariyadancheva mariyadancheva !user@host\r\n";
+//								send( all_connections[i], welcomeMessage.c_str(), welcomeMessage.size(),0 );
 						}
 					}
 					if ( ret == -1 ) {

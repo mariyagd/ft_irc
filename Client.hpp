@@ -9,11 +9,11 @@ private:
 
 	int 				_socket;
 	bool				_is_registered;
-	std::string			_name;
-	std::string			_nick;
-	std::string			_user;
-	std::string			_realname;
+	std::string			_nickname;
+	std::string			_username;
 	std::string			_hostname;
+	std::string			_servname;
+	std::string			_realname;
 	struct sockaddr		_addr;
 	socklen_t 			_addrlen;
 
@@ -26,21 +26,23 @@ public:
 
 	void		setSocket( int socket );
 	void		setRegistered( bool );
-	void		setName( std::string name );
-	void		setNick( std::string nick );
-	void		setUser( std::string user );
-	void		setRealname( std::string realname );
+	void		setNickname( std::string nick );
+	void		setUsername( std::string user );
 	void		setHostname( std::string hostname );
+	void		setServname( std::string servname );
+	void		setRealname( std::string realname );
 
 	int			getSocket( void );
 	bool		isRegistered( void );
-	std::string	getName( void );
-	std::string	getNick( void );
-	std::string	getUser( void );
-	std::string	getRealname( void );
+	std::string	getNickname( void );
+	std::string	getUsername( void );
 	std::string	getHostname( void );
+	std::string	getServname( void );
+	std::string	getRealname( void );
 
 	void		closeSocket( void );
+
+	void 		printInfo( void );
 
 };
 

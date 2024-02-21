@@ -315,20 +315,15 @@ void	Server::process_registration(std::string &msg, int i) {
 		}
 	}
 
-	std::cout << "msg " << msg << std::endl;
-	std::cout << "pass " << password << std::endl;
-	std::cout << "nick " << nick << std::endl;
-	std::cout << "username " << username << std::endl;
-	std::cout << "hostname " << hostname << std::endl;
-	std::cout << "servname " << servname << std::endl;
-	std::cout << "realname " << realname << std::endl;
 	if (password == _password)
 	{
-		_connections[i].setNick(nick);
-		_connections[i].setUser(username);
-		_connections[i].setRealname(realname);
-		_connections[i].setHostname(hostname);
 		_connections[i].setRegistered(true);
+		_connections[i].setNickname(nick);
+		_connections[i].setUsername(username);
+		_connections[i].setHostname(hostname);
+		_connections[i].setServname(servname);
+		_connections[i].setRealname(realname);
+		_connections[i].printInfo();
 		std::cout << "Client " << _connections[i].getSocket() << " registered successfully" << std::endl;
 	}
 	else

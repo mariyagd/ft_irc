@@ -23,5 +23,6 @@
 # include <fcntl.h>
 # include <vector>
 # include <sstream>				// for std::stringstream
+# include <iomanip>
 
 #endif

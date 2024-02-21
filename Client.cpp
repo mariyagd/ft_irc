@@ -128,7 +128,7 @@ void	Client::closeSocket( void ) {
 
 	ret = close( _socket );
 	if (ret < 0)
-		std::cerr << "Error while closing socket: " << strerror(errno) << std::endl;
+		std::cerr << RED_BOLD << "Error while closing socket: " << strerror(errno) << END << std::endl;
 	else
 		std::cout << "Socket " << _socket << " closed successfully" << std::endl;
 	_socket = -1;

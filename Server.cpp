@@ -227,7 +227,7 @@ void	Server::receive( int i )
 	ret = recv( _connections[i].getSocket(), buf, DATA_BUFFER, 0 );
 	if ( ret < 0 )
 	{
-		std::cerr << "recv() failed for fd: " << _connections[i].getSocket() << ": " << strerror(errno) << std::endl;
+		std::cerr << RED_BOLD << "recv() failed for fd: " << _connections[i].getSocket() << ": " << strerror(errno) << END << std::endl;
 	}
 	else if (ret == 0)
 	{
@@ -238,6 +238,8 @@ void	Server::receive( int i )
 	{
 		buf[ret] = '\0';
 		result = buf;
+		std::cout << "Received message: [" << result << "]" <<  std::endl;
+
 		process(result, i);
 	}
 	FD_CLR(_connections[i].getSocket(), &read_fd_set);
@@ -334,9 +336,14 @@ void	Server::process_registration(std::string &msg, int i) {
 		_connections[i].setRealname(realname);
 		std::cout << GREEN_BOLD << "Client " << _connections[i].getSocket() << " registered successfully" << END << std::endl;
 		_connections[i].printInfo();
+
+		char welcome_msg[MSG_MAX_SIZE];
+		sprintf(welcome_msg, ":%s 001 %s Welcome to the Internet Relay Network %s!%s@%s\r\n", inet_ntoa(_server_address.sin_addr), nick.c_str(), nick.c_str(), username.c_str(), hostname.c_str() );
+		send( _connections[i].getSocket(), welcome_msg, strlen(welcome_msg), 0 );
 	}
 	else if ( password != _password )
 	{
+
 		std::cout << RED_BOLD << "Client " << _connections[i].getSocket() << " failed to register: Wrong password" << END << std::endl;
 		send( _connections[i].getSocket(), "Error: wrong password\n", 23, 0 );
 		_connections[i].closeSocket();
@@ -351,8 +358,10 @@ void	Server::process_registration(std::string &msg, int i) {
 
 void	Server::process( std::string &msg, int i )
 {
-	if (_connections[i].isRegistered() == false)
+	if ( _connections[i].isRegistered() == false )
 		process_registration(msg, i);
+	else if ( msg == "\r\n" )
+		return ;
 	else
 		std::cout << "Process message: " << msg << std::endl;
 }

@@ -10,4 +10,5 @@ add_executable(ft_irc
         main.cpp
         Server.cpp
         Server.hpp
-        Client.cpp)
+        Client.cpp
+        Colors.h)

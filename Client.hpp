@@ -3,8 +3,8 @@
 
 # include "Irc.hpp"
 
-class Client
-{
+class Client {
+
 private:
 
 	int 				_socket;

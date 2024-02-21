@@ -10,10 +10,12 @@ Server::Server(int port, char *password) : _port(port), _password(password)
 	(void)_password;
 	_servSock = 0;
 	_servinfo = 0;
+	_server_name = 0;
 
 	// initialize structures to 0
 	memset( &_server_address, 0, sizeof( struct sockaddr_in ) );
 	memset( &_hints, 0, sizeof( struct addrinfo ) );
+	memset(&message, 0, MSG_MAX_SIZE);
 
 	// initialize the connections table
 	for ( int i = 0; i < MAX_CONNECTIONS; ++i )
@@ -139,13 +141,16 @@ void	Server::bind()
 		throw ServerException( error_msg.c_str() );
 	}
 
+	_server_name = inet_ntoa(_server_address.sin_addr);
+
+
 	std::cout	<< "Server socket fd " << _servSock << " bound successfully."
 				<< " Familly "
 				<< getProtocolFamilyName(_server_address.sin_family)
 				<< " Port "
 				<< ntohs(_server_address.sin_port)
 				<< " Address "
-				<< inet_ntoa(_server_address.sin_addr) << std::endl;
+				<< _server_name << std::endl;
 
 }
 
@@ -258,7 +263,7 @@ void	Server::loop()
 		ret = ::select( FD_SETSIZE, &read_fd_set, &write_fd_set, NULL, NULL );			// returns the number of connections ready to read
 		if ( ret < 0 )
 		{
-			std::cerr << "Select failed: " << strerror( errno ) << std::endl;
+			std::cerr << RED_BOLD << "Select failed: " << strerror( errno ) << END << std::endl;
 			break;
 		}
 		for ( int i = 0; i < MAX_CONNECTIONS; i++ )
@@ -269,6 +274,7 @@ void	Server::loop()
 					accept();
 				else
 					receive(i);
+				FD_CLR(_connections[i].getSocket(), &read_fd_set);
 			}
 		}
 	}
@@ -305,6 +311,7 @@ void	Server::process_registration(std::string &msg, int i) {
 		iss >> temp;
 		tokens.push_back(temp);
 	}
+
 	size_t j = 0;
 	if ( tokens[j] == "PASS" )
 	{
@@ -326,7 +333,7 @@ void	Server::process_registration(std::string &msg, int i) {
 			realname += tokens[j] + " ";
 		}
 	}
-	if ( password == _password && is_unique_nickname(nick) == true )
+	if ( password == _password  && !nick.empty() && is_unique_nickname(nick) == true )
 	{
 		_connections[i].setRegistered(true);
 		_connections[i].setNickname(nick);
@@ -337,23 +344,25 @@ void	Server::process_registration(std::string &msg, int i) {
 		std::cout << GREEN_BOLD << "Client " << _connections[i].getSocket() << " registered successfully" << END << std::endl;
 		_connections[i].printInfo();
 
-		char welcome_msg[MSG_MAX_SIZE];
-		sprintf(welcome_msg, ":%s 001 %s Welcome to the Internet Relay Network %s!%s@%s\r\n", inet_ntoa(_server_address.sin_addr), nick.c_str(), nick.c_str(), username.c_str(), hostname.c_str() );
-		send( _connections[i].getSocket(), welcome_msg, strlen(welcome_msg), 0 );
+		snprintf(message, MSG_MAX_SIZE, ":%s 001 %s Welcome to the Internet Relay Network %s!%s@%s\r\n", _server_name, nick.c_str(), nick.c_str(), username.c_str(), hostname.c_str() );
+		send( _connections[i].getSocket(), message, strlen(message), 0 );
 	}
 	else if ( password != _password )
 	{
 
+//		snprintf(message, MSG_MAX_SIZE, ":%s 001 %s Welcome to the Internet Relay Network %s!%s@%s\r\n", _server_name, nick.c_str(), nick.c_str(), username.c_str(), hostname.c_str() );
 		std::cout << RED_BOLD << "Client " << _connections[i].getSocket() << " failed to register: Wrong password" << END << std::endl;
 		send( _connections[i].getSocket(), "Error: wrong password\n", 23, 0 );
 		_connections[i].closeSocket();
 	}
-	else
+	else if ( !nick.empty() && is_unique_nickname(nick) == false )
 	{
-		std::cout << RED_BOLD << "Client " << _connections[i].getSocket() << " failed to register: Nickname in use" << END << std::endl;
-		send( _connections[i].getSocket(), "Error: nickname in use\n", 24, 0 );
+		snprintf(message, MSG_MAX_SIZE, ":%s 433 %s Nickname is already in use\r\n", _server_name, nick.c_str() );
+		std::cout << RED_BOLD << "Client " << _connections[i].getSocket() << " failed to register: Nickname [" << nick << "] in use" << END << std::endl;
+		send( _connections[i].getSocket(), message, strlen(message), 0 );
 		_connections[i].closeSocket();
 	}
+	memset(&message, 0, MSG_MAX_SIZE);
 }
 
 void	Server::process( std::string &msg, int i )
@@ -363,7 +372,7 @@ void	Server::process( std::string &msg, int i )
 	else if ( msg == "\r\n" )
 		return ;
 	else
-		std::cout << "Process message: " << msg << std::endl;
+		Commands::process_command(msg, i, *this );
 }
 
 // Helper functions ------------------------------------------------------------------------------------------------------
@@ -376,4 +385,14 @@ std::string	Server::getProtocolFamilyName(int family)
 		return "IPv6";
 	else
 		return "Unknown";
+}
+
+std::vector< Client > &	Server::getConnections( void )
+{
+	return _connections;
+}
+
+char *	Server::getServerName( void )
+{
+	return _server_name;
 }

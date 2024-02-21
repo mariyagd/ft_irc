@@ -1,8 +1,11 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-
 # include "Client.hpp"
+# include "Commands.hpp"
+
+class Client;
+class Commands;
 
 class Server {
 
@@ -13,6 +16,7 @@ private:
 	struct sockaddr_in				_server_address;		// for bind()
 	struct addrinfo 				_hints;					// for getaddrinfo()
 	struct addrinfo					*_servinfo;				// for getaddrinfo()
+	char * 							_server_name;
 
 	fd_set							read_fd_set;
 	fd_set							write_fd_set;
@@ -20,6 +24,7 @@ private:
 	socklen_t						addrlen;
 
 	std::vector< Client >			_connections;
+	char 							message[MSG_MAX_SIZE];
 
 
 public:
@@ -50,7 +55,10 @@ public:
 	void process_registration( std::string &msg, int i );
 	bool is_unique_nickname( std::string &nickname );
 
-	std::string		getProtocolFamilyName(int family);
+	char *						getServerName( void );
+	std::string					getProtocolFamilyName(int family);
+	std::vector< Client > &		getConnections( void );
+
 	class ServerException : public std::exception {
 
 	private:

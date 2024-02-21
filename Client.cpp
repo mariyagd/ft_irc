@@ -53,17 +53,26 @@ void	Client::setRegistered( bool status ) {
 
 void	Client::setNickname( std::string nick ) {
 
+	if ( !_nickname.empty() )
+		_nickname.clear();
+
 	_nickname = nick;
 	return;
 }
 
 void	Client::setUsername( std::string user ) {
 
+	if ( !_username.empty() )
+		_username.clear();
+
 	_username = user;
 	return;
 }
 
 void	Client::setHostname( std::string hostname ) {
+
+	if ( !_hostname.empty() )
+		_hostname.clear();
 
 	_hostname = hostname;
 	return;
@@ -76,6 +85,9 @@ void	Client::setServname( std::string servname ) {
 }
 
 void	Client::setRealname( std::string realname ) {
+
+	if ( !_realname.empty() )
+		_realname.clear();
 
 	_realname = realname;
 	return;

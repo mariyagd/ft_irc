@@ -48,6 +48,7 @@ public:
 
 	void process( std::string &msg, int i );
 	void process_registration( std::string &msg, int i );
+	bool is_unique_nickname( std::string &nickname );
 
 	std::string		getProtocolFamilyName(int family);
 	class ServerException : public std::exception {

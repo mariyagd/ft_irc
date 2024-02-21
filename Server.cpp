@@ -274,6 +274,16 @@ void	Server::loop()
 
 // Process received data ------------------------------------------------------------------------------------------------
 
+bool Server::is_unique_nickname( std::string &nickname )
+{
+	for ( int i = 0; i < MAX_CONNECTIONS; ++i )
+	{
+		if ( _connections[i].getSocket() >= 0 && _connections[i].getNickname() == nickname )
+			return false;
+	}
+	return true;
+}
+
 void	Server::process_registration(std::string &msg, int i) {
 
 	(void)i;
@@ -314,8 +324,7 @@ void	Server::process_registration(std::string &msg, int i) {
 			realname += tokens[j] + " ";
 		}
 	}
-
-	if (password == _password)
+	if ( password == _password && is_unique_nickname(nick) == true )
 	{
 		_connections[i].setRegistered(true);
 		_connections[i].setNickname(nick);
@@ -323,13 +332,19 @@ void	Server::process_registration(std::string &msg, int i) {
 		_connections[i].setHostname(hostname);
 		_connections[i].setServname(servname);
 		_connections[i].setRealname(realname);
+		std::cout << GREEN_BOLD << "Client " << _connections[i].getSocket() << " registered successfully" << END << std::endl;
 		_connections[i].printInfo();
-		std::cout << "Client " << _connections[i].getSocket() << " registered successfully" << std::endl;
+	}
+	else if ( password != _password )
+	{
+		std::cout << RED_BOLD << "Client " << _connections[i].getSocket() << " failed to register: Wrong password" << END << std::endl;
+		send( _connections[i].getSocket(), "Error: wrong password\n", 23, 0 );
+		_connections[i].closeSocket();
 	}
 	else
 	{
-		std::cout << "Client " << _connections[i].getSocket() << " failed to register" << std::endl;
-		send( _connections[i].getSocket(), "Error: wrong password\n", 22, 0 );
+		std::cout << RED_BOLD << "Client " << _connections[i].getSocket() << " failed to register: Nickname in use" << END << std::endl;
+		send( _connections[i].getSocket(), "Error: nickname in use\n", 24, 0 );
 		_connections[i].closeSocket();
 	}
 }

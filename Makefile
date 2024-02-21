@@ -1,5 +1,5 @@
 NAME = ircserv
-SRCS = main.cpp  Server.cpp
+SRCS = main.cpp  Server.cpp Client.cpp
 
 CPPF = c++ -Wall -Werror -Wextra -std=c++98 -g
 

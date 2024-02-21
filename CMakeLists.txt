@@ -9,4 +9,5 @@ add_executable(ft_irc
         Irc.hpp
         main.cpp
         Server.cpp
-        Server.hpp )
+        Server.hpp
+        Client.cpp)

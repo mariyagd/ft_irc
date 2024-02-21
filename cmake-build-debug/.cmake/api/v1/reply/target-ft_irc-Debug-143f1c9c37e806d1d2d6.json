@@ -42,14 +42,14 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk -fcolor-diagnostics"
+					"fragment" : "-g -std=gnu++14 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk -mmacosx-version-min=10.15 -fcolor-diagnostics"
 				}
 			],
 			"includes" : 
 			[
 				{
 					"backtrace" : 2,
-					"path" : "/Users/mariyadancheva/Documents/GitHub/ft_irc/."
+					"path" : "/Users/mdanchev/Desktop/ft_irc/."
 				}
 			],
 			"language" : "CXX",
@@ -64,7 +64,8 @@
 			"sourceIndexes" : 
 			[
 				1,
-				2
+				2,
+				4
 			]
 		}
 	],
@@ -106,7 +107,8 @@
 			"sourceIndexes" : 
 			[
 				1,
-				2
+				2,
+				4
 			]
 		}
 	],
@@ -133,6 +135,12 @@
 			"backtrace" : 1,
 			"path" : "Server.hpp",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Client.cpp",
+			"sourceGroupIndex" : 1
 		}
 	],
 	"type" : "EXECUTABLE"

@@ -1,3 +1,3 @@
-/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/CMakeFiles/ft_irc.dir
-/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/CMakeFiles/ft_irc.dir
+/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/CMakeFiles/rebuild_cache.dir

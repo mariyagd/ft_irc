@@ -1,7 +1,8 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include "Irc.hpp"
+
+# include "Client.hpp"
 
 class Server {
 
@@ -10,15 +11,16 @@ private:
 	const char *					_password;
 	int								_servSock;				// for socket()
 	struct sockaddr_in				_server_address;		// for bind()
-	struct addrinfo 				_hints, *_servinfo;	// for getaddrinfo()
+	struct addrinfo 				_hints;					// for getaddrinfo()
+	struct addrinfo					*_servinfo;				// for getaddrinfo()
 
-	int 							maxDescriptorPlus1;
-	int								all_connections[MAX_CONNECTIONS];
 	fd_set							read_fd_set;
 	fd_set							write_fd_set;
-	int								new_fd;
 	struct sockaddr_storage			new_addr;
 	socklen_t						addrlen;
+
+	std::vector< Client >			_connections;
+
 
 public:
 
@@ -37,12 +39,15 @@ public:
 	void	socket( void );
 	void	bind( void );
 	void	listen( void );
-	void	select( void );
-	void	accept( void );
-//	void	receive( void );
-//	void	send( void );
+	void	loop( void );
 
-	ssize_t handle_log_record(int in_h, int out_h);
+
+	void reset_fds( void );
+	void accept( void );
+	void receive( int i );
+
+	void process( std::string &msg, int i );
+	void process_registration( std::string &msg, int i );
 
 	std::string		getProtocolFamilyName(int family);
 	class ServerException : public std::exception {

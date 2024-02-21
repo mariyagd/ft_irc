@@ -10,62 +10,35 @@ Server::Server(int port, char *password) : _port(port), _password(password)
 	(void)_password;
 	_servSock = 0;
 	_servinfo = 0;
-	memset( &_server_address, 0, sizeof( _server_address ) );	// make sure the struct is empty (i.e. all zeros
-	bzero( &_hints, sizeof( struct addrinfo ) );								// make sure the struct is empty
 
-	// initialise for select()
-	maxDescriptorPlus1 = -1;
-	// Initialize all_connections
+	// initialize structures to 0
+	memset( &_server_address, 0, sizeof( struct sockaddr_in ) );
+	memset( &_hints, 0, sizeof( struct addrinfo ) );
+
+	// initialize the connections table
 	for ( int i = 0; i < MAX_CONNECTIONS; ++i )
-		all_connections[i] = -1;
+		_connections.push_back( Client() );
 }
 
 Server::~Server()
 {
-	int ret = 0;
-
 	for (int i = 0; i < MAX_CONNECTIONS; ++i)
 	{
-		if (all_connections[i] > 0)
-		{
-			ret = close( all_connections[i] );
-			if (ret < 0)
-				std::cerr << "Error while closing socket: " << strerror(errno) << std::endl;
-			else
-			{
-				if (all_connections[i] == _servSock)
-					std::cout << "Server socket closed successfully" << std::endl;
-				else
-					std::cout << "Connection fd " << all_connections[i]  << " closed successfully" << std::endl;
-			}
-
-		}
+		if (_connections[i].getSocket() > 0)
+			_connections[i].closeSocket();
 	}
-//	ret = close(_servSock);
-//	if (ret < 0)
-//		std::cerr << "Error while closing socket: " << strerror(errno) << std::endl;
-//	else
-//		std::cout << "Server socket closed successfully" << std::endl;
 	if (_servinfo)
 		freeaddrinfo(_servinfo);
+	std::cout << BOLD << "Exit Server" << END << std::endl;
 }
 
 
 void Server::shutdown()
 {
-	int ret = 0;
-
 	for (int i = 0; i < MAX_CONNECTIONS; ++i)
 	{
-		if (all_connections[i] > 0)
-		{
-			ret = close( all_connections[i] );
-			if (ret < 0)
-				std::cerr << "Error while closing socket: " << strerror(errno) << std::endl;
-			else
-				std::cout << "Connection fd " << all_connections[i]  << " closed successfully" << std::endl;
-
-		}
+		if (_connections[i].getSocket() > 0)
+			_connections[i].closeSocket();
 	}
 	if (_servinfo)
 		freeaddrinfo(_servinfo);
@@ -109,22 +82,19 @@ void	Server::launch()
 {
 	std::cout << "Launching server on port " << _port << std::endl;
 
-	// signal handling
 	sig_handler();
 
 	get_addrinfo();
 	socket();
 	bind();
 	listen();
-	accept();
+	loop();
 }
 
 // Get addrinfo ----------------------------------------------------------------------------------------------------------
 
 void	Server::get_addrinfo()
 {
-
-	bzero( &_hints, sizeof( struct addrinfo ) );		// make sure the struct is empty
 	_hints.ai_family = AF_UNSPEC;						// don't care IPv4 or IPv6
 	_hints.ai_socktype = SOCK_STREAM;					// TCP stream sockets
 	_hints.ai_flags = AI_PASSIVE;						// fill in my IP for me
@@ -149,8 +119,6 @@ void	Server::socket()
 		std::string error_msg = "Server socket error: " + std::string( strerror(errno) );
 		throw ServerException( error_msg.c_str() );
 	}
-//	fcntl(_servSock, F_SETFL, O_NONBLOCK | FASYNC);  // Configuration du descripteur pour le mode asynchrone
-//	fcntl(_servSock, F_SETOWN, getpid());
 	std::cout << "Server socket fd " << _servSock << " created successfully " << std::endl;
 }
 
@@ -178,6 +146,7 @@ void	Server::bind()
 				<< ntohs(_server_address.sin_port)
 				<< " Address "
 				<< inet_ntoa(_server_address.sin_addr) << std::endl;
+
 }
 
 // Listen ---------------------------------------------------------------------------------------------------------------
@@ -192,7 +161,7 @@ void	Server::listen()
 		throw ServerException( error_msg.c_str() );
 	}
 
-	std::cout << "Server socket fd " << _servSock << " is listening" << std::endl;
+	std::cout << BOLD << "Server socket fd " << _servSock << " is listening" << END << std::endl;
 }
 
 
@@ -211,103 +180,171 @@ const char *Server::ServerException::what() const throw()
 
 // Accept ---------------------------------------------------------------------------------------------------------------
 
-void	Server::accept()
+void Server::reset_fds( void )
 {
-	int				ret, i;
+	FD_ZERO( &read_fd_set );
+	FD_ZERO( &write_fd_set );
+
+	for ( int i = 0; i < MAX_CONNECTIONS; ++i )											// set fd int the read_fd_set before passing it to the select call
+	{
+		if ( _connections[i].getSocket() >= 0 )
+		{
+			FD_SET( _connections[i].getSocket(), &read_fd_set );
+			FD_SET( _connections[i].getSocket(), &write_fd_set );
+		}
+	}
+}
+
+void Server::accept( void )
+{
+	std::cout << "Server is ready to read" << std::endl;
+
+	int clientSocket = ::accept(_servSock, reinterpret_cast<struct sockaddr *>( &new_addr ), &addrlen);
+	if (clientSocket >= 0)
+	{
+		std::cout << "Accepted a new connection with fd: " << clientSocket << std::endl;
+		for (int i = 0; i < MAX_CONNECTIONS; i++)                    // save the fd in the table
+		{
+			if (_connections[i].getSocket() < 0)
+			{
+				_connections[i].setSocket(clientSocket);
+				return;
+			}
+		}
+	}
+	else
+		std::cerr << "Accept failed: " << strerror(errno) << std::endl;
+	return;
+}
+
+void	Server::receive( int i )
+{
+	int				ret = 0;
 	const int		DATA_BUFFER =  5000;
 	char			buf[DATA_BUFFER];
 	std::string 	result = "";
 
-
-	// set the first entry to server fd
-	all_connections[0] = _servSock;
-
-	while ( _shutdown_server == false )										// while there no SIGINT
+	ret = recv( _connections[i].getSocket(), buf, DATA_BUFFER, 0 );
+	if ( ret < 0 )
 	{
-		FD_ZERO( &read_fd_set );                                            // removes all descriptors from the vector
-		FD_ZERO( &write_fd_set );                                            // removes all descriptors from the vector
+		std::cerr << "recv() failed for fd: " << _connections[i].getSocket() << ": " << strerror(errno) << std::endl;
+	}
+	else if (ret == 0)
+	{
+		std::cout << "Connection " << _connections[i].getSocket() << " closed by client" << std::endl;
+		_connections[i].closeSocket();
+	}
+	else
+	{
+		buf[ret] = '\0';
+		result = buf;
+		process(result, i);
+	}
+	FD_CLR(_connections[i].getSocket(), &read_fd_set);
+	return;
+}
 
-		for ( i = 0; i < MAX_CONNECTIONS; ++i )                            // set fd int the read_fd_set before passing it to the select call
+void	Server::loop()
+{
+	int				ret = 0;
+
+	_connections[0].setSocket( _servSock );												// set the first element of the table to the server socket
+
+	while ( _shutdown_server == false )													// while there no SIGINT
+	{
+		reset_fds();
+		ret = ::select( FD_SETSIZE, &read_fd_set, &write_fd_set, NULL, NULL );			// returns the number of connections ready to read
+		if ( ret < 0 )
 		{
-			if ( all_connections[i] >= 0 )
-				FD_SET( all_connections[i], &read_fd_set );
+			std::cerr << "Select failed: " << strerror( errno ) << std::endl;
+			break;
 		}
-
-		ret = ::select( FD_SETSIZE, &read_fd_set, &write_fd_set, NULL, NULL );        // returns the number of connections ready to read
-
-		if ( ret >= 0 )
+		for ( int i = 0; i < MAX_CONNECTIONS; i++ )
 		{
-			if ( FD_ISSET( _servSock, &read_fd_set ) )                        // if server is ready to read, it will be in the read_fd_se
+			if (FD_ISSET(_connections[i].getSocket(), &read_fd_set))                                    // if server is ready to read, it will be in the read_fd_se
 			{
-				std::cout << "Server is ready to read" << std::endl;
-				new_fd = ::accept( _servSock, reinterpret_cast<struct sockaddr *>( &new_addr ), &addrlen );
-				if ( new_fd >= 0 )
-				{
-					std::cout << "Accepted a new connection with fd: " << new_fd << std::endl;
-					for ( i = 0; i < MAX_CONNECTIONS; i++ )                    // save the fd in the table
-					{
-						if ( all_connections[i] < 0 )
-						{
-							all_connections[i] = new_fd;
-							break;
-						}
-					}
-				}
+				if (_connections[i].getSocket() == _servSock)
+					accept();
 				else
-					std::cerr << "Accept failed: " << strerror( errno ) << std::endl;
-				ret--;
-				if ( !ret ) continue;
+					receive(i);
 			}
+		}
+	}
+}
 
+// Process received data ------------------------------------------------------------------------------------------------
 
-			for ( i = 1; i < MAX_CONNECTIONS; ++i )                            // start receiving data from all connections. index 0 is _serverSock
-			{
-				if ( ( all_connections[i] > 0 ) && ( FD_ISSET( all_connections[i], &read_fd_set ) ) )
-				{
-					ret = recv( all_connections[i], buf, DATA_BUFFER, 0 );
-					if ( ret == 0 )
-					{
-						std::cout << "Connection " << all_connections[i] << " closed by client" << std::endl;
-						close( all_connections[i] );
-						all_connections[i] = -1;                            // delete the connection from the table
-					}
-					if ( ret > 0 )                                          // ^D handling starts here
-					{
-						buf[ret] = '\0';
-						std::cout << "Received data \"" << buf << "\" from fd " << all_connections[i] << " ( len "
-								  << strlen( buf ) << ")" << std::endl;
+void	Server::process_registration(std::string &msg, int i) {
 
-						if ( strchr( buf, '\n' ) == NULL )        // if there is no \n, there is ^D
-						{
-							std::cout << "Keep data in memory" << std::endl;
-							result += std::string( buf );
-						}
-						else
-						{
-							std::cout << "Data is ready to be outputted" << std::endl;
-							result += std::string( buf );
-//							size_t pos = result.find( '\n' );					// to erase the final \n
-//							result.erase(pos, 1);
-							std::cout << "Output data: (len " << result.size( ) << ") \"" << result << "\"" << std::endl;
-							if ( result == "exit\n" )
-								return;
-							result.clear( );
+	(void)i;
+	std::string nick;
+	std::string username;
+	std::string hostname;
+	std::string servname;
+	std::string realname;
+	std::string password;
 
-//								std::string welcomeMessage = ":localhost 001 mariyadancheva :Welcome to the IRC Network mariyadancheva mariyadancheva !user@host\r\n";
-//								send( all_connections[i], welcomeMessage.c_str(), welcomeMessage.size(),0 );
-						}
-					}
-					if ( ret == -1 ) {
-						std::cerr << "recv() failed for fd: " << all_connections[i] << ": " << strerror( errno )
-								  << std::endl;
-						break;
-					}
-				}
-				ret--;
-				if ( !ret ) continue;
-			} /* for-loop */
-		}/* (ret >= 0) */
-	}/* while(1) */
+	std::vector< std::string > tokens;
+
+	std::istringstream iss(msg);
+	while ( !iss.eof() )
+	{
+		std::string temp;
+		iss >> temp;
+		tokens.push_back(temp);
+	}
+	size_t j = 0;
+	if ( tokens[j] == "PASS" )
+	{
+		password = tokens[++j];
+		++j;
+	}
+	if ( tokens[j] == "NICK" )
+	{
+		nick = tokens[++j];
+		++j;
+	}
+	if ( tokens[j] == "USER" )
+	{
+		username = tokens[++j];
+		hostname = tokens[++j];
+		servname = tokens[++j];
+		for ( j += 1; j < tokens.size(); ++j )
+		{
+			realname += tokens[j] + " ";
+		}
+	}
+
+	std::cout << "msg " << msg << std::endl;
+	std::cout << "pass " << password << std::endl;
+	std::cout << "nick " << nick << std::endl;
+	std::cout << "username " << username << std::endl;
+	std::cout << "hostname " << hostname << std::endl;
+	std::cout << "servname " << servname << std::endl;
+	std::cout << "realname " << realname << std::endl;
+	if (password == _password)
+	{
+		_connections[i].setNick(nick);
+		_connections[i].setUser(username);
+		_connections[i].setRealname(realname);
+		_connections[i].setHostname(hostname);
+		_connections[i].setRegistered(true);
+		std::cout << "Client " << _connections[i].getSocket() << " registered successfully" << std::endl;
+	}
+	else
+	{
+		std::cout << "Client " << _connections[i].getSocket() << " failed to register" << std::endl;
+		send( _connections[i].getSocket(), "Error: wrong password\n", 22, 0 );
+		_connections[i].closeSocket();
+	}
+}
+
+void	Server::process( std::string &msg, int i )
+{
+	if (_connections[i].isRegistered() == false)
+		process_registration(msg, i);
+	else
+		std::cout << "Process message: " << msg << std::endl;
 }
 
 // Helper functions ------------------------------------------------------------------------------------------------------

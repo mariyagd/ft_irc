@@ -3,8 +3,10 @@
 
 # define MAX_CONNECTIONS 10
 
+# include "Colors.h"
+
 # include <iostream>
-# include <sys/socket.h>
+# include <sys/socket.h>		// for socket, getpeername
 # include <errno.h>				// for strerror
 # include <stdio.h>				// for strerror
 # include <strings.h> 			// for bzero
@@ -19,5 +21,7 @@
 # include <signal.h>			// for signal				<-------
 # include <csignal>				// for std::sig_atomic_t	<-------
 # include <fcntl.h>
+# include <vector>
+# include <sstream>				// for std::stringstream
 
 #endif

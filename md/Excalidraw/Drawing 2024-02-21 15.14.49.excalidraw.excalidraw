@@ -1,122 +1,3 @@
----
-
-excalidraw-plugin: parsed
-tags: [excalidraw]
-
----
-==⚠  Switch to EXCALIDRAW VIEW in the MORE OPTIONS menu of this document. ⚠==
-
-
-# Text Elements
-socket ^jtQIziLQ
-
-commands ^hM9dTT0r
-
-channel
-tracker ^YkgQOROA
-
-IRC server ^xvdQcLQ5
-
-server socket and info
-FD_SETS
-clients table
- ^vmDgWakP
-
-executes commands by 
-having a direct access
-to the server infos, 
-clients infos and channels ^Cx9xImkw
-
-- creates, deletes and
-  keeps track about all 
-  current channels and
-  its modes as well as 
-  the clients in each 
-  channel
-- manages clients in 
-  the channel
- ^jIPsx8j3
-
-servSocket
-std::vector< Connexions > ^VtF801nP
-
-std::vector< Channel > allChannels
-void addChannel( Channel name ); ^o37siV85
-
-Channel ^tY4eMLzv
-
-void analyzeRecievedMessage()
-void registration(); -> PASS, USER, NICK
-void NICK();  -> if registered -> change nickname
-void TOPIC(); -> if channel[i].isOperator(Connexion) | channel[i].getTopicMode() { channel[i].setTopic(std::string topic); }
-void INVITE(); -> if channel[i].isOperator(Connexion) { channel[i].setInvitedUser( Connexion ); }
-void KICK(); -> if channel[i].isOperator(Connexion) { channel[i].kickUser( Connexion ); }
-void JOIN(); -> according to password, invite and limit topic. If limit topic -> check if he was invited by an operator
-void MSG();
-
-// PART()
-// PONG()
-// OPER()????
-
- ^94BA3yPv
-
-
-- manages clients in 
-  the current channel
-- manages modes and
-  operators
- ^wD5EGN9l
-
-Channel::Channel() -> creates a new channel
-
-std::vector< Connexion > allUsersInThisChannel;
-std::vector< Connexion  > invitedUser;
-std::vector< Connexion > operators;
-
-bool         inviteMode;
-bool         topicMode;
-std::string  topic;
-std::string  password;
-int          limit (-1 if no limits);
-
-size_t       totAllUsers = allUsersInThisChannel.size();
-size_t       totOperatos = operators.size();
-
-void addUser( Connexion, password ); -> eventually checks if +i mode and in invited list
-void set/unsetInvitedUser( Connexion );
-void kickUser( Connexion );
-void addOperator( Connexion );
-
-bool isOperator( Connexion );
-
-void setInviteMode( bool );
-bool getInviteMode( );
-
-void setTopicMode( bool );
-bool getTopicMode( );
-
-void setLimitMode( std::argument, std::string num );
-// void unsetLimitMode( std::argument );
-bool getLimitMode( );
-
-void setPasswordMode( std::string password );
-bool getPasswordMode( );
- ^x7LeXpqL
-
-void createTCPserverSocket() ^iU9aeIep
-
-keeps info about each
-client: registration,
-name, socket, channel
- ^WQw4BCKX
-
-Connexions ^IqLGE6Bw
-
-Inheritance order ^xK62wEez
-
-%%
-# Drawing
-```json
 {
 	"type": "excalidraw",
 	"version": 2,
@@ -447,8 +328,8 @@ Inheritance order ^xK62wEez
 		},
 		{
 			"type": "arrow",
-			"version": 415,
-			"versionNonce": 1810005967,
+			"version": 419,
+			"versionNonce": 118608897,
 			"isDeleted": false,
 			"id": "P5-xTRBuO6AMpFtOlHM-2",
 			"fillStyle": "solid",
@@ -470,7 +351,7 @@ Inheritance order ^xK62wEez
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708615577299,
+			"updated": 1708615963252,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1015,8 +896,8 @@ Inheritance order ^xK62wEez
 		},
 		{
 			"type": "arrow",
-			"version": 830,
-			"versionNonce": 1281892175,
+			"version": 834,
+			"versionNonce": 712023169,
 			"isDeleted": false,
 			"id": "9ZsvJn0zQFw349DkxrGud",
 			"fillStyle": "solid",
@@ -1038,7 +919,7 @@ Inheritance order ^xK62wEez
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708615577299,
+			"updated": 1708615963251,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1067,8 +948,8 @@ Inheritance order ^xK62wEez
 		},
 		{
 			"type": "arrow",
-			"version": 595,
-			"versionNonce": 890378255,
+			"version": 599,
+			"versionNonce": 1058768833,
 			"isDeleted": false,
 			"id": "nU2OB7W4Ex4006r6Hrolv",
 			"fillStyle": "solid",
@@ -1090,7 +971,7 @@ Inheritance order ^xK62wEez
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708615577299,
+			"updated": 1708615963252,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1119,8 +1000,8 @@ Inheritance order ^xK62wEez
 		},
 		{
 			"type": "text",
-			"version": 2339,
-			"versionNonce": 2040479663,
+			"version": 2364,
+			"versionNonce": 1703362977,
 			"isDeleted": false,
 			"id": "94BA3yPv",
 			"fillStyle": "solid",
@@ -1129,8 +1010,8 @@ Inheritance order ^xK62wEez
 			"roughness": 1,
 			"opacity": 40,
 			"angle": 0,
-			"x": 24.164974185970777,
-			"y": -666.9690615211604,
+			"x": 48.30559918597078,
+			"y": -700.7017004100493,
 			"strokeColor": "#2f9e44",
 			"backgroundColor": "#b2f2bb",
 			"width": 1299.8203125,
@@ -1140,7 +1021,7 @@ Inheritance order ^xK62wEez
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1708615349550,
+			"updated": 1708615972436,
 			"link": null,
 			"locked": false,
 			"fontSize": 17.89019097222218,
@@ -1266,8 +1147,8 @@ Inheritance order ^xK62wEez
 		},
 		{
 			"type": "text",
-			"version": 3799,
-			"versionNonce": 361943407,
+			"version": 3820,
+			"versionNonce": 541911951,
 			"isDeleted": false,
 			"id": "x7LeXpqL",
 			"fillStyle": "solid",
@@ -1276,8 +1157,8 @@ Inheritance order ^xK62wEez
 			"roughness": 1,
 			"opacity": 40,
 			"angle": 0,
-			"x": -542.6381448954705,
-			"y": -1741.7527722765499,
+			"x": -518.1068948954705,
+			"y": -1742.9159667209942,
 			"strokeColor": "#2f9e44",
 			"backgroundColor": "#b2f2bb",
 			"width": 922.453125,
@@ -1287,7 +1168,7 @@ Inheritance order ^xK62wEez
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1708615371589,
+			"updated": 1708615965986,
 			"link": null,
 			"locked": false,
 			"fontSize": 17.89019097222218,
@@ -1374,8 +1255,8 @@ Inheritance order ^xK62wEez
 		},
 		{
 			"type": "arrow",
-			"version": 1080,
-			"versionNonce": 1901451151,
+			"version": 1084,
+			"versionNonce": 1455566913,
 			"isDeleted": false,
 			"id": "JM3cYPk7vjveMxX6s5INn",
 			"fillStyle": "solid",
@@ -1397,7 +1278,7 @@ Inheritance order ^xK62wEez
 				"type": 2
 			},
 			"boundElements": [],
-			"updated": 1708615577299,
+			"updated": 1708615963251,
 			"link": null,
 			"locked": false,
 			"startBinding": {
@@ -1624,10 +1505,10 @@ Inheritance order ^xK62wEez
 		"currentItemTextAlign": "left",
 		"currentItemStartArrowhead": null,
 		"currentItemEndArrowhead": "arrow",
-		"scrollX": 1186.4145977549786,
-		"scrollY": 1583.060151583443,
+		"scrollX": 1582.5198312801317,
+		"scrollY": 1884.7901468485932,
 		"zoom": {
-			"value": 0.55
+			"value": 0.45
 		},
 		"currentItemRoundness": "round",
 		"gridSize": null,
@@ -1644,7 +1525,6 @@ Inheritance order ^xK62wEez
 			"outline": true
 		}
 	},
+	"prevTextMode": "parsed",
 	"files": {}
 }
-```
-%%

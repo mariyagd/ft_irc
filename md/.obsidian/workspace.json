@@ -25,14 +25,36 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Messages.md",
+                "file": "Irssi and Libera chat.md",
                 "mode": "source",
                 "source": false
               }
             }
+          },
+          {
+            "id": "9e1d0b4584c689c7",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Commands.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "56e6221360ef4c80",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.excalidraw"
+              }
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -98,7 +120,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Messages.md",
+                "file": "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.excalidraw",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -115,7 +137,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Messages.md",
+                "file": "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.excalidraw",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -138,7 +160,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Messages.md"
+                "file": "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.excalidraw"
               }
             }
           }
@@ -160,15 +182,22 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "a6b3d855b2720ec6",
+  "active": "56e6221360ef4c80",
   "lastOpenFiles": [
+    "Excalidraw/Drawing 2024-02-21 12.48.01.excalidraw.excalidraw",
+    "Excalidraw/Drawing 2024-02-21 12.48.01.excalidraw.md",
+    "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.md",
+    "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.excalidraw",
+    "Channels.md",
+    "Commands.md",
+    "Excalidraw/Drawing 2024-02-22 15.37.16.excalidraw.md",
+    "Excalidraw/Drawing 2024-02-22 15.37.16.excalidraw.excalidraw",
     "Irssi and Libera chat.md",
     "Messages.md",
     "select().md",
     "The Socket API.md",
     "Untitled",
     "Messages",
-    "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.md",
     "Excalidraw",
     "Excalidraw/Drawing 2024-02-21 15.14.02.excalidraw.md",
     "Excalidraw/Drawing 2024-02-21 15.13.04.excalidraw.md"

@@ -88,6 +88,9 @@
 		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Client.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Colors.h">
+			<Option target="ft_irc"/>
+		</Unit>
 		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Irc.hpp">
 			<Option target="ft_irc"/>
 		</Unit>

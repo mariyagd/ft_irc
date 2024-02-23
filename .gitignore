@@ -1,6 +1,8 @@
-ircserv
+*ircserv
 # Prerequisites
 *.d
+
+*.dSYM/
 
 # Compiled Object files
 *.slo

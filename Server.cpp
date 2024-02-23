@@ -10,12 +10,14 @@ Server::Server(int port, char *password) : _port(port), _password(password)
 	(void)_password;
 	_servSock = 0;
 	_servinfo = 0;
-	_server_name = 0;
+	_server_name = "irc.lausanne42.ch";
+
 
 	// initialize structures to 0
 	memset( &_server_address, 0, sizeof( struct sockaddr_in ) );
 	memset( &_hints, 0, sizeof( struct addrinfo ) );
 	memset(&message, 0, MSG_MAX_SIZE);
+	memset(&read_fd_set, 0, sizeof(fd_set));
 
 	// initialize the connections table
 	for ( int i = 0; i < MAX_CONNECTIONS; ++i )
@@ -24,16 +26,16 @@ Server::Server(int port, char *password) : _port(port), _password(password)
 
 Server::~Server()
 {
-	for (int i = 0; i < MAX_CONNECTIONS; ++i)
+	for ( int i = 0; i < MAX_CONNECTIONS; ++i )
 	{
-		if (_connections[i].getSocket() > 0)
+		if ( _connections[i].getSocket() > 0 )
 			_connections[i].closeSocket();
 	}
-	if (_servinfo)
-		freeaddrinfo(_servinfo);
-	std::cout << BOLD << "Exit Server" << END << std::endl;
-}
+	if ( _servinfo )
+		freeaddrinfo( _servinfo );
 
+	std::cout << BOLD << PrintTime::printTime() << " Exit Server" << END << std::endl;
+}
 
 void Server::shutdown()
 {
@@ -44,9 +46,11 @@ void Server::shutdown()
 	}
 	if (_servinfo)
 		freeaddrinfo(_servinfo);
-	std::cout << "Exit Server" << std::endl;
+	std::cout << BOLD << PrintTime::printTime() << " Exit Server" << END << std::endl;
 	exit(0);
 }
+
+
 
 // Signal handling ------------------------------------------------------------------------------------------------------
 
@@ -54,7 +58,7 @@ void	Server::handler(int sig_code)
 {
 	if (sig_code == SIGINT)
 	{
-		std::cout << std::endl << "Received SIGINT. Close program." << std::endl;
+		std::cout << std::endl << PrintTime::printTime() << " Received SIGINT. Close program." << std::endl;
 		_shutdown_server = true;
 	}
 }
@@ -82,7 +86,7 @@ void	Server::sig_handler( void )
 
 void	Server::launch()
 {
-	std::cout << "Launching server on port " << _port << std::endl;
+	std::cout << PrintTime::printTime() << " Launching server on port " << _port << std::endl; // add time
 
 	sig_handler();
 
@@ -92,22 +96,25 @@ void	Server::launch()
 	listen();
 	loop();
 }
+// Get Current Time -----------------------------------------------------------------------------------------------------
+
 
 // Get addrinfo ----------------------------------------------------------------------------------------------------------
 
 void	Server::get_addrinfo()
 {
-	_hints.ai_family = AF_UNSPEC;						// don't care IPv4 or IPv6
+	_hints.ai_family = PF_INET;						// don't care IPv4 or IPv6
 	_hints.ai_socktype = SOCK_STREAM;					// TCP stream sockets
 	_hints.ai_flags = AI_PASSIVE;						// fill in my IP for me
+	_hints.ai_protocol = 0;								// any protocol
 
-	int	status = getaddrinfo(NULL, std::to_string(_port).c_str(), &_hints, &_servinfo);
+	int	status = getaddrinfo( NULL, std::to_string(_port).c_str(), &_hints, &_servinfo );
 	if (status != 0)
 	{
-		std::string error_msg = "Getaddrinfo error: " + std::string( gai_strerror(status) );
+		std::string error_msg = PrintTime::printTime() + " Getaddrinfo error: " + std::string( gai_strerror(status) );
 		throw ServerException( error_msg.c_str() );
 	}
-	std::cout << "Getting address info successful." << std::endl;
+	std::cout << PrintTime::printTime() << " Getting address info successful." << std::endl;
 }
 
 // Socket ---------------------------------------------------------------------------------------------------------------
@@ -115,43 +122,43 @@ void	Server::get_addrinfo()
 void	Server::socket()
 {
 
-	_servSock = ::socket( PF_INET, SOCK_STREAM, 0 );
+	_servSock = ::socket( _servinfo->ai_family, _servinfo->ai_socktype , _servinfo->ai_protocol );
 	if (_servSock < 0)
 	{
-		std::string error_msg = "Server socket error: " + std::string( strerror(errno) );
+		std::string error_msg = PrintTime::printTime() + " Server socket error: " + std::string( strerror(errno) );
 		throw ServerException( error_msg.c_str() );
 	}
-	std::cout << "Server socket fd " << _servSock << " created successfully " << std::endl;
+	_connections[0].setSocket( _servSock );												// set the first element of the table to the server socket
+	std::cout << PrintTime::printTime() << " Server socket fd " << _servSock << " created successfully " << std::endl;
 }
 
 // Bind ---------------------------------------------------------------------------------------------------------------
 
 void	Server::bind()
 {
-	_server_address.sin_family = AF_INET;						// for IPv4
-	_server_address.sin_addr.s_addr = htonl( INADDR_ANY );
+	_server_address.sin_family = PF_INET;						// for IPv4
+	_server_address.sin_addr.s_addr = htonl( INADDR_ANY ); 		// let the system fill in the IP address
 	_server_address.sin_port = htons( _port );
 
 	bzero( _server_address.sin_zero, sizeof(_server_address.sin_zero ) );
 
-	int	status = ::bind( _servSock, reinterpret_cast<struct sockaddr*>(&_server_address), sizeof( _server_address ) );
+	int	status = ::bind( _servSock, reinterpret_cast< struct sockaddr * >( &_server_address ), sizeof( _server_address ) );
 	if (status < 0)
 	{
-		std::string error_msg = "Bind error: " + std::string( strerror(errno) );
+		std::string error_msg = PrintTime::printTime()  + " Bind error: " + std::string( strerror(errno) );
+		shutdown();  																				// close the server socket
 		throw ServerException( error_msg.c_str() );
 	}
 
-	_server_name = inet_ntoa(_server_address.sin_addr);
-
-
-	std::cout	<< "Server socket fd " << _servSock << " bound successfully."
+	std::cout	<< PrintTime::printTime()
+				<< " Server socket fd " << _servSock << " bound successfully."
 				<< " Familly "
 				<< getProtocolFamilyName(_server_address.sin_family)
 				<< " Port "
 				<< ntohs(_server_address.sin_port)
 				<< " Address "
-				<< _server_name << std::endl;
-
+				<< inet_ntoa( _server_address.sin_addr ) << std::endl;
+	return;
 }
 
 // Listen ---------------------------------------------------------------------------------------------------------------
@@ -162,11 +169,11 @@ void	Server::listen()
 	int	status = ::listen( _servSock, 10 );
 	if (status < 0)
 	{
-		std::string error_msg = "Listen error: " + std::string( strerror(errno) );
+		std::string error_msg = PrintTime::printTime() + " Listen error: " + std::string( strerror(errno) );
+		shutdown();																					// close the server socket
 		throw ServerException( error_msg.c_str() );
 	}
-
-	std::cout << BOLD << "Server socket fd " << _servSock << " is listening" << END << std::endl;
+	std::cout << BOLD << PrintTime::printTime() << " Server socket fd " << _servSock << " is listening" << END << std::endl;
 }
 
 
@@ -188,34 +195,38 @@ const char *Server::ServerException::what() const throw()
 void Server::reset_fds( void )
 {
 	FD_ZERO( &read_fd_set );
-	FD_ZERO( &write_fd_set );
+//	FD_ZERO( &write_fd_set );
 
 	for ( int i = 0; i < MAX_CONNECTIONS; ++i )											// set fd int the read_fd_set before passing it to the select call
 	{
 		if ( _connections[i].getSocket() >= 0 )
 		{
 			FD_SET( _connections[i].getSocket(), &read_fd_set );
-			FD_SET( _connections[i].getSocket(), &write_fd_set );
+//			FD_SET( _connections[i].getSocket(), &write_fd_set );
 		}
 	}
 }
 
+
 void Server::accept( void )
 {
-	std::cout << "Server is ready to read" << std::endl;
+	std::cout << PrintTime::printTime() << " Server is ready to read" << std::endl;
 
 	int clientSocket = ::accept(_servSock, reinterpret_cast<struct sockaddr *>( &new_addr ), &addrlen);
 	if (clientSocket >= 0)
 	{
 		std::cout << "Accepted a new connection with fd: " << clientSocket << std::endl;
-		for (int i = 0; i < MAX_CONNECTIONS; i++)                    // save the fd in the table
+		for (int i = 0; i < MAX_CONNECTIONS; i++)                    // save the fd in the table, find available cell
 		{
-			if (_connections[i].getSocket() < 0)
+			if ( _connections[i].getSocket() < 0 )
 			{
-				_connections[i].setSocket(clientSocket);
+				_connections[i].setSocket( clientSocket );
 				return;
 			}
 		}
+		std::cout << RED_BOLD << "Error: No room for new connection" << END << std::endl;
+		// send a message to the client
+		close( clientSocket );
 	}
 	else
 		std::cerr << "Accept failed: " << strerror(errno) << std::endl;
@@ -224,24 +235,23 @@ void Server::accept( void )
 
 void	Server::receive( int i )
 {
-	int				ret = 0;
-	const int		DATA_BUFFER =  5000;
-	char			buf[DATA_BUFFER];
+	int				bytesRead = 0;
+	char			buf[MSG_MAX_SIZE];
 	std::string 	result = "";
 
-	ret = recv( _connections[i].getSocket(), buf, DATA_BUFFER, 0 );
-	if ( ret < 0 )
+	bytesRead = recv( _connections[i].getSocket(), buf, MSG_MAX_SIZE, 0 );
+	if ( bytesRead < 0 )
 	{
 		std::cerr << RED_BOLD << "recv() failed for fd: " << _connections[i].getSocket() << ": " << strerror(errno) << END << std::endl;
 	}
-	else if (ret == 0)
+	else if (bytesRead == 0)
 	{
 		std::cout << "Connection " << _connections[i].getSocket() << " closed by client" << std::endl;
 		_connections[i].closeSocket();
 	}
 	else
 	{
-		buf[ret] = '\0';
+		buf[bytesRead] = '\0';
 		result = buf;
 		std::cout << "Received message: [" << result << "]" <<  std::endl;
 
@@ -255,12 +265,10 @@ void	Server::loop()
 {
 	int				ret = 0;
 
-	_connections[0].setSocket( _servSock );												// set the first element of the table to the server socket
-
 	while ( _shutdown_server == false )													// while there no SIGINT
 	{
 		reset_fds();
-		ret = ::select( FD_SETSIZE, &read_fd_set, &write_fd_set, NULL, NULL );			// returns the number of connections ready to read
+		ret = ::select( FD_SETSIZE, &read_fd_set, NULL, NULL, NULL );			// returns the number of connections ready to be read
 		if ( ret < 0 )
 		{
 			std::cerr << RED_BOLD << "Select failed: " << strerror( errno ) << END << std::endl;
@@ -274,7 +282,6 @@ void	Server::loop()
 					accept();
 				else
 					receive(i);
-				FD_CLR(_connections[i].getSocket(), &read_fd_set);
 			}
 		}
 	}
@@ -294,79 +301,29 @@ bool Server::is_unique_nickname( std::string &nickname )
 
 void	Server::process_registration(std::string &msg, int i) {
 
-	(void)i;
-	std::string nick;
-	std::string username;
-	std::string hostname;
-	std::string servname;
-	std::string realname;
-	std::string password;
-
-	std::vector< std::string > tokens;
-
-	std::istringstream iss(msg);
-	while ( !iss.eof() )
+	Client & client = _connections[i];
+	
+	if ( Registration::ValidPassword(msg, client, *this) == false )
 	{
-		std::string temp;
-		iss >> temp;
-		tokens.push_back(temp);
+		std::cout << RED_BOLD << "Client " << client.getSocket() << " failed to register: Wrong password" << END << std::endl;
+		send( client.getSocket(), "Error: wrong password\n", 23, 0 );
+		client.closeSocket();
+		return;
+	}
+	if ( Registration::ClientReadyToRegister( client ) == true )
+	{
+		std::string time_s = PrintTime::printTime();
+		snprintf(message, MSG_MAX_SIZE, "@time=%s :%s 001 %s Welcome to the Internet Relay Network %s!%s@%s\r\n", time_s.c_str(), _server_name.c_str(), client.getNickname().c_str(), client.getNickname().c_str(), client.getUsername().c_str(), client.getHostname().c_str() );
+		client.setRegistered( true );
+		send( client.getSocket(), message, strlen(message ), 0 );
+		client.printInfo();
 	}
 
-	size_t j = 0;
-	if ( tokens[j] == "PASS" )
-	{
-		password = tokens[++j];
-		++j;
-	}
-	if ( tokens[j] == "NICK" )
-	{
-		nick = tokens[++j];
-		++j;
-	}
-	if ( tokens[j] == "USER" )
-	{
-		username = tokens[++j];
-		hostname = tokens[++j];
-		servname = tokens[++j];
-		for ( j += 1; j < tokens.size(); ++j )
-		{
-			realname += tokens[j] + " ";
-		}
-	}
-	if ( password == _password  && !nick.empty() && is_unique_nickname(nick) == true )
-	{
-		_connections[i].setRegistered(true);
-		_connections[i].setNickname(nick);
-		_connections[i].setUsername(username);
-		_connections[i].setHostname(hostname);
-		_connections[i].setServname(servname);
-		_connections[i].setRealname(realname);
-		std::cout << GREEN_BOLD << "Client " << _connections[i].getSocket() << " registered successfully" << END << std::endl;
-		_connections[i].printInfo();
-
-		snprintf(message, MSG_MAX_SIZE, ":%s 001 %s Welcome to the Internet Relay Network %s!%s@%s\r\n", _server_name, nick.c_str(), nick.c_str(), username.c_str(), hostname.c_str() );
-		send( _connections[i].getSocket(), message, strlen(message), 0 );
-	}
-	else if ( password != _password )
-	{
-
-//		snprintf(message, MSG_MAX_SIZE, ":%s 001 %s Welcome to the Internet Relay Network %s!%s@%s\r\n", _server_name, nick.c_str(), nick.c_str(), username.c_str(), hostname.c_str() );
-		std::cout << RED_BOLD << "Client " << _connections[i].getSocket() << " failed to register: Wrong password" << END << std::endl;
-		send( _connections[i].getSocket(), "Error: wrong password\n", 23, 0 );
-		_connections[i].closeSocket();
-	}
-	else if ( !nick.empty() && is_unique_nickname(nick) == false )
-	{
-		snprintf(message, MSG_MAX_SIZE, ":%s 433 %s Nickname is already in use\r\n", _server_name, nick.c_str() );
-		std::cout << RED_BOLD << "Client " << _connections[i].getSocket() << " failed to register: Nickname [" << nick << "] in use" << END << std::endl;
-		send( _connections[i].getSocket(), message, strlen(message), 0 );
-		_connections[i].closeSocket();
-	}
 	memset(&message, 0, MSG_MAX_SIZE);
 }
 
-void	Server::process( std::string &msg, int i )
-{
+void	Server::process( std::string &msg, int i ) {
+
 	if ( _connections[i].isRegistered() == false )
 		process_registration(msg, i);
 	else if ( msg == "\r\n" )
@@ -375,10 +332,9 @@ void	Server::process( std::string &msg, int i )
 		Commands::process_command(msg, i, *this );
 }
 
-// Helper functions ------------------------------------------------------------------------------------------------------
+// Getters ------------------------------------------------------------------------------------------------------
 
-std::string	Server::getProtocolFamilyName(int family)
-{
+std::string	Server::getProtocolFamilyName(int family) {
 	if (family == AF_INET)
 		return "IPv4";
 	else if (family == AF_INET6)
@@ -387,12 +343,17 @@ std::string	Server::getProtocolFamilyName(int family)
 		return "Unknown";
 }
 
-std::vector< Client > &	Server::getConnections( void )
-{
+const std::string &	Server::getPassword( void ) const {
+
+	return _password;
+}
+
+std::vector< Client > &	Server::getConnections( void ) {
+
 	return _connections;
 }
 
-char *	Server::getServerName( void )
-{
-	return _server_name;
+char *	Server::getServerName( void ) {
+
+	return const_cast<char *>(_server_name.c_str());
 }

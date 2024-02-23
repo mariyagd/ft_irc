@@ -153,6 +153,30 @@ Client.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Client.cpp.s
 .PHONY : Client.cpp.s
 
+Registration.o: Registration.cpp.o
+.PHONY : Registration.o
+
+# target to build an object file
+Registration.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Registration.cpp.o
+.PHONY : Registration.cpp.o
+
+Registration.i: Registration.cpp.i
+.PHONY : Registration.i
+
+# target to preprocess a source file
+Registration.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Registration.cpp.i
+.PHONY : Registration.cpp.i
+
+Registration.s: Registration.cpp.s
+.PHONY : Registration.s
+
+# target to generate assembly for a file
+Registration.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Registration.cpp.s
+.PHONY : Registration.cpp.s
+
 Server.o: Server.cpp.o
 .PHONY : Server.o
 
@@ -213,6 +237,9 @@ help:
 	@echo "... Client.o"
 	@echo "... Client.i"
 	@echo "... Client.s"
+	@echo "... Registration.o"
+	@echo "... Registration.i"
+	@echo "... Registration.s"
 	@echo "... Server.o"
 	@echo "... Server.i"
 	@echo "... Server.s"

@@ -3,6 +3,7 @@
 
 # define MAX_CONNECTIONS 10
 # define MSG_MAX_SIZE 512
+
 # include "Colors.h"
 
 # include <iostream>
@@ -24,5 +25,8 @@
 # include <vector>
 # include <sstream>				// for std::stringstream
 # include <iomanip>
+# include <time.h>
+# include "PrintTime.hpp"
+
 
 #endif

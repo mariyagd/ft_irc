@@ -63,25 +63,27 @@ void Commands::NICK( std::string &nickname, int j, Server &server ) {
 	if ( server.is_unique_nickname( nickname ) == false )
 	{
 		char message[MSG_MAX_SIZE];
-		snprintf( message, MSG_MAX_SIZE, ":%s 433 %s Nickname is already in use\r\n", server.getServerName(), nickname.c_str() );
+		snprintf( message, MSG_MAX_SIZE, ":%s 433 %s %s\r\n", server.getServerName(), server.getConnections()[j].getNickname().c_str() ,nickname.c_str() );
 		send( server.getConnections()[j].getSocket(), message, strlen(message), 0 );
 		return;
 	}
-	for ( int i = 0; i < MAX_CONNECTIONS; ++i )
-	{
-		if ( i != j &&  server.getConnections()[i].getSocket() >= 0 && server.getConnections()[i].getNickname() == nickname )
-		{
-			char message[MSG_MAX_SIZE];
-			snprintf( message, MSG_MAX_SIZE, ":%s 433 %s Nickname is already in use\r\n", server.getServerName(), nickname.c_str() );
-			send( server.getConnections()[j].getSocket(), message, strlen(message), 0 );
-			return;
-		}
-	}
-	server.getConnections()[j].setNickname( nickname );
+//	for ( int i = 0; i < MAX_CONNECTIONS; ++i )
+//	{
+//		if ( i != j &&  server.getConnections()[i].getSocket() >= 0 && server.getConnections()[i].getNickname() == nickname )
+//		{
+//			char message[MSG_MAX_SIZE];
+//			snprintf( message, MSG_MAX_SIZE, ":%s 433 %s Nickname is already in use\r\n", server.getServerName(), nickname.c_str() );
+//			send( server.getConnections()[j].getSocket(), message, strlen(message), 0 );
+//			return;
+//		}
+//	}
 
 	char message[MSG_MAX_SIZE];
-	snprintf( message, MSG_MAX_SIZE, ":%s!%s@%s NICK %s\r\n", server.getConnections()[j].getNickname().c_str(), server.getConnections()[j].getUsername().c_str(), server.getConnections()[j].getHostname().c_str(), nickname.c_str() );
+	std::string time = PrintTime::printTime();
+	snprintf( message, MSG_MAX_SIZE, "@time=%s:%s!%s@%s NICK %s\r\n", time.c_str(), server.getConnections()[j].getNickname().c_str(), server.getConnections()[j].getUsername().c_str(), server.getConnections()[j].getHostname().c_str(), nickname.c_str() );
 	send( server.getConnections()[j].getSocket(), message, strlen(message), 0 );
+
+	server.getConnections()[j].setNickname( nickname );
 	server.getConnections()[j].printInfo();
 	return ;
 }

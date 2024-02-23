@@ -4,6 +4,7 @@
 Client::Client( void ) {
 
 	_is_registered = false;
+	_gave_password = false;
 	_socket = -1;
 	_nickname = "";
 	_username = "";
@@ -23,6 +24,7 @@ Client::~Client( void ) {
 Client::Client( int socket ) : _socket(socket) {
 
 	_is_registered = false;
+	_gave_password = false;
 	_socket = -1;
 	_nickname = "";
 	_username = "";
@@ -93,46 +95,72 @@ void	Client::setRealname( std::string realname ) {
 	return;
 }
 
+void	Client::setGavePassword( bool status ) {
+
+	_gave_password = status;
+	return;
+}
 
 
 // Getters --------------------------------------------------------------------------------------------------------------
 
-int		Client::getSocket( void ) {
+
+bool	Client::getGavePassword( void ) const {
+
+	return _gave_password;
+}
+
+int		Client::getSocket( void ) const {
 
 	return _socket;
 }
 
-bool	Client::isRegistered( void ) {
+bool	Client::isRegistered( void ) const {
 
 	return _is_registered;
 }
 
-std::string	Client::getNickname( void ) {
+std::string	Client::getNickname( void ) const {
 
 	return _nickname;
 }
 
-std::string	Client::getUsername( void ) {
+std::string	Client::getUsername( void ) const {
 
 	return _username;
 }
 
-std::string	Client::getHostname( void ) {
+std::string	Client::getHostname( void ) const {
 
 	return _hostname;
 }
 
-std::string	Client::getServname( void ) {
+std::string	Client::getServname( void ) const {
 
 	return _servname;
 }
 
-std::string	Client::getRealname( void ) {
+std::string	Client::getRealname( void ) const {
 
 	return _realname;
 }
 
 // Member functions -----------------------------------------------------------------------------------------------------
+
+void	Client::cleanClient( void ) {
+
+	_socket = -1;
+	_is_registered = false;
+	_gave_password = false;
+	_nickname.clear();
+	_username.clear();
+	_hostname.clear();
+	_servname.clear();
+	_realname.clear();
+	memset(&_addr, 0, sizeof( struct sockaddr ) );
+	_addrlen = sizeof(_addr);
+	return;
+}
 
 void	Client::closeSocket( void ) {
 
@@ -142,8 +170,8 @@ void	Client::closeSocket( void ) {
 	if (ret < 0)
 		std::cerr << RED_BOLD << "Error while closing socket: " << strerror(errno) << END << std::endl;
 	else
-		std::cout << "Socket " << _socket << " closed successfully" << std::endl;
-	_socket = -1;
+		std::cout << PrintTime::printTime() << " Socket " << _socket << " closed successfully" << std::endl;
+	cleanClient();
 	return;
 }
 

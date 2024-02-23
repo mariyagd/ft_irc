@@ -3,12 +3,13 @@
 
 # include "Irc.hpp"
 
-class Client {
+class Client  {
 
 private:
 
 	int 				_socket;
 	bool				_is_registered;
+	bool				_gave_password;
 	std::string			_nickname;
 	std::string			_username;
 	std::string			_hostname;
@@ -31,14 +32,18 @@ public:
 	void		setHostname( std::string hostname );
 	void		setServname( std::string servname );
 	void		setRealname( std::string realname );
+	void		setGavePassword( bool status );
 
-	int			getSocket( void );
-	bool		isRegistered( void );
-	std::string	getNickname( void );
-	std::string	getUsername( void );
-	std::string	getHostname( void );
-	std::string	getServname( void );
-	std::string	getRealname( void );
+	bool		getGavePassword( void ) const;
+	int			getSocket( void ) const;
+	bool		isRegistered( void ) const;
+	std::string	getNickname( void ) const;
+	std::string	getUsername( void ) const;
+	std::string	getHostname( void ) const;
+	std::string	getServname( void ) const;
+	std::string	getRealname( void ) const;
+
+	void		cleanClient( void );
 
 	void		closeSocket( void );
 

@@ -149,7 +149,7 @@ Numeric Replies:
 ERR_NOORIGIN 
 ERR_NOSUCHSERVER
 
-#### MSG
+#### PRIVMSG
 `PRIVMSG <msgtarget> <text to be sent>`
 - `PRIVMSG` is used to send private messages between users, as well as to send messages to channels.
 
@@ -158,3 +158,9 @@ ERR_NOSUCHSERVER
 - /part  -> exits the current channel
 - /part channel -> exit a channel
 - /window close ->exit a private message
+
+
+### Commands for nc
+- QUIT
+- PART
+- PING

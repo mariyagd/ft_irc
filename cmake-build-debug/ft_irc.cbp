@@ -94,6 +94,12 @@
 		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Irc.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Registration.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Registration.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
 		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Server.cpp">
 			<Option target="ft_irc"/>
 		</Unit>

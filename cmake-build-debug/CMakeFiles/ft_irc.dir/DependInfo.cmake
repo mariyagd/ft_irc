@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/mdanchev/Desktop/ft_irc/Client.cpp" "CMakeFiles/ft_irc.dir/Client.cpp.o" "gcc" "CMakeFiles/ft_irc.dir/Client.cpp.o.d"
+  "/Users/mdanchev/Desktop/ft_irc/Registration.cpp" "CMakeFiles/ft_irc.dir/Registration.cpp.o" "gcc" "CMakeFiles/ft_irc.dir/Registration.cpp.o.d"
   "/Users/mdanchev/Desktop/ft_irc/Server.cpp" "CMakeFiles/ft_irc.dir/Server.cpp.o" "gcc" "CMakeFiles/ft_irc.dir/Server.cpp.o.d"
   "/Users/mdanchev/Desktop/ft_irc/main.cpp" "CMakeFiles/ft_irc.dir/main.cpp.o" "gcc" "CMakeFiles/ft_irc.dir/main.cpp.o.d"
   )

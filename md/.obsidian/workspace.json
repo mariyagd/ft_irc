@@ -52,6 +52,16 @@
                 "file": "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.excalidraw"
               }
             }
+          },
+          {
+            "id": "ee29df24a233878d",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.5.8"
+              }
+            }
           }
         ],
         "currentTab": 3
@@ -104,7 +114,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "afe2fa4bcfbb9cf8",
@@ -184,15 +195,15 @@
   },
   "active": "56e6221360ef4c80",
   "lastOpenFiles": [
+    "Commands.md",
+    "Irssi and Libera chat.md",
+    "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.excalidraw",
     "Excalidraw/Drawing 2024-02-21 12.48.01.excalidraw.excalidraw",
     "Excalidraw/Drawing 2024-02-21 12.48.01.excalidraw.md",
     "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.md",
-    "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.excalidraw",
     "Channels.md",
-    "Commands.md",
     "Excalidraw/Drawing 2024-02-22 15.37.16.excalidraw.md",
     "Excalidraw/Drawing 2024-02-22 15.37.16.excalidraw.excalidraw",
-    "Irssi and Libera chat.md",
     "Messages.md",
     "select().md",
     "The Socket API.md",

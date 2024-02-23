@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/ft_irc.dir/Client.cpp.o"
   "CMakeFiles/ft_irc.dir/Client.cpp.o.d"
+  "CMakeFiles/ft_irc.dir/Registration.cpp.o"
+  "CMakeFiles/ft_irc.dir/Registration.cpp.o.d"
   "CMakeFiles/ft_irc.dir/Server.cpp.o"
   "CMakeFiles/ft_irc.dir/Server.cpp.o.d"
   "CMakeFiles/ft_irc.dir/main.cpp.o"

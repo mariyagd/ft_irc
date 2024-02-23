@@ -3,30 +3,32 @@
 
 # include "Client.hpp"
 # include "Commands.hpp"
-
+# include "Registration.hpp"
 class Client;
 class Commands;
 
 class Server {
 
-private:
+protected:
 	int								_port;
-	const char *					_password;
 	int								_servSock;				// for socket()
 	struct sockaddr_in				_server_address;		// for bind()
 	struct addrinfo 				_hints;					// for getaddrinfo()
 	struct addrinfo					*_servinfo;				// for getaddrinfo()
-	char * 							_server_name;
+
+	std::string						_server_name;
 
 	fd_set							read_fd_set;
-	fd_set							write_fd_set;
+//	fd_set							write_fd_set;
 	struct sockaddr_storage			new_addr;
 	socklen_t						addrlen;
 
 	std::vector< Client >			_connections;
+
 	char 							message[MSG_MAX_SIZE];
 
-
+//	const char *					_password;
+	std::string 					_password;
 public:
 
 	// signal handling
@@ -55,9 +57,12 @@ public:
 	void process_registration( std::string &msg, int i );
 	bool is_unique_nickname( std::string &nickname );
 
+
+	const std::string &					getPassword( void ) const;
+	std::vector< Client > &		getConnections( void );
+
 	char *						getServerName( void );
 	std::string					getProtocolFamilyName(int family);
-	std::vector< Client > &		getConnections( void );
 
 	class ServerException : public std::exception {
 

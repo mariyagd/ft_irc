@@ -11,4 +11,6 @@ add_executable(ft_irc
         Server.cpp
         Server.hpp
         Client.cpp
-        Colors.h)
+        Colors.h
+        Registration.cpp
+        Registration.hpp)

@@ -5,7 +5,8 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
 
-add_executable(ft_irc
+add_executable(
+        ft_irc
         Irc.hpp
         main.cpp
         Server.cpp
@@ -13,4 +14,5 @@ add_executable(ft_irc
         Client.cpp
         Colors.h
         Registration.cpp
-        Registration.hpp)
+        Registration.hpp
+)

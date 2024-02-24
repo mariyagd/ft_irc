@@ -26,6 +26,8 @@ public:
 	static std::string RPL_NICK( Client const & client, Server const & server, std::string & newNickname );
 
 	static std::string RPL_WHOISUSER( Client const & client, Server const & server );
+
+	static std::string ERR_NEEDMOREPARAMS( Client const & client, Server const & server, std::string const & command );
 };
 
 #endif

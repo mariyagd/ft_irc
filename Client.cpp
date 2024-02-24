@@ -170,7 +170,7 @@ void	Client::closeSocket( void ) {
 	if (ret < 0)
 		std::cerr << PrintTime::printTime() << RED_BOLD << " --- Error while closing socket: " << strerror(errno) << END << std::endl;
 	else
-		std::cout << PrintTime::printTime() << GREEN_BOLD << " --- Socket " << _socket << " closed successfully" << END << std::endl;
+		std::cout << PrintTime::printTime() << GREEN_BOLD << " --- [socket " << _socket << "] closed by server successfully" << END << std::endl;
 	cleanClient();
 	return;
 }

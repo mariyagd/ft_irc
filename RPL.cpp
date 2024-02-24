@@ -51,7 +51,7 @@ std::string RPL::RPL_MYINFO( Client const & client, Server const & server ) {
 std::string RPL::ERR_NICKNAMEINUSE( Client const & client, Server const & server, std::string & wantedNickname ) {
 
 	(void)wantedNickname;
-	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 433 *" + client.getNickname() + "\r\n";
+	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 433 *" + client.getNickname() + " " + client.getNickname() + "\r\n";
 	return message;
 }
 
@@ -79,5 +79,11 @@ std::string RPL::RPL_SAVENICK( Client const & client, Server const & server ) {
 std::string RPL::RPL_WHOISUSER( Client const & client, Server const & server ) {
 
 	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 311 " + client.getNickname() + " " + client.getUsername() + " " + client.getHostname() + " * :" + client.getRealname() + "\r\n";
+	return message;
+}
+
+std::string RPL::ERR_NEEDMOREPARAMS( Client const & client, Server const & server, std::string const & command ) {
+
+	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 461 " + client.getNickname() + " " + command + "\r\n";
 	return message;
 }

@@ -128,11 +128,11 @@ void Commands::choose_command( std::vector <std::string> & command, int i, Serve
 
 // NICK------------------------------------------------------------------------------------------------------------------
 
-bool Commands::is_unique_nickname(  std::string & nickname, std::vector< Client > & connections )
+bool Commands::is_unique_nickname(  std::string & nickname, int clientSocket, std::vector< Client > & connections )
 {
 	for ( int i = 0; i < MAX_CONNECTIONS; ++i )
 	{
-		if ( connections[i].getSocket() >= 0 && connections[i].getNickname() == nickname )
+		if ( connections[i].getSocket() >= 0 && connections[i].getSocket() != clientSocket && connections[i].getNickname() == nickname )
 			return false;
 	}
 	return true;
@@ -162,7 +162,7 @@ void Commands::NICK( std::vector< std::string > & command, int j, Server &server
 	}
 	client.setNickname( nickname );
 
-	if ( !is_unique_nickname( nickname, server.getConnections() ) )
+	if ( !is_unique_nickname( nickname, client.getSocket(), server.getConnections() ) )
 	{
 		message = RPL::ERR_NICKNAMEINUSE( client, server, nickname );
 		send( client.getSocket(), message.c_str(), message.size(), 0 );
@@ -208,8 +208,7 @@ void Commands::USER( std::vector <std::string> & command, int i, Server & server
 	{
 		client.printInfo();
 
-		std::cout << PrintTime::printTime() << BOLD << " --- socket " << client.getSocket() << " "
-																							   "is now registered" << END << std::endl;
+		std::cout << PrintTime::printTime() << BOLD << " --- socket " << client.getSocket() << " is now registered" << END << std::endl;
 
 		message = RPL::RPL_WELCOME( client, server );
 		send( client.getSocket(), message.c_str(), message.size(), 0 );
@@ -233,12 +232,18 @@ void Commands::USER( std::vector <std::string> & command, int i, Server & server
 void Commands::PASS( std::vector< std::string > & command, int i, Server & server ) {
 
 	Client & client = server.getConnections()[i];
+	std::string message;
 
 //	std::cout << PrintTime::printTime() << GREEN << " --- Processing PASS command" << END << std::endl;
 
 	if ( command.size() == 1 )
 	{
 		std::cout << PrintTime::printTime() << BOLD << " --- socket " << client.getSocket() << " gave empty password. Disconnecting" << END << std::endl;
+
+		message = RPL::ERR_NEEDMOREPARAMS( client, server, "PASS" );
+		send( client.getSocket(), message.c_str(), message.size(), 0 );
+		std::cout << PrintTime::printTime() << YELLOW_BOLD << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
+
 		client.closeSocket();
 		return ;
 	}

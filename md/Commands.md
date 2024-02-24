@@ -8,14 +8,16 @@
 	3. USER message
 	4. Service message
 
-- If the selected nickname during registration is already in use, the server must iteratively modify it until an available one is found and must **send error message to the client `ERR_NICKNAMEINUSE`**.  The procedure is illustrated using the example nickname 'lola':
+- A "PASS" command is not required for a client connection to be registered, but it MUST precede the latter of the NICK/USER combination (for a user connection)
+- Upon success, the client will receive an RPL_WELCOME
+- If the selected nickname during registration is already in use, the server must iteratively modify it until an available one is found and must **send error message to the client `ERR_NICKNAMEINUSE`**.  The procedure is illustrated using the example nickname `lola`:
 
-	- Initially, an underscore is appended to the original nickname, resulting in 'lola_'.
-	- If this modified nickname is still taken, sequential numbers are added starting from 1. For instance: 'lola1', 'lola2', and so forth, until an available nickname is obtained, such as 'lola10', 'lola11', and beyond.
+	- Initially, an underscore is appended to the original nickname, resulting in `lola_`.
+	- If this modified nickname is still taken, sequential numbers are added starting from 1. For instance: `lola1`, `lola2`, and so forth, until an available nickname is obtained, such as `lola10`, `lola11`, and beyond.
 ##### Replies upon registration:
 The server sends Replies 001 to 004 to a user upon successful registration.
 
-###### 001   RPL_WELCOME 
+###### 001    RPL_WELCOME 
 - indicates that the connection is now registered and known the to the entire IRC network. The reply message MUST contain the full client identifier upon which it was registered.
 
 ```
@@ -25,22 +27,25 @@ The server sends Replies 001 to 004 to a user upon successful registration.
 ```
 :<serverName> 002 Your host is <servername>, running version <ver>
 ```
-
 ###### 003    RPL_CREATED
 
 ```
 :<serverName> 003 This server was created <date>
 ```
-
 ###### 004    RPL_MYINFO
 ```
 :<serverName> 004 <servername> <version> <available user modes> <available channel modes>
 ```
 #### PASS
 - A "PASS" command is not required for a client connection to be registered, but it MUST precede the latter of the NICK/USER combination (for a user connection)
+- Currently this requires that user send a PASS command before sending the NICK/USER combination.
 ##### Replies:
-ERR_NEEDMOREPARAMS
-ERR_ALREADYREGISTRED
+
+###### 461 ERR_NEEDMOREPARAMS
+```
+<command> :Not enough parameters
+```
+462 ERR_ALREADYREGISTRED
 #### NICK
 - NICK command is used to give user a nickname or change the existing one.
 ##### Replies:

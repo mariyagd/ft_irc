@@ -22,7 +22,7 @@ public:
 	static bool		isCommand( const std::string & token, std::vector< std::string > & availableCommands );
 	static void 	deleteCommandFromList( std::string & token, std::vector< std::string > & availableCommands );
 	static void		initAvailableCommands( std::vector< std::string > & availableCommands );
-	static bool		is_unique_nickname(  std::string & nickname, std::vector< Client > & connections );
+	static bool		is_unique_nickname(  std::string & nickname, int clientSocket, std::vector< Client > & connections );
 
 
 

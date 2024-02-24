@@ -42,6 +42,8 @@ void	Commands::initAvailableCommands( std::vector< std::string > & availableComm
 	availableCommands.push_back( "MODE" );
 	availableCommands.push_back( "PING" );
 	availableCommands.push_back( "WHOIS" );
+	availableCommands.push_back( "KICK" );
+
 	return ;
 }
 
@@ -121,6 +123,16 @@ void Commands::choose_command( std::vector <std::string> & command, int i, Serve
 	else if ( command[0] == "PING" )
 	{
 		PING( command, i, server );
+	}
+	else if ( command[0] == "KICK" )
+	{
+		std::cout << "Process KICK command" << std::endl;
+		if (command.size() >= 3) { // Ensure enough parameters for KICK
+			KICK(command[1], command[2], server);
+		} else {
+			std::cerr << "Insufficient parameters for KICK command" << std::endl;
+		}
+		
 	}
 	return ;
 }
@@ -310,3 +322,38 @@ void Commands::PING( std::vector< std::string > & command, int i, Server & serve
 
 	return ;
 }
+
+
+void Commands::KICK( std::string &channel, std::string &nickname, Server &server)
+{
+    // Check if the channel exists and the user is available in the channel
+    Channel* ch = server.getChannel(channel);
+    if (ch && ch->isClientInChannel(nickname)) {
+		std::cout<<"the client "<<nickname<< " is join to channel."<<std::endl;
+        // Check if the user has operator status in the channel
+        // if (ch->isOperator(nickname)) {
+        //     // Remove the user from the channel
+        //     ch->removeUser(nickname);
+        //     // Send message to all users in the channel about the kick
+        //     std::string kickMessage = "KICK " + channel + " " + nickname;
+        //     server.sendToChannel(kickMessage, channel);
+        // } else {
+        //     // User does not have operator status
+        //     // Send ERR_CHANOPRIVSNEEDED message
+        //     server.sendErrorToUser(nickname, "ERR_CHANOPRIVSNEEDED", "You do not have operator status in the channel");
+        // }
+    } 
+	else {
+			std::cout<<"the client "<<nickname<< " is not joined to channel."<<std::endl;
+
+        // Either channel doesn't exist or user is not available in the channel
+        // Send appropriate error messages
+        // if (!ch) {
+        //     // Channel does not exist
+        //     server.sendErrorToUser(nickname, "ERR_NOSUCHCHANNEL", "No such channel");
+        // } else {
+        //     // User is not available in the channel
+        //     server.sendErrorToUser(nickname, "ERR_USERNOTINCHANNEL", "You are not in that channel");
+        }
+    }
+

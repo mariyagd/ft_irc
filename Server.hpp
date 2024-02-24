@@ -3,9 +3,11 @@
 
 # include "Client.hpp"
 # include "Commands.hpp"
+# include "Channel.hpp"
 
 class Client;
 class Commands;
+class Channel;
 
 class Server {
 
@@ -24,7 +26,7 @@ protected:
 	socklen_t						addrlen;
 
 	std::vector< Client >			_connections;
-
+	std::vector<Channel>			_channelName;
 	char 							message[MSG_MAX_SIZE];
 
 //	const char *					_password;
@@ -37,6 +39,7 @@ public:
 	void			sig_handler( void );
 
 	Server(int port, char *password );
+	Server		&operator=(const Server &rhs);
 	~Server( void );
 
 	void	shutdown( void );
@@ -58,6 +61,7 @@ public:
 
 	const std::string &					getPassword( void ) const;
 	std::vector< Client > &				getConnections( void );
+	Channel	*					getChannel(const std::string& channelName);
 	char *								getServerName( void ) const;
 	std::string							getProtocolFamilyName(int family);
 

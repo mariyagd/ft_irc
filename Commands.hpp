@@ -35,6 +35,9 @@ public:
 	static void 	WHOIS( std::vector< std::string > & command, int i, Server &server );
 	static void 	PING( std::vector< std::string > & command, int i, Server &server );
 
+	static void 	KICK( std::string &channel, std::string &nickname, Server &server );
+	static void 	TOPIC( std::string &nickname, int i, Server &server );
+
 };
 
 # endif

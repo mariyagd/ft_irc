@@ -19,6 +19,18 @@ Client::Client( void ) {
 	return;
 }
 
+Client:: Client(const std::string& nickname) : _nickname(nickname) 
+{
+	
+}
+
+// used to get the client in chanel add const
+/// @return 
+std::string Client::getnickname() const
+{ 
+	return _nickname;
+}
+
 Client::~Client( void ) {
 
 	return;

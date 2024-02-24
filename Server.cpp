@@ -24,6 +24,31 @@ Server::Server(int port, char *password) : _port(port), _password(password)
 		_connections.push_back( Client() );
 }
 
+
+Server&		Server::operator=(const Server &rhs)
+{
+	if (this != &rhs)
+	{
+	// Copy scalar members
+		_port = rhs._port;
+		_password = rhs._password;
+		_servSock = rhs._servSock;
+
+		// Deep copy _server_name
+		// if (_server_name != nullptr) {
+		// 	delete[] _server_name;
+		// }
+		// if (rhs._server_name != nullptr) {
+		// 	_server_name = new char[strlen(rhs._server_name) + 1];
+		// 	strcpy(_server_name, rhs._server_name);
+		// } else {
+		// 	_server_name = nullptr;
+		// }
+
+	}
+	return (*this);
+}
+
 Server::~Server()
 {
 	for ( int i = 0; i < MAX_CONNECTIONS; ++i )
@@ -346,3 +371,15 @@ char *	Server::getServerName( void ) const {
 
 	return const_cast<char *>(_server_name.c_str());
 }
+
+
+// channel functions ------------------------------------------------------------------------------------------------------
+   Channel* Server::getChannel(const std::string& channelName) {
+        // Find the channel in the vector
+        for (size_t i = 0; i < _channelName.size(); ++i) {
+            if (_channelName[i].getName() == channelName) {
+                return &_channelName[i]; // Return pointer to the Channel object
+            }
+        }
+        return nullptr; // Return nullptr if channel not found
+    }

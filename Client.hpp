@@ -21,6 +21,9 @@ private:
 public:
 	Client( void );
 	Client( int socket );
+	Client( const std::string& nickname );
+	// Allow Channel class to access _nickname directly
+    // friend bool Channel::isClientInChannel(const std::string& nickname) const;
 	~Client( void );
 
 	static int 			_serverSocket;
@@ -40,6 +43,7 @@ public:
 	int			getSocket( void ) const;
 	bool		isRegistered( void ) const;
 	std::string	getNickname( void ) const;
+	std::string getnickname() const;
 	std::string	getUsername( void ) const;
 	std::string	getHostname( void ) const;
 	std::string	getServname( void ) const;

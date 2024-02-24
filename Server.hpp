@@ -3,7 +3,7 @@
 
 # include "Client.hpp"
 # include "Commands.hpp"
-# include "Registration.hpp"
+
 class Client;
 class Commands;
 
@@ -53,16 +53,11 @@ public:
 	void accept( void );
 	void receive( int i );
 
-	void process( std::string &msg, int i );
-	void process_registration( std::string &msg, int i );
-	bool is_unique_nickname( std::string &nickname );
-
 
 	const std::string &					getPassword( void ) const;
-	std::vector< Client > &		getConnections( void );
-
-	char *						getServerName( void );
-	std::string					getProtocolFamilyName(int family);
+	std::vector< Client > &				getConnections( void );
+	char *								getServerName( void ) const;
+	std::string							getProtocolFamilyName(int family);
 
 	class ServerException : public std::exception {
 

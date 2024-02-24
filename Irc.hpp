@@ -1,10 +1,11 @@
 #ifndef IRC_HPP
 # define IRC_HPP
 
-# define MAX_CONNECTIONS 10
+# define MAX_CONNECTIONS 100
 # define MSG_MAX_SIZE 512
 
 # include "Colors.h"
+# include "PrintTime.hpp"
 
 # include <iostream>
 # include <sys/socket.h>		// for socket, getpeername
@@ -26,7 +27,6 @@
 # include <sstream>				// for std::stringstream
 # include <iomanip>
 # include <time.h>
-# include "PrintTime.hpp"
 
 
 #endif

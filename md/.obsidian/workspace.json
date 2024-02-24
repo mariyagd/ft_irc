@@ -4,16 +4,18 @@
     "type": "split",
     "children": [
       {
-        "id": "8fc494aa87a413d8",
+        "id": "083205ca1f48072f",
         "type": "tabs",
         "children": [
           {
-            "id": "ee29df24a233878d",
+            "id": "de011a4173419296",
             "type": "leaf",
             "state": {
-              "type": "release-notes",
+              "type": "markdown",
               "state": {
-                "currentVersion": "1.5.8"
+                "file": "Commands.md",
+                "mode": "source",
+                "source": false
               }
             }
           }
@@ -67,8 +69,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "afe2fa4bcfbb9cf8",
@@ -84,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Commands.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -100,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Commands.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -121,7 +124,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Commands.md"
+              }
             }
           }
         ]
@@ -142,19 +147,19 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "ee29df24a233878d",
+  "active": "de011a4173419296",
   "lastOpenFiles": [
-    "select().md",
-    "The Socket API.md",
     "Messages.md",
+    "Commands.md",
     "Irssi and Libera chat.md",
+    "select().md",
+    "Channels.md",
+    "The Socket API.md",
     "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.md",
     "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.excalidraw",
     "Excalidraw/Drawing 2024-02-21 12.48.01.excalidraw.md",
     "Excalidraw/Drawing 2024-02-21 12.48.01.excalidraw.excalidraw",
     "Excalidraw",
-    "Commands.md",
-    "Channels.md",
     "Excalidraw/Drawing 2024-02-22 15.37.16.excalidraw.md",
     "Excalidraw/Drawing 2024-02-22 15.37.16.excalidraw.excalidraw",
     "Untitled",

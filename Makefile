@@ -1,5 +1,6 @@
 NAME = ircserv
-SRCS = main.cpp  Server.cpp Client.cpp Commands.cpp Registration.cpp PrintTime.cpp
+SRCS = 	main.cpp  Server.cpp Client.cpp \
+		Commands.cpp PrintTime.cpp RPL.cpp
 
 CPPF = c++ -Wall -Werror -Wextra -std=c++98 -g
 

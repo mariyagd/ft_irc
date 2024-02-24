@@ -1,39 +1,31 @@
 #ifndef RPL_HPP
 # define RPL_HPP
 
-# include "Irc.hpp"
 # include "Server.hpp"
-# include "Client.hpp"
 
-#define RPL_WELCOME( server, client ) RPL::RPL_WELCOME( server, client )
+class Server;
+class Client;
 
 class RPL  {
 
 private:
 	RPL( void );
+
 public:
 	~RPL( void );
 
-	static char * RPL_WELCOME( Server const & server, Client & client )
-	{
-		std::string server_name = server.getServerName();
-		std::string nickname = client.getNickname();
-		std::string user = client.getUsername();
-		std::string host = client.getHostname();
+	static std::string RPL_WELCOME( Client const & client, Server const & server );
+	static std::string RPL_YOURHOST( Client const & client, Server const & server );
+	static std::string RPL_CREATED( Client const & client, Server const & server );
+	static std::string RPL_MYINFO( Client const & client, Server const & server );
 
-		std::string message = "@time=" + PrintTime::printTime() + " :" + _server_name + " 001 " + _nickname + " Welcome to the Internet Relay Network " + _user "\r\n";
-	}
+	static std::string ERR_NICKNAMEINUSE( Client const & client, Server const & server, std::string & wantedNickname );
+	static std::string ERR_ERRONEUSNICKNAME( Client const & client, Server const & server );
+	static std::string RPL_SAVENICK( Client const & client, Server const & server);
 
-	static char * RPL_NICK( Server const & server, Client & client, std::string msg )
-	{
-		std::string message = "@time=" + PrintTime::printTime() + _user + "NICK" + msg + "\r\n";
-	}
+	static std::string RPL_NICK( Client const & client, Server const & server, std::string & newNickname );
 
-	static char * ERR_NICKNAMEINUSE( Server const & server, Client & client, std::string msg )
-	{
-		std::string message = "@time=" + PrintTime::printTime() + " :" + _server_name + " 433 " + _nickname + " " + msg + "\r\n";
-	}
-
+	static std::string RPL_WHOISUSER( Client const & client, Server const & server );
 };
 
 #endif

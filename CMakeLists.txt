@@ -13,6 +13,8 @@ add_executable(
         Server.hpp
         Client.cpp
         Colors.h
-        Registration.cpp
-        Registration.hpp
+        RPL.cpp
+        RPL.hpp
+        Commands.hpp
+        Commands.cpp
 )

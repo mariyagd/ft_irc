@@ -103,18 +103,44 @@ void	Server::launch()
 
 void	Server::get_addrinfo()
 {
-	_hints.ai_family = PF_INET;						// don't care IPv4 or IPv6
+	char hostname[1024];
+	memset(hostname, 0, 1024);
+	gethostname(hostname, 1023);
+
+	_hints.ai_family = PF_INET;							// IPv4
 	_hints.ai_socktype = SOCK_STREAM;					// TCP stream sockets
 	_hints.ai_flags = AI_PASSIVE;						// fill in my IP for me
 	_hints.ai_protocol = 0;								// any protocol
 
-	int	status = getaddrinfo( NULL, std::to_string(_port).c_str(), &_hints, &_servinfo );
+	int	status = getaddrinfo( hostname, std::to_string(_port).c_str(), &_hints, &_servinfo );
 	if (status != 0)
 	{
 		std::string error_msg = PrintTime::printTime() + " Getaddrinfo error: " + std::string( gai_strerror(status) );
 		throw ServerException( error_msg.c_str() );
 	}
-	std::cout << PrintTime::printTime() << " --- Getting address info successful." << std::endl;
+
+	std::cout << PrintTime::printTime() << " --- Getting address info successful"<< std::endl;
+
+	std::cout << PrintTime::printTime() << BOLD << " --- Server is hosted on: " << hostname << END << std::endl;
+	std::cout << PrintTime::printTime() << " ---" << GREEN_BG << BOLD << std::setw(40) << " To connect to this server, use this/these adresse/s: "<< END << std::endl;
+
+	for (struct addrinfo *ptr = _servinfo; ptr != NULL; ptr = ptr->ai_next)
+	{
+		if (ptr->ai_family == AF_INET)
+		{
+			struct sockaddr_in *ipv4 = reinterpret_cast< struct sockaddr_in * >( ptr->ai_addr );
+			char IP_adress[INET_ADDRSTRLEN];
+			inet_ntop( AF_INET, &( ipv4->sin_addr ), IP_adress, INET_ADDRSTRLEN );
+			std::cout << PrintTime::printTime () << " ---" << GREEN_BG << BOLD << " IPv4: " << std::setw(20) << std::left << IP_adress << END << std::endl;
+		}
+		else if (ptr->ai_family == AF_INET6) 
+		{
+			struct sockaddr_in6 *ipv6 = reinterpret_cast< struct sockaddr_in6 *>( ptr->ai_addr );
+			char IP_adress[INET6_ADDRSTRLEN];
+			inet_ntop( AF_INET6, &( ipv6->sin6_addr ), IP_adress, INET6_ADDRSTRLEN );
+			std::cout << PrintTime::printTime() << " ---" << GREEN_BG << BOLD << " IPv6: " << std::setw(20) << std::left << IP_adress << END << std::endl;
+		}
+	}
 }
 
 // Socket ---------------------------------------------------------------------------------------------------------------
@@ -130,7 +156,9 @@ void	Server::socket()
 	}
 	_connections[0].setSocket( _servSock );												// set the first element of the table to the server socket
 	_connections[0].setServerSocket( _servSock );							    // set the static variable to keep track of the server socket
-	std::cout << PrintTime::printTime() << " --- Server socket fd " << _servSock << " created successfully " << std::endl;
+	std::cout << PrintTime::printTime() << GREEN_BOLD << " --- Server's socket created successfully [socket " << _servSock << "]" END << std::endl;
+
+
 }
 
 // Bind ---------------------------------------------------------------------------------------------------------------
@@ -138,7 +166,7 @@ void	Server::socket()
 void	Server::bind()
 {
 	_server_address.sin_family = PF_INET;						// for IPv4
-	_server_address.sin_addr.s_addr = htonl( INADDR_ANY ); 		// let the system fill in the IP address
+	_server_address.sin_addr.s_addr = htonl( INADDR_ANY ); 		// let the system fill in the IPv4 address
 	_server_address.sin_port = htons( _port );
 
 	bzero( _server_address.sin_zero, sizeof(_server_address.sin_zero ) );
@@ -303,6 +331,7 @@ void	Server::loop()
 		ret = ::select( FD_SETSIZE, &read_fd_set, NULL, NULL, NULL );			// returns the number of connections ready to be read
 		if ( ret < 0 )
 		{
+			if ( errno != EINTR ) // as we close the server only with ^C, select will return Interrupted system call. But this is not an error
 			std::cerr << PrintTime::printTime() << RED_BOLD << " --- Select failed: " << strerror( errno ) << END << std::endl;
 			break;
 		}

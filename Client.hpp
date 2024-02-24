@@ -15,6 +15,7 @@ private:
 	std::string			_hostname;
 	std::string			_servname;
 	std::string			_realname;
+
 	struct sockaddr		_addr;
 	socklen_t 			_addrlen;
 

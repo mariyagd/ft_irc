@@ -207,6 +207,7 @@ void	Client::printInfo( void ) {
 	std::cout << std::left << std::setw(15) << "Servname: " << _servname << std::endl;
 	std::cout << std::left << std::setw(15) << "Realname: " << _realname << std::endl;
 	std::cout << std::left << std::setw(15) << "Address: " << inet_ntoa(((struct sockaddr_in *)&_addr)->sin_addr) << std::endl;
+
 	std::cout << BLUE_BOLD  << "------------------------------------------------------" << END << std::endl;
 	return;
 }

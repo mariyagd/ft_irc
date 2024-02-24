@@ -129,6 +129,7 @@ void	Server::socket()
 		throw ServerException( error_msg.c_str() );
 	}
 	_connections[0].setSocket( _servSock );												// set the first element of the table to the server socket
+	_connections[0].setServerSocket( _servSock );							    // set the static variable to keep track of the server socket
 	std::cout << PrintTime::printTime() << " --- Server socket fd " << _servSock << " created successfully " << std::endl;
 }
 
@@ -232,6 +233,36 @@ void Server::accept( void )
 	return;
 }
 
+void Server::register_client( int i )
+{
+	std::string 	message;
+	Client & client = _connections[i];
+
+	if ( client.getGavePassword() && !client.getNickname().empty() && !client.getUsername().empty() && !client.getHostname().empty() && !client.getRealname().empty() )
+	{
+		client.setRegistered( true );
+		std::cout << PrintTime::printTime() << BOLD << " --- socket " << client.getSocket() << " is now registered" << END << std::endl;
+
+		client.printInfo();
+
+		message = RPL::RPL_WELCOME( client, *this );
+		send( client.getSocket(), message.c_str(), message.size(), 0 );
+		std::cout << PrintTime::printTime() << YELLOW_BOLD  << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
+
+		message = RPL::RPL_YOURHOST( client, *this );
+		send( client.getSocket(), message.c_str(), message.size(), 0 );
+		std::cout << PrintTime::printTime() << YELLOW_BOLD  << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
+
+		message = RPL::RPL_CREATED( client, *this );
+		send( client.getSocket(), message.c_str(), message.size(), 0 );
+		std::cout << PrintTime::printTime() << YELLOW_BOLD  << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
+
+		message = RPL::RPL_MYINFO( client, *this );
+		send( client.getSocket(), message.c_str(), message.size(), 0 );
+		std::cout << PrintTime::printTime() << YELLOW_BOLD  << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
+	}
+}
+
 void	Server::receive( int i )
 {
 	int				bytesRead = 0;
@@ -245,7 +276,7 @@ void	Server::receive( int i )
 	}
 	else if (bytesRead == 0)
 	{
-		std::cout << PrintTime::printTime() << " --- Connection " << _connections[i].getSocket() << " closed by client" << std::endl;
+		std::cout << PrintTime::printTime() << " --- [socket " << _connections[i].getSocket() << "] left the IRC network" << std::endl;
 		_connections[i].closeSocket();
 	}
 	else
@@ -255,6 +286,8 @@ void	Server::receive( int i )
 		std::cout << PrintTime::printTime() << CYAN_BOLD << " --- Received msg from [socket " << _connections[i].getSocket() << "] " << msg << END;
 
 		Commands::process_command(msg, i, *this );
+		if ( !_connections[i].isRegistered() )
+			register_client(i);
 	}
 	FD_CLR(_connections[i].getSocket(), &read_fd_set);
 	return;

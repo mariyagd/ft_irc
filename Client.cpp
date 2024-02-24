@@ -1,5 +1,10 @@
 #include "Client.hpp"
 
+// Static member --------------------------------------------------------------------------------------------------------
+// helps to close the server socket when the server is shut down
+
+int Client::_serverSocket = -1;
+
 // Coplien's form -------------------------------------------------------------------------------------------------------
 Client::Client( void ) {
 
@@ -36,6 +41,12 @@ Client::Client( int socket ) : _socket(socket) {
 }
 
 // Setters --------------------------------------------------------------------------------------------------------------
+
+void	Client::setServerSocket( int socket ) {
+
+	_serverSocket = socket;
+	return;
+}
 
 void	Client::setSocket( int socket ) {
 
@@ -170,7 +181,12 @@ void	Client::closeSocket( void ) {
 	if (ret < 0)
 		std::cerr << PrintTime::printTime() << RED_BOLD << " --- Error while closing socket: " << strerror(errno) << END << std::endl;
 	else
-		std::cout << PrintTime::printTime() << GREEN_BOLD << " --- [socket " << _socket << "] closed by server successfully" << END << std::endl;
+	{
+		if ( _socket != _serverSocket )
+			std::cout << PrintTime::printTime() << GREEN_BOLD << " --- Client [socket " << _socket << "] closed by server successfully" << END << std::endl;
+		else
+			std::cout << PrintTime::printTime() << GREEN_BOLD << " --- Server's [socket " << _socket << "] closed successfully" << END << std::endl;
+	}
 	cleanClient();
 	return;
 }

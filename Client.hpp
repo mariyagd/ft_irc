@@ -18,12 +18,14 @@ private:
 	struct sockaddr		_addr;
 	socklen_t 			_addrlen;
 
-
 public:
 	Client( void );
 	Client( int socket );
-
 	~Client( void );
+
+	static int 			_serverSocket;
+
+	void		setServerSocket( int socket );
 
 	void		setSocket( int socket );
 	void		setRegistered( bool );

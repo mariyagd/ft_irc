@@ -146,6 +146,19 @@ void Commands::NICK( std::vector< std::string > & command, int j, Server &server
 	std::string nickname = command[1];
 	Client & client = server.getConnections()[j];
 
+	if ( client.getSocket() < 0 )
+		return;
+
+	if ( command.size() == 1 )
+	{
+		std::cout << PrintTime::printTime() << BOLD << " --- socket " << client.getSocket() << " Nick: " << nickname <<  " no nickname given" << END << std::endl;
+
+		message = RPL::ERR_NONICKNAMEGIVEN( server );
+		send( client.getSocket(), message.c_str(), message.size(), 0 );
+		std::cout << PrintTime::printTime() << YELLOW_BOLD << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
+		return;
+	}
+
 	for ( size_t i = 0; i < nickname.length(); i++ )
 	{
 		if ( std::isspace(nickname[i]) || nickname[i] == '+' || nickname[i] == '-' || \
@@ -154,25 +167,36 @@ void Commands::NICK( std::vector< std::string > & command, int j, Server &server
 			 nickname[i] == '.' || nickname[i] == '/' || nickname[i] == '<' || nickname[i] == '>' || nickname[i] == '?' || \
 			 nickname[i] == '=' || nickname[i] == '"' || nickname[i] == '\''  || nickname[i] == '~' )
 		{
+			std::cout << PrintTime::printTime() << BOLD << " --- socket " << client.getSocket() << " Nick: " << nickname << " erroneus nickname" << END << std::endl;
+
 			message = RPL::ERR_ERRONEUSNICKNAME( client, server );
 			send( client.getSocket(), message.c_str(), message.size(), 0 );
 			std::cout << PrintTime::printTime() << YELLOW_BOLD << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
+
+			client.getNickname().clear();
+
 			return ;
 		}
 	}
-	client.setNickname( nickname );
 
 	if ( !is_unique_nickname( nickname, client.getSocket(), server.getConnections() ) )
 	{
+		std::cout << PrintTime::printTime() << BOLD << " --- socket " << client.getSocket() << " Nick: " << nickname << " nickname is use" << END << std::endl;
+
 		message = RPL::ERR_NICKNAMEINUSE( client, server, nickname );
 		send( client.getSocket(), message.c_str(), message.size(), 0 );
 		std::cout << PrintTime::printTime() << YELLOW_BOLD << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
 		return;
 	}
+	else if ( !client.isRegistered() )
+	{
+		client.setNickname( nickname );
+		return;
+	}
 
-//	message = RPL::RPL_SAVENICK( client, server );
-//	send( client.getSocket(), message.c_str(), message.size(), 0 );
-//	std::cout << PrintTime::printTime() << YELLOW_BOLD << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
+	message = RPL::RPL_SAVENICK( client, server );
+	send( client.getSocket(), message.c_str(), message.size(), 0 );
+	std::cout << PrintTime::printTime() << YELLOW_BOLD << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
 
 	message = RPL::RPL_NICK( client, server, nickname );
 	send( client.getSocket(), message.c_str(), message.size(), 0 );
@@ -192,6 +216,9 @@ void Commands::USER( std::vector <std::string> & command, int i, Server & server
 	std::string 	message;
 	Client & 		client = server.getConnections()[i];
 
+	if ( client.getSocket() < 0 )
+		return;
+
 	client.setUsername( command[1] );
 	client.setHostname( command[2] );
 	client.setServname( command[3] );
@@ -204,30 +231,9 @@ void Commands::USER( std::vector <std::string> & command, int i, Server & server
 			realname += " ";
 	}
 	client.setRealname( realname );
-	if ( client.getGavePassword() )
-	{
-		client.printInfo();
-
-		std::cout << PrintTime::printTime() << BOLD << " --- socket " << client.getSocket() << " is now registered" << END << std::endl;
-
-		message = RPL::RPL_WELCOME( client, server );
-		send( client.getSocket(), message.c_str(), message.size(), 0 );
-		std::cout << PrintTime::printTime() << YELLOW_BOLD  << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
-
-		message = RPL::RPL_YOURHOST( client, server );
-		send( client.getSocket(), message.c_str(), message.size(), 0 );
-		std::cout << PrintTime::printTime() << YELLOW_BOLD  << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
-
-		message = RPL::RPL_CREATED( client, server );
-		send( client.getSocket(), message.c_str(), message.size(), 0 );
-		std::cout << PrintTime::printTime() << YELLOW_BOLD  << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
-
-		message = RPL::RPL_MYINFO( client, server );
-		send( client.getSocket(), message.c_str(), message.size(), 0 );
-		std::cout << PrintTime::printTime() << YELLOW_BOLD  << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
-	}
-
 }
+
+// PASS------------------------------------------------------------------------------------------------------------------
 
 void Commands::PASS( std::vector< std::string > & command, int i, Server & server ) {
 
@@ -261,11 +267,14 @@ void Commands::PASS( std::vector< std::string > & command, int i, Server & serve
 	}
 }
 
-
+// WHOIS-----------------------------------------------------------------------------------------------------------------
 void Commands::WHOIS( std::vector< std::string > & command, int i, Server & server ) {
 
 	Client & client = server.getConnections()[i];
 	std::string message;
+
+	if ( client.getSocket() < 0 )
+		return;
 
 	std::string nickname = command[1];
 	for ( int j = 0; j < MAX_CONNECTIONS; j++ )
@@ -284,7 +293,18 @@ void Commands::WHOIS( std::vector< std::string > & command, int i, Server & serv
 void Commands::PING( std::vector< std::string > & command, int i, Server & server ) {
 
 	( void )command;
-	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " PONG " + server.getServerName() + " :" + server.getServerName() +"\r\n";
+	std::string message = "";
+
+	if ( server.getConnections()[i].getSocket() < 0 )
+		return;
+
+	if ( command.size() == 1 )
+	{
+		message = RPL::ERR_NOORIGIN( server );
+		send( server.getConnections()[i].getSocket(), message.c_str(), message.size(), 0 );
+		std::cout << PrintTime::printTime() << YELLOW_BOLD << " --- Send msg to [socket " << server.getConnections()[i].getSocket() << "] " << message << END;
+	}
+	message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " PONG " + server.getServerName() + " :" + server.getServerName() +"\r\n";
 	send( server.getConnections()[i].getSocket(), message.c_str(), message.size(), 0 );
 	std::cout << PrintTime::printTime() << YELLOW_BOLD << " --- Send msg to [socket " << server.getConnections()[i].getSocket() << "] " << message << END;
 

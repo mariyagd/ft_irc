@@ -43,26 +43,32 @@ The server sends Replies 001 to 004 to a user upon successful registration.
 
 ###### 461 ERR_NEEDMOREPARAMS
 ```
-<command> :Not enough parameters
+:<serverName> 461 <command> :Not enough parameters
 ```
 462 ERR_ALREADYREGISTRED
 #### NICK
 - NICK command is used to give user a nickname or change the existing one.
 ##### Replies:
 
-| Number | Name              | Returned message                     |
-| ------ | ----------------- | ------------------------------------ |
-| 433    | ERR_NICKNAMEINUSE | `<nick> :Nickname is already in use` |
-
-
-ERR_NONICKNAMEGIVEN 
+###### 433    ERR_NICKNAMEINUSE
+- Returned when a NICK message is processed that results in an attempt to change to a currently existing nickname.
+```
+:<serverName> 433 <nick> :Nickname is already in use
+```
+###### 431    ERR_NONICKNAMEGIVEN
+-  Returned when a nickname parameter expected for a command and isn’t found.
+```
+:<serverName> 434 :No nickname given
+```
 ERR_UNAVAILRESOURCE
 ERR_ERRONEUSNICKNAME 
 ERR_NICKCOLLISION 
 ERR_RESTRICTED
 
-Successful change:
-:oldNick!userName@hostName NICK newNick
+###### Successful change:
+```
+:<oldNick>!<user>@<host> NICK <newNick>
+```
 #### OPER
 `/OPER <name> <password>`
 - A normal user uses the OPER command to obtain operator privileges. The combination of `<name>` and `<password>` are REQUIRED to gain Operator privileges. Upon success, the user will receive a MODE message (see section 3.1.5) indicating the new user modes.
@@ -72,7 +78,6 @@ ERR_NOOPERHOST
 ERR_PASSWDMISMATCH
 
 RPL_YOUREOPER
-
 #### MODE
 
 `/MODE  ("+" or "-")  i`
@@ -168,21 +173,35 @@ KICK message on channel `#Finnish` from WiZ to remove John from channel
 #### PING
  ` PING <server1> [ <server2> ]`
 - The PING command is used to test the presence of an active client or server at the other end of the connection. 
-- Servers send a PING message at regular intervals if no other activity detected coming from a connection. If a connection fails to respond to a PING message within a set amount of time, that connection is closed. 
+- **Servers send a PING message at regular intervals if no other activity detected coming from a connection. If a connection fails to respond to a PING message within a set amount of time, that connection is closed. **
 - A PING message MAY be sent even if the connection is active.
 - When a PING message is received, the appropriate PONG message MUST be sent as reply to `<server1>` (server which sent the PING message out) as soon as possible.
 ##### Replies: 
-ERR_NOORIGIN
-ERR_NOSUCHSERVER
+###### 409    ERR_NOORIGIN
+- PING or PONG message missing the originator parameter.
+```
+:<serverName> 409 :No origin specified 
+```
+###### 402    ERR_NOSUCHSERVER
+- PING or PONG message missing the originator parameter.
+```
+:<serverName> 402 <server name> :No such server
+```
 #### PONG
 `PONG <server>
-
-- PONG message is a reply to ping message.
+- PONG message is a reply to PING message.
 - The `<server>` parameter is the name of the entity who has responded to PING message and generated this message.
-
-Numeric Replies:  
-ERR_NOORIGIN 
-ERR_NOSUCHSERVER
+##### Replies: 
+###### 409    ERR_NOORIGIN
+- PING or PONG message missing the originator parameter.
+```
+:<serverName> 409 :No origin specified
+```
+###### 402    ERR_NOSUCHSERVER
+- Used to indicate the server name given currently does not exist.
+```
+:<serverName> 402 <server name> :No such server
+```
 
 #### PRIVMSG
 `PRIVMSG <msgtarget> <text to be sent>`

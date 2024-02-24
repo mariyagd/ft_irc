@@ -46,22 +46,29 @@ std::string RPL::RPL_MYINFO( Client const & client, Server const & server ) {
 	return message;
 }
 
-// Upon nickname change---------------------------------------------------------------------------------------------------
+// For NICK -------------------------------------------------------------------------------------------------------------
+
+//:tungsten.libera.chat 433 * mariyadancheva :Nickname is already in use.
 
 std::string RPL::ERR_NICKNAMEINUSE( Client const & client, Server const & server, std::string & wantedNickname ) {
 
 	(void)wantedNickname;
-	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 433 *" + client.getNickname() + " " + client.getNickname() + "\r\n";
+	(void)client;
+	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 433 " + wantedNickname + " " + wantedNickname + "\r\n";
 	return message;
 }
+std::string RPL::ERR_NONICKNAMEGIVEN( Server const & server ) {
+
+	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 431 " + ":No nickname given\r\n";
+	return message;
+}
+
 
 std::string RPL::ERR_ERRONEUSNICKNAME( Client const & client, Server const & server ) {
 
 	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 432 " + client.getNickname() + "\r\n";
 	return message;
 }
-
-
 
 std::string RPL::RPL_NICK( Client const & client, Server const & server, std::string & newNickname ) {
 
@@ -76,6 +83,8 @@ std::string RPL::RPL_SAVENICK( Client const & client, Server const & server ) {
 	return message;
 }
 
+// For WHOIS ------------------------------------------------------------------------------------------------------------
+
 std::string RPL::RPL_WHOISUSER( Client const & client, Server const & server ) {
 
 	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 311 " + client.getNickname() + " " + client.getUsername() + " " + client.getHostname() + " * :" + client.getRealname() + "\r\n";
@@ -84,6 +93,14 @@ std::string RPL::RPL_WHOISUSER( Client const & client, Server const & server ) {
 
 std::string RPL::ERR_NEEDMOREPARAMS( Client const & client, Server const & server, std::string const & command ) {
 
-	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 461 " + client.getNickname() + " " + command + "\r\n";
+	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 461 " + client.getNickname() + " " + command + ":Not enough parameters. Disconnecting\r\n";
+	return message;
+}
+
+// PING PONG
+
+std::string RPL::ERR_NOORIGIN( Server const & server ) {
+
+	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 409 :No origin specified\r\n";
 	return message;
 }

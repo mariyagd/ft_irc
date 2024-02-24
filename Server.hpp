@@ -53,6 +53,8 @@ public:
 	void accept( void );
 	void receive( int i );
 
+	void register_client( int i );
+
 
 	const std::string &					getPassword( void ) const;
 	std::vector< Client > &				getConnections( void );

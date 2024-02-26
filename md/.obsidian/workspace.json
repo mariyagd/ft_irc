@@ -1,26 +1,14 @@
 {
   "main": {
-    "id": "079e569ad124268e",
+    "id": "b225a2821cf38ca5",
     "type": "split",
     "children": [
       {
-        "id": "083205ca1f48072f",
+        "id": "7303ca1315367e94",
         "type": "tabs",
         "children": [
           {
-            "id": "de011a4173419296",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "The Socket API.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "d0aaa3c9a3a5f4d5",
+            "id": "aefacc0894817186",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -31,22 +19,21 @@
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
   },
   "left": {
-    "id": "6e46808cdca879eb",
+    "id": "1d2d29f87a3bb43d",
     "type": "split",
     "children": [
       {
-        "id": "8b4e0d8954666a95",
+        "id": "2752fbe6d16db0fd",
         "type": "tabs",
         "children": [
           {
-            "id": "17ef63a184ef7485",
+            "id": "8b1f0fdacd493580",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -56,7 +43,7 @@
             }
           },
           {
-            "id": "591ddeb2c02e67fa",
+            "id": "9d4448c4b931d766",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -71,7 +58,7 @@
             }
           },
           {
-            "id": "3acbe6d187e750fa",
+            "id": "a6a16a50a0c7131c",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -82,19 +69,18 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
-    "id": "afe2fa4bcfbb9cf8",
+    "id": "3719c73679c82adb",
     "type": "split",
     "children": [
       {
-        "id": "0dada399b35d49a6",
+        "id": "8a8723ddec314b85",
         "type": "tabs",
         "children": [
           {
-            "id": "078323949fcd9c1a",
+            "id": "1d58d5fa3affa9d6",
             "type": "leaf",
             "state": {
               "type": "backlink",
@@ -111,7 +97,7 @@
             }
           },
           {
-            "id": "a232e7dd3b530a09",
+            "id": "4adabf3023a2a87e",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
@@ -123,7 +109,7 @@
             }
           },
           {
-            "id": "cb6ae779a8ec5d18",
+            "id": "54fd3a4906e3e6ec",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -134,7 +120,7 @@
             }
           },
           {
-            "id": "20595836c857ab62",
+            "id": "099e182545f03ddd",
             "type": "leaf",
             "state": {
               "type": "outline",
@@ -161,25 +147,10 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "d0aaa3c9a3a5f4d5",
+  "active": "aefacc0894817186",
   "lastOpenFiles": [
-    "The Socket API.md",
-    "getaddrinfo & gethostname.md",
-    "Commands.md",
-    "Messages.md",
     "Irssi and Libera chat.md",
-    "select().md",
-    "Channels.md",
-    "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.md",
-    "Excalidraw/Drawing 2024-02-21 15.14.49.excalidraw.excalidraw",
-    "Excalidraw/Drawing 2024-02-21 12.48.01.excalidraw.md",
-    "Excalidraw/Drawing 2024-02-21 12.48.01.excalidraw.excalidraw",
-    "Excalidraw",
-    "Excalidraw/Drawing 2024-02-22 15.37.16.excalidraw.md",
-    "Excalidraw/Drawing 2024-02-22 15.37.16.excalidraw.excalidraw",
-    "Untitled",
-    "Messages",
-    "Excalidraw/Drawing 2024-02-21 15.14.02.excalidraw.md",
-    "Excalidraw/Drawing 2024-02-21 15.13.04.excalidraw.md"
+    "Messages.md",
+    "select().md"
   ]
 }

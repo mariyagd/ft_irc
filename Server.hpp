@@ -10,29 +10,14 @@ class Commands;
 class Server {
 
 protected:
-	int								_port;
-	int								_servSock;				// for socket()
-	struct sockaddr_in				_server_address;		// for bind()
-	struct addrinfo 				_hints;					// for getaddrinfo()
-	struct addrinfo					*_servinfo;				// for getaddrinfo()
-
-	std::string						_server_name;
-
-	fd_set							read_fd_set;
-//	fd_set							write_fd_set;
-	struct sockaddr_storage			new_addr;
-	socklen_t						addrlen;
-
-	std::vector< Client >			_connections;
-
-	char 							message[MSG_MAX_SIZE];
-
-//	const char *					_password;
-	std::string 					_password;
-public:
-
-	// signal handling
+	int									_port;
+	std::string 						_password;
+	fd_set								_read_fd_set;
+	std::vector< Client >				_connections;
 	static volatile std::sig_atomic_t 	_shutdown_server;
+
+public:
+	// signal handling
 	static void		handler(int sig_code);
 	void			sig_handler( void );
 
@@ -42,12 +27,10 @@ public:
 	void	shutdown( void );
 
 	void	launch( void );
-	void	get_addrinfo( void );
 	void	socket( void );
 	void	bind( void );
 	void	listen( void );
 	void	loop( void );
-
 
 	void reset_fds( void );
 	void accept( void );
@@ -55,10 +38,8 @@ public:
 
 	void register_client( int i );
 
-
 	const std::string &					getPassword( void ) const;
 	std::vector< Client > &				getConnections( void );
-	char *								getServerName( void ) const;
 	std::string							getProtocolFamilyName(int family);
 
 	class ServerException : public std::exception {

@@ -32,9 +32,9 @@ int getaddrinfo(const char *hostname, const char *servname, const struct addrinf
 - **`servname`**: This is the service name or port number associated with the address. The client has to use this port to connect to your server. This parameter is optional and can be set to `nullptr` if not needed.
 
 ```
-void    Server::get_addrinfo()  
+int main (void) 
 {  
-	std::string     _port;
+	std::string     _port = "4242";
 	struct addrinfo _hints;
 	struct addrinfo *_servinfo;
   

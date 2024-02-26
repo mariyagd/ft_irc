@@ -26,7 +26,7 @@ protected:
 	socklen_t						addrlen;
 
 	std::vector< Client >			_connections;
-	std::vector<Channel>			_channelName;
+	std::vector<Channel *>			_channelName;
 	char 							message[MSG_MAX_SIZE];
 
 //	const char *					_password;
@@ -61,9 +61,12 @@ public:
 
 	const std::string &					getPassword( void ) const;
 	std::vector< Client > &				getConnections( void );
-	Channel	*					getChannel(const std::string& channelName);
+	void								addChannel(Channel *channel);
+	Channel	*							getChannel(const std::string& channelName);
 	char *								getServerName( void ) const;
 	std::string							getProtocolFamilyName(int family);
+	void 								addClientToChannel(const std::string& channelname, Client* client);
+	void								sendToChannel(std::string&kickMessage, std::string& channel);
 
 	class ServerException : public std::exception {
 

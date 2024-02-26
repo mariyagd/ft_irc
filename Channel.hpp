@@ -12,21 +12,25 @@ class Channel {
 
 private:
 	std::string					_name;
-	std::vector<Client>			_clients;
+	std::vector<Client*>			_clients;
 	std::vector<int>			_operators;
 public:
-	Channel( void );
+	Channel(void);
 	Channel(const std::string& channelName);
-	Channel( Channel const & src );
-	Channel & operator=( Channel const & rhs );
-	std::string getName();
-	std::vector<Client>	getClient();
-	void setName(std::string name);
-	void addClient(Client& client);
-	bool isClientInChannel(const std::string& nickname) const;
+	Channel(Channel const & src);
+	Channel & operator=(Channel const & rhs);
 	~Channel( void );
-	static void	process_channel( std::string &msg, int i, Server &server );
-
+	std::string getName();
+	std::vector<Client*>	getClient();
+	int	getNicknameId(std::string nickname);
+	void setName(std::string name);
+	void addClient(Client* client);
+	bool isClientInChannel(const std::string& nickname) const;
+	bool	isOperator(const std::string& nickname);
+	std::vector<int> getOperator();
+	bool isClientIsOperator(const std::string& nickname);
+	Channel* createChannel(std::string& channelname, Server &server);
+	void	removeUser(std::string &nickname);
 
 };
 

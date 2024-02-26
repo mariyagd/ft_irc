@@ -222,3 +222,8 @@ void	Client::printInfo( void ) {
 	std::cout << BLUE_BOLD  << "------------------------------------------------------" << END << std::endl;
 	return;
 }
+
+void	Client::sendMessage(std::string& kickMessage)
+{
+	std::cout<<"user kiked reason "<<kickMessage<<std::endl;
+}

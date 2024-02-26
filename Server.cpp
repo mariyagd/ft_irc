@@ -374,12 +374,48 @@ char *	Server::getServerName( void ) const {
 
 
 // channel functions ------------------------------------------------------------------------------------------------------
-   Channel* Server::getChannel(const std::string& channelName) {
-        // Find the channel in the vector
-        for (size_t i = 0; i < _channelName.size(); ++i) {
-            if (_channelName[i].getName() == channelName) {
-                return &_channelName[i]; // Return pointer to the Channel object
-            }
+Channel* Server::getChannel(const std::string& channelName)
+{
+	// Find the channel in the vector
+	for (size_t i = 0; i < _channelName.size(); ++i) {
+		if (_channelName[i]->getName() == channelName) {
+			return _channelName[i]; // Return pointer to the Channel object
+		}
+	}
+	return nullptr; // Return nullptr if channel not found
+}
+
+void Server:: addClientToChannel(const std::string& channelname, Client* client)
+{
+	for (size_t i = 0; i < _channelName.size(); ++i)
+	{
+		if (_channelName[i]->getName() == channelname)
+		{
+			_channelName[i]->addClient(client);
+			std::cout<<"Added client "<< client->getNickname()<< " to channel "<<channelname<<std::endl;
+			return;
+		}
+	}
+	std::cerr<< "channel "<< channelname <<" not found. "<<std::endl;
+}
+
+void Server::addChannel(Channel *channel)
+{
+	_channelName.push_back(channel);
+}
+
+void	Server::sendToChannel(std::string&kickMessage, std::string& channel)
+{
+	 // Get the list of clients in the specified channel
+    Channel* ch = getChannel(channel);
+    if (ch) {
+        std::vector<Client*> clients = ch->getClient();
+
+        // Send the kick message to each client in the channel
+        for (size_t i = 0; i < clients.size(); ++i) {
+            clients[i]->sendMessage(kickMessage);
         }
-        return nullptr; // Return nullptr if channel not found
     }
+}
+
+

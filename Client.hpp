@@ -48,6 +48,7 @@ public:
 	std::string	getHostname( void ) const;
 	std::string	getServname( void ) const;
 	std::string	getRealname( void ) const;
+	void		sendMessage(std::string& kickMessage);
 
 	void		cleanClient( void );
 

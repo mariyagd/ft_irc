@@ -331,15 +331,17 @@ void Commands::KICK( std::string &channel, std::string &nickname, Server &server
     if (ch && ch->isClientInChannel(nickname)) {
 		std::cout<<"the client "<<nickname<< " is join to channel."<<std::endl;
         // Check if the user has operator status in the channel
-        // if (ch->isOperator(nickname)) {
-        //     // Remove the user from the channel
-        //     ch->removeUser(nickname);
-        //     // Send message to all users in the channel about the kick
-        //     std::string kickMessage = "KICK " + channel + " " + nickname;
-        //     server.sendToChannel(kickMessage, channel);
-        // } else {
-        //     // User does not have operator status
-        //     // Send ERR_CHANOPRIVSNEEDED message
+        if (ch->isClientIsOperator(nickname)) {
+            // Remove the user from the channel
+            std::cout<<"found operator"<<std::endl;
+            ch->removeUser(nickname);
+            // Send message to all users in the channel about the kick
+            std::string kickMessage = "KICK " + channel + " " + nickname;
+            server.sendToChannel(kickMessage, channel);
+        }
+		//  else {
+        // //     // User does not have operator status
+        // //     // Send ERR_CHANOPRIVSNEEDED message
         //     server.sendErrorToUser(nickname, "ERR_CHANOPRIVSNEEDED", "You do not have operator status in the channel");
         // }
     } 

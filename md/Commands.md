@@ -9,11 +9,23 @@
 	4. Service message
 
 - A "PASS" command is not required for a client connection to be registered, but it MUST precede the latter of the NICK/USER combination (for a user connection)
+- NICK is the nickname that you will be visible in IRC network. If you don't specify it while connecting, irssi will automatically use your username as nick.
+- USER message consist of:
+	- username -> wich will be the name of your machine
+	- hostname -> the name of your host machine ( your computer )
+	- servname -> the server you use to connect (localhost)
+	- realname -> your real name ( based on your machine )
 - Upon success, the client will receive an RPL_WELCOME
 - If the selected nickname during registration is already in use, the server must iteratively modify it until an available one is found and must **send error message to the client `ERR_NICKNAMEINUSE`**.  The procedure is illustrated using the example nickname `lola`:
 
 	- Initially, an underscore is appended to the original nickname, resulting in `lola_`.
 	- If this modified nickname is still taken, sequential numbers are added starting from 1. For instance: `lola1`, `lola2`, and so forth, until an available nickname is obtained, such as `lola10`, `lola11`, and beyond.
+##### Examples of registration
+
+1. Specifying only the server abd the port, irssi will get you informations from your computer. 
+```
+/CONNECT <server address/name> <port>
+```
 ##### Replies upon registration:
 The server sends Replies 001 to 004 to a user upon successful registration.
 

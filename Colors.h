@@ -58,6 +58,7 @@
 # define BLACK_BG		"\033[40m"
 # define RED_BG			"\033[41m"
 # define GREEN_BG		"\033[42m"
+# define DARK_GREEN_BG		"\x1b[48;5;106m"
 # define YELLOW_BG		"\033[43m"
 # define BLUE_BG		"\033[44m"
 # define MAGNETA_BG		"\033[45m"

@@ -11,8 +11,6 @@ class Commands {
 
 private:
 	Commands( void );
-	Commands( Commands const & src );
-	Commands & operator=( Commands const & rhs );
 
 public:
 	~Commands( void );
@@ -26,14 +24,14 @@ public:
 
 
 
-	static void		choose_command( std::vector< std::string > & command, int i, Server &server );
-	static void		process_command( std::string &msg, int i, Server &server );
-	static void 	PASS( std::vector< std::string > & command, int i, Server &server );
-	static void 	NICK( std::vector< std::string > & command, int i, Server &server );
-	static void 	USER( std::vector< std::string > & command, int i, Server &server );
+	static void		choose_command( std::vector< std::string > & command, Client & client, Server &server );
+	static void		process_command( std::string &msg, Client & client, Server & server );
+	static void 	PASS( std::vector< std::string > & command, Client & client, Server &server );
+	static void 	NICK( std::vector< std::string > & command, Client & client, Server &server );
+	static void 	USER( std::vector< std::string > & command, Client & client, Server &server );
 
-	static void 	WHOIS( std::vector< std::string > & command, int i, Server &server );
-	static void 	PING( std::vector< std::string > & command, int i, Server &server );
+	static void 	WHOIS( std::vector< std::string > & command, Client & client, Server &server );
+	static void 	PING( std::vector< std::string > & command, Client & client, Server &server );
 
 	static void 	KICK( std::string &channel, std::string &nickname, Server &server );
 	static void 	TOPIC( std::string &nickname, int i, Server &server );

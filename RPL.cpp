@@ -14,93 +14,105 @@ RPL::~RPL( void ) {
 	return;
 }
 
+// Send message-----------------------------------------------------------------------------------------------------------
+
+void RPL::send_message( const int socket, const char * message, const size_t msg_size ) {
+
+	int ret = 0;
+	ret = send( socket, message, msg_size, 0 );
+	if ( ret < 0 )
+	{
+		std::cerr << Get::Time() << RED << " --- send() failed" << strerror( errno ) << END << std::endl;
+		return;
+	}
+	std::cout << Get::Time() << YELLOW_BOLD << " --- Send msg to [socket " << socket << "] " << message << END;
+	return;
+}
+
 // Upon registration------------------------------------------------------------------------------------------------------
 
 
-std::string RPL::RPL_WELCOME( const Client & client, const Server & server ) {
+void	RPL::RPL_WELCOME( const Client & client ) {
 
-	std::string message = "@time=" + PrintTime::printTime();
-	message += ":" + std::string(server.getServerName()) + " 001 " + client.getNickname();
-	message += " Welcome to the Internet Relay Network ";
-	message += client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname() + "\r\n";;
-	return message;
+	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
+	std::string message = "@time=" + Get::Time() + ":" + std::string(client.getServname());
+	message += + " 001 " + client.getNickname()+ " Welcome to the Internet Relay Network " + msgto  + "\r\n";
+
+	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
-std::string RPL::RPL_YOURHOST( Client const & client, Server const & server ) {
+void	RPL::RPL_YOURHOST( Client const & client ) {
 
-	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 002 " + client.getNickname() + " Your host is " + server.getServerName() + ", running version 1.0\r\n";
-	return message;
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 002 " + client.getNickname() + " Your host is " + client.getServname() + ", running version 1.0\r\n";
+	send( client.getSocket(), message.c_str(), message.size(), 0 );
 }
 
-std::string RPL::RPL_CREATED( Client const & client, Server const & server ) {
+void	RPL::RPL_CREATED( Client const & client ) {
 
-	std::string date = PrintTime::printTime().substr(0, 10);
-	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 003 " + client.getNickname() + " This server was created " + date + "\r\n";
-	return message;
+	std::string date = Get::Time().substr(0, 10);
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 003 " + client.getNickname() + " This server was created " + date + "\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
 
-std::string RPL::RPL_MYINFO( Client const & client, Server const & server ) {
+void	RPL::RPL_MYINFO( Client const & client ) {
 
-	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 004 " + client.getNickname() + " " + server.getServerName() + " v1.0 [user modes: none] [channel modes: itklo]\r\n";
-	return message;
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 004 " + client.getNickname() + " " + client.getServname() + " v1.0 [user modes: none] [channel modes: itklo]\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
 // For NICK -------------------------------------------------------------------------------------------------------------
 
 //:tungsten.libera.chat 433 * mariyadancheva :Nickname is already in use.
 
-std::string RPL::ERR_NICKNAMEINUSE( Client const & client, Server const & server, std::string & wantedNickname ) {
+void RPL::ERR_NICKNAMEINUSE( Client const & client, std::string & wantedNickname ) {
 
-	(void)wantedNickname;
-	(void)client;
-	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 433 " + wantedNickname + " " + wantedNickname + "\r\n";
-	return message;
-}
-std::string RPL::ERR_NONICKNAMEGIVEN( Server const & server ) {
-
-	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 431 " + ":No nickname given\r\n";
-	return message;
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 433 " + wantedNickname + " " + wantedNickname + "\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
+void RPL::ERR_NONICKNAMEGIVEN( Client const & client ) {
 
-std::string RPL::ERR_ERRONEUSNICKNAME( Client const & client, Server const & server ) {
-
-	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 432 " + client.getNickname() + "\r\n";
-	return message;
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 431 " + ":No nickname given\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
-std::string RPL::RPL_NICK( Client const & client, Server const & server, std::string & newNickname ) {
+void RPL::ERR_ERRONEUSNICKNAME( Client const & client ) {
 
-	(void)server;
-	std::string message = "@time=" + PrintTime::printTime() + ":" + client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname() + " NICK " + newNickname + "\r\n";
-	return message;
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 432 " + client.getNickname() + "\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
-std::string RPL::RPL_SAVENICK( Client const & client, Server const & server ) {
+void RPL::RPL_NICK( Client const & client, std::string & newNickname ) {
 
-	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 043 " + client.getNickname() + client.getNickname() + "\r\n";
-	return message;
+	std::string message = "@time=" + Get::Time() + ":" + client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname() + " NICK " + newNickname + "\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+void RPL::RPL_SAVENICK( Client const & client ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 043 " + client.getNickname() + client.getNickname() + "\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
 // For WHOIS ------------------------------------------------------------------------------------------------------------
 
-std::string RPL::RPL_WHOISUSER( Client const & client, Server const & server ) {
+void RPL::RPL_WHOISUSER( Client const & client ) {
 
-	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 311 " + client.getNickname() + " " + client.getUsername() + " " + client.getHostname() + " * :" + client.getRealname() + "\r\n";
-	return message;
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 311 " + client.getNickname() + " " + client.getUsername() + " " + client.getHostname() + " * :" + client.getRealname() + "\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
-std::string RPL::ERR_NEEDMOREPARAMS( Client const & client, Server const & server, std::string const & command ) {
+void RPL::ERR_NEEDMOREPARAMS( Client const & client, std::string const & command ) {
 
-	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 461 " + client.getNickname() + " " + command + ":Not enough parameters. Disconnecting\r\n";
-	return message;
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 461 " + client.getNickname() + " " + command + ":Not enough parameters. Disconnecting\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
 // PING PONG
 
-std::string RPL::ERR_NOORIGIN( Server const & server ) {
+void RPL::ERR_NOORIGIN( Client const & client ) {
 
-	std::string message = "@time=" + PrintTime::printTime() + ":" + server.getServerName() + " 409 :No origin specified\r\n";
-	return message;
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 409 :No origin specified\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
 }

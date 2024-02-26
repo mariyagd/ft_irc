@@ -15,6 +15,7 @@ private:
 	std::string			_hostname;
 	std::string			_servname;
 	std::string			_realname;
+
 	struct sockaddr		_addr;
 	socklen_t 			_addrlen;
 
@@ -28,9 +29,8 @@ public:
 
 	static int 			_serverSocket;
 
-	void		setServerSocket( int socket );
-
-	void		setSocket( int socket );
+	void		setServer( const int & socket );
+	void		setConnecion( const int & socket, const struct sockaddr & addr, const socklen_t & addrlen );
 	void		setRegistered( bool );
 	void		setNickname( std::string nick );
 	void		setUsername( std::string user );
@@ -40,7 +40,7 @@ public:
 	void		setGavePassword( bool status );
 
 	bool		getGavePassword( void ) const;
-	int			getSocket( void ) const;
+	const int &		getSocket( void ) const;
 	bool		isRegistered( void ) const;
 	std::string	getNickname( void ) const;
 	std::string getnickname() const;

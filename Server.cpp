@@ -7,20 +7,13 @@ volatile std::sig_atomic_t 	Server::_shutdown_server = false;   // <------ stati
 
 Server::Server(int port, char *password) : _port(port), _password(password)
 {
-	(void)_password;
-	_servSock = 0;
-	_servinfo = 0;
-	_server_name = "irc.lausanne42.ch";
-
-
 	// initialize structures to 0
-	memset( &_server_address, 0, sizeof( struct sockaddr_in ) );
-	memset( &_hints, 0, sizeof( struct addrinfo ) );
-	memset(&message, 0, MSG_MAX_SIZE);
-	memset(&read_fd_set, 0, sizeof(fd_set));
+	memset(&_read_fd_set, 0, sizeof(fd_set));
 
 	// initialize the connections table
-	for ( int i = 0; i < MAX_CONNECTIONS; ++i )
+	// the first element of the table is the server socket
+	// this is why we initialize the table with MAX_CONNECTIONS + 1 elements
+	for ( int i = 0; i < MAX_CONNECTIONS + 1; ++i )
 		_connections.push_back( Client() );
 }
 
@@ -51,31 +44,23 @@ Server&		Server::operator=(const Server &rhs)
 
 Server::~Server()
 {
-	for ( int i = 0; i < MAX_CONNECTIONS; ++i )
+	for ( int i = 0; i < MAX_CONNECTIONS + 1; ++i )
 	{
 		if ( _connections[i].getSocket() > 0 )
 			_connections[i].closeSocket();
 	}
-	if ( _servinfo )
-		freeaddrinfo( _servinfo );
-
-	std::cout << PrintTime::printTime() << BOLD << " --- Exit Server" << END << std::endl;
+	std::cout << Get::Time() << BOLD << " --- Exit Server" << END << std::endl;
 }
 
 void Server::shutdown()
 {
-	for (int i = 0; i < MAX_CONNECTIONS; ++i)
+	for (int i = 0; i < MAX_CONNECTIONS + 1; ++i)
 	{
 		if (_connections[i].getSocket() > 0)
 			_connections[i].closeSocket();
 	}
-	if (_servinfo)
-		freeaddrinfo(_servinfo);
-	std::cout << PrintTime::printTime() << BOLD << " --- Exit Server" << END << std::endl;
-	exit(0);
+	std::cout << Get::Time() << BOLD << " --- Exit Server" << END << std::endl;
 }
-
-
 
 // Signal handling ------------------------------------------------------------------------------------------------------
 
@@ -83,7 +68,7 @@ void	Server::handler(int sig_code)
 {
 	if (sig_code == SIGINT)
 	{
-		std::cout << std::endl << PrintTime::printTime() << BOLD << " --- Received SIGINT. Close program."  << END << std::endl;
+		std::cout << std::endl << Get::Time() << BOLD << " --- Received SIGINT. Close program."  << END << std::endl;
 		_shutdown_server = true;
 	}
 }
@@ -106,101 +91,87 @@ void	Server::sig_handler( void )
 	sigaction(SIGINT, &act, 0);
 }
 
-
 // Launch ---------------------------------------------------------------------------------------------------------------
 
 void	Server::launch()
 {
-	std::cout << PrintTime::printTime() << " --- Launching server on port " << _port << std::endl; // add time
+	std::cout << Get::Time() << " --- Launching server on port " << _port << std::endl; // add time
 
 	sig_handler();
 
-	get_addrinfo();
 	socket();
 	bind();
 	listen();
 	loop();
-}
-// Get Current Time -----------------------------------------------------------------------------------------------------
-
-
-// Get addrinfo ----------------------------------------------------------------------------------------------------------
-
-void	Server::get_addrinfo()
-{
-	_hints.ai_family = PF_INET;						// don't care IPv4 or IPv6
-	_hints.ai_socktype = SOCK_STREAM;					// TCP stream sockets
-	_hints.ai_flags = AI_PASSIVE;						// fill in my IP for me
-	_hints.ai_protocol = 0;								// any protocol
-
-	int	status = getaddrinfo( NULL, std::to_string(_port).c_str(), &_hints, &_servinfo );
-	if (status != 0)
-	{
-		std::string error_msg = PrintTime::printTime() + " Getaddrinfo error: " + std::string( gai_strerror(status) );
-		throw ServerException( error_msg.c_str() );
-	}
-	std::cout << PrintTime::printTime() << " --- Getting address info successful." << std::endl;
 }
 
 // Socket ---------------------------------------------------------------------------------------------------------------
 
 void	Server::socket()
 {
-
-	_servSock = ::socket( _servinfo->ai_family, _servinfo->ai_socktype , _servinfo->ai_protocol );
+	const int _servSock = ::socket( PF_INET, SOCK_STREAM , 0 );
 	if (_servSock < 0)
 	{
-		std::string error_msg = PrintTime::printTime() + " Server socket error: " + std::string( strerror(errno) );
+		std::string error_msg = Get::Time() + " Server socket error: " + std::string( strerror(errno) );
+		shutdown();
 		throw ServerException( error_msg.c_str() );
 	}
-	_connections[0].setSocket( _servSock );												// set the first element of the table to the server socket
-	_connections[0].setServerSocket( _servSock );							    // set the static variable to keep track of the server socket
-	std::cout << PrintTime::printTime() << " --- Server socket fd " << _servSock << " created successfully " << std::endl;
+
+	_connections[0].setServer( _servSock );	// set the first element of the table to the server socket
+	std::cout << Get::Time() << GREEN_BOLD << " --- Server's socket created successfully [socket " << _servSock << "]" END << std::endl;
 }
 
 // Bind ---------------------------------------------------------------------------------------------------------------
 
 void	Server::bind()
 {
+	const int					_servSock = _connections[0].getSocket();
+	struct sockaddr_in			_server_address;
+
+	memset( &_server_address, 0, sizeof( struct sockaddr_in ) );
+	memset( _server_address.sin_zero, 0, sizeof( _server_address.sin_zero ) );
+
 	_server_address.sin_family = PF_INET;						// for IPv4
-	_server_address.sin_addr.s_addr = htonl( INADDR_ANY ); 		// let the system fill in the IP address
+	_server_address.sin_addr.s_addr = htonl( INADDR_ANY ); 		// 0.0.0.0 wildcard, accept connections on any of the host's network addresses.
 	_server_address.sin_port = htons( _port );
 
-	bzero( _server_address.sin_zero, sizeof(_server_address.sin_zero ) );
-
 	int	status = ::bind( _servSock, reinterpret_cast< struct sockaddr * >( &_server_address ), sizeof( _server_address ) );
-	if (status < 0)
+
+	if (status < 0 )
 	{
-		std::string error_msg = PrintTime::printTime()  + " --- Bind error: " + std::string( strerror(errno) );
+		std::string error_msg = Get::Time()  + " --- error: " + std::string( strerror(errno) );
 		shutdown();  																				// close the server socket
 		throw ServerException( error_msg.c_str() );
 	}
+	if ( Get::Addrinfo() < 0 )
+		shutdown();
 
-	std::cout	<< PrintTime::printTime()
-				<< " --- Server socket fd " << _servSock << " bound successfully. Protocol "
-				<< getProtocolFamilyName(_server_address.sin_family)
-				<< " Port "
-				<< ntohs(_server_address.sin_port)
-				<< " Address "
-				<< inet_ntoa( _server_address.sin_addr ) << std::endl;
+	std::cout	<< Get::Time()
+				<< " --- Server bound successfully to all available IP addresses" << std::endl
+				<< "                         on his host machine that use protocol "
+				<< BOLD << getProtocolFamilyName(_server_address.sin_family) << END
+				<< " on port "
+				<< BOLD << ntohs(_server_address.sin_port) << END << std::endl;
+
 	return;
 }
+
+
 
 // Listen ---------------------------------------------------------------------------------------------------------------
 
 void	Server::listen()
 {
-
+	int _servSock = _connections[0].getSocket();
 	int	status = ::listen( _servSock, 10 );
 	if (status < 0)
 	{
-		std::string error_msg = PrintTime::printTime() + " --- Listen error: " + std::string( strerror(errno) );
+		std::string error_msg = Get::Time() + " --- Listen error: " + std::string( strerror(errno) );
 		shutdown();																					// close the server socket
 		throw ServerException( error_msg.c_str() );
 	}
-	std::cout << PrintTime::printTime() << GREEN_BOLD << " --- Server socket fd " << _servSock << " is listening" << END << std::endl;
+	std::cout << Get::Time() << GREEN_BOLD << " --- Server is listening" << END << std::endl;
 }
-
 
 // Exception handling-----------------------------------------------------------------------------------------------------
 
@@ -219,15 +190,13 @@ const char *Server::ServerException::what() const throw()
 
 void Server::reset_fds( void )
 {
-	FD_ZERO( &read_fd_set );
-//	FD_ZERO( &write_fd_set );
+	FD_ZERO( &_read_fd_set );
 
-	for ( int i = 0; i < MAX_CONNECTIONS; ++i )											// set fd int the read_fd_set before passing it to the select call
+	for ( int i = 0; i < MAX_CONNECTIONS; ++i )											// set fd int the _read_fd_set before passing it to the select call
 	{
 		if ( _connections[i].getSocket() >= 0 )
 		{
-			FD_SET( _connections[i].getSocket(), &read_fd_set );
-//			FD_SET( _connections[i].getSocket(), &write_fd_set );
+			FD_SET( _connections[i].getSocket(), &_read_fd_set );
 		}
 	}
 }
@@ -235,26 +204,32 @@ void Server::reset_fds( void )
 
 void Server::accept( void )
 {
-	std::cout << PrintTime::printTime() << " --- Server is ready to accept new connections" << std::endl;
+	std::cout << Get::Time() << " --- Server is ready to accept new connections" << std::endl;
 
-	int clientSocket = ::accept(_servSock, reinterpret_cast<struct sockaddr *>( &new_addr ), &addrlen);
+	int _servSock = _connections[0].getSocket();
+
+	struct sockaddr clientAddress;
+	memset(&clientAddress, 0, sizeof(struct sockaddr));
+	socklen_t addrlen = sizeof(clientAddress);
+
+	int clientSocket = ::accept( _servSock, &clientAddress, &addrlen );
 	if (clientSocket >= 0)
 	{
-		std::cout << PrintTime::printTime() << GREEN_BOLD << " --- Accepted a new connection [socket " << clientSocket << "]" << END << std::endl;
+		std::cout << Get::Time() << GREEN_BOLD << " --- Accepted a new connection [socket " << clientSocket << "]" << END << std::endl;
 		for (int i = 0; i < MAX_CONNECTIONS; i++)                    // save the fd in the table, find available cell
 		{
 			if ( _connections[i].getSocket() < 0 )
 			{
-				_connections[i].setSocket( clientSocket );
+				_connections[i].setConnecion( clientSocket, clientAddress, addrlen );
 				return;
 			}
 		}
-		std::cout << RED_BOLD << PrintTime::printTime() << " --- Error: No room for new connection" << END << std::endl;
+		std::cout << RED_BOLD << Get::Time() << " --- Error: No room for new connection" << END << std::endl;
 		// send a message to the client
 		close( clientSocket );
 	}
 	else
-		std::cout << PrintTime::printTime() <<  RED_BOLD << " --- Accept failed: " << strerror(errno) << END << std::endl;
+		std::cout << Get::Time() <<  RED_BOLD << " --- Accept failed: " << strerror(errno) << END << std::endl;
 	return;
 }
 
@@ -266,25 +241,14 @@ void Server::register_client( int i )
 	if ( client.getGavePassword() && !client.getNickname().empty() && !client.getUsername().empty() && !client.getHostname().empty() && !client.getRealname().empty() )
 	{
 		client.setRegistered( true );
-		std::cout << PrintTime::printTime() << BOLD << " --- socket " << client.getSocket() << " is now registered" << END << std::endl;
+		std::cout << Get::Time() << BOLD << " --- socket " << client.getSocket() << " is now registered" << END << std::endl;
 
 		client.printInfo();
 
-		message = RPL::RPL_WELCOME( client, *this );
-		send( client.getSocket(), message.c_str(), message.size(), 0 );
-		std::cout << PrintTime::printTime() << YELLOW_BOLD  << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
-
-		message = RPL::RPL_YOURHOST( client, *this );
-		send( client.getSocket(), message.c_str(), message.size(), 0 );
-		std::cout << PrintTime::printTime() << YELLOW_BOLD  << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
-
-		message = RPL::RPL_CREATED( client, *this );
-		send( client.getSocket(), message.c_str(), message.size(), 0 );
-		std::cout << PrintTime::printTime() << YELLOW_BOLD  << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
-
-		message = RPL::RPL_MYINFO( client, *this );
-		send( client.getSocket(), message.c_str(), message.size(), 0 );
-		std::cout << PrintTime::printTime() << YELLOW_BOLD  << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
+		RPL::RPL_WELCOME( client );
+		RPL::RPL_YOURHOST( client );
+		RPL::RPL_CREATED( client );
+		RPL::RPL_MYINFO( client );
 	}
 }
 
@@ -297,43 +261,45 @@ void	Server::receive( int i )
 	bytesRead = recv( _connections[i].getSocket(), buf, MSG_MAX_SIZE, 0 );
 	if ( bytesRead < 0 )
 	{
-		std::cerr << RED_BOLD << PrintTime::printTime() << " --- recv() failed for fd: " << _connections[i].getSocket() << ": " << strerror(errno) << END << std::endl;
+		std::cerr << RED_BOLD << Get::Time() << " --- recv() failed for fd: " << _connections[i].getSocket() << ": " << strerror(errno) << END << std::endl;
 	}
 	else if (bytesRead == 0)
 	{
-		std::cout << PrintTime::printTime() << " --- [socket " << _connections[i].getSocket() << "] left the IRC network" << std::endl;
+		std::cout << Get::Time() << " --- [socket " << _connections[i].getSocket() << "] left the IRC network" << std::endl;
 		_connections[i].closeSocket();
 	}
 	else
 	{
 		buf[bytesRead] = '\0';
 		msg = buf;
-		std::cout << PrintTime::printTime() << CYAN_BOLD << " --- Received msg from [socket " << _connections[i].getSocket() << "] " << msg << END;
+		std::cout << Get::Time() << CYAN_BOLD << " --- Received msg from [socket " << _connections[i].getSocket() << "] " << msg << END;
 
-		Commands::process_command(msg, i, *this );
+		Commands::process_command(msg, _connections[i], *this );
 		if ( !_connections[i].isRegistered() )
 			register_client(i);
 	}
-	FD_CLR(_connections[i].getSocket(), &read_fd_set);
+	FD_CLR(_connections[i].getSocket(), &_read_fd_set);
 	return;
 }
 
 void	Server::loop()
 {
-	int				ret = 0;
+	int	ret = 0;
+	int _servSock = _connections[0].getSocket();
 
 	while ( _shutdown_server == false )													// while there no SIGINT
 	{
 		reset_fds();
-		ret = ::select( FD_SETSIZE, &read_fd_set, NULL, NULL, NULL );			// returns the number of connections ready to be read
+		ret = ::select( FD_SETSIZE, &_read_fd_set, NULL, NULL, NULL );			// returns the number of connections ready to be read
 		if ( ret < 0 )
 		{
-			std::cerr << PrintTime::printTime() << RED_BOLD << " --- Select failed: " << strerror( errno ) << END << std::endl;
+			if ( errno != EINTR ) // as we close the server only with ^C, select will return Interrupted system call. But this is not an error
+			std::cerr << Get::Time() << RED_BOLD << " --- Select failed: " << strerror( errno ) << END << std::endl;
 			break;
 		}
 		for ( int i = 0; i < MAX_CONNECTIONS; i++ )
 		{
-			if (FD_ISSET(_connections[i].getSocket(), &read_fd_set))                                    // if server is ready to read, it will be in the read_fd_se
+			if (FD_ISSET(_connections[i].getSocket(), &_read_fd_set))                                    // if server is ready to read, it will be in the read_fd_se
 			{
 				if (_connections[i].getSocket() == _servSock)
 					accept();
@@ -366,56 +332,3 @@ std::vector< Client > &	Server::getConnections( void ) {
 
 	return _connections;
 }
-
-char *	Server::getServerName( void ) const {
-
-	return const_cast<char *>(_server_name.c_str());
-}
-
-
-// channel functions ------------------------------------------------------------------------------------------------------
-Channel* Server::getChannel(const std::string& channelName)
-{
-	// Find the channel in the vector
-	for (size_t i = 0; i < _channelName.size(); ++i) {
-		if (_channelName[i]->getName() == channelName) {
-			return _channelName[i]; // Return pointer to the Channel object
-		}
-	}
-	return nullptr; // Return nullptr if channel not found
-}
-
-void Server:: addClientToChannel(const std::string& channelname, Client* client)
-{
-	for (size_t i = 0; i < _channelName.size(); ++i)
-	{
-		if (_channelName[i]->getName() == channelname)
-		{
-			_channelName[i]->addClient(client);
-			std::cout<<"Added client "<< client->getNickname()<< " to channel "<<channelname<<std::endl;
-			return;
-		}
-	}
-	std::cerr<< "channel "<< channelname <<" not found. "<<std::endl;
-}
-
-void Server::addChannel(Channel *channel)
-{
-	_channelName.push_back(channel);
-}
-
-void	Server::sendToChannel(std::string&kickMessage, std::string& channel)
-{
-	 // Get the list of clients in the specified channel
-    Channel* ch = getChannel(channel);
-    if (ch) {
-        std::vector<Client*> clients = ch->getClient();
-
-        // Send the kick message to each client in the channel
-        for (size_t i = 0; i < clients.size(); ++i) {
-            clients[i]->sendMessage(kickMessage);
-        }
-    }
-}
-
-

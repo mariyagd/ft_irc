@@ -5,7 +5,7 @@
 # define MSG_MAX_SIZE 512
 
 # include "Colors.h"
-# include "PrintTime.hpp"
+# include "Get.hpp"
 
 # include <iostream>
 # include <sys/socket.h>		// for socket, getpeername
@@ -14,8 +14,7 @@
 # include <strings.h> 			// for bzero
 # include <string.h>			// for strcmp
 # include <netinet/in.h>		// for struct sockaddr_in
-# include <sys/types.h>			// for getaddrinfo, gai_strerror
-# include <netdb.h>				// for getaddrinfo, gai_strerror
+
 # include <stdexcept>			// for std::exception
 # include <unistd.h>			// for close
 # include <arpa/inet.h>			// for inet_addr
@@ -27,6 +26,6 @@
 # include <sstream>				// for std::stringstream
 # include <iomanip>
 # include <time.h>
-
+//# include <limits.h>			// for _POSIX_HOST_NAME_MAX in gethostname()
 
 #endif

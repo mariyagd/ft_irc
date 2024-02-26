@@ -48,23 +48,23 @@ Client::Client( int socket ) : _socket(socket) {
 	_realname = "";
 	memset(&_addr, 0, sizeof( struct sockaddr ) );
 	_addrlen = sizeof(_addr);
-	getpeername( _socket, &_addr, &_addrlen );
 	return;
 }
 
 // Setters --------------------------------------------------------------------------------------------------------------
 
-void	Client::setServerSocket( int socket ) {
+void	Client::setServer( const int & socket ) {
 
+	_socket = socket;
 	_serverSocket = socket;
 	return;
 }
 
-void	Client::setSocket( int socket ) {
+void	Client::setConnecion(const int & socket, const struct sockaddr & addr, const socklen_t & addrlen) {
 
 	_socket = socket;
-	_addrlen = sizeof(_addr);
-	getpeername( _socket, &_addr, &_addrlen );
+	_addr = addr;
+	_addrlen = addrlen;
 
 	fcntl(_socket, F_SETFL, O_NONBLOCK);
 	return;
@@ -133,7 +133,7 @@ bool	Client::getGavePassword( void ) const {
 	return _gave_password;
 }
 
-int		Client::getSocket( void ) const {
+const int &		Client::getSocket( void ) const {
 
 	return _socket;
 }
@@ -191,13 +191,13 @@ void	Client::closeSocket( void ) {
 
 	ret = close( _socket );
 	if (ret < 0)
-		std::cerr << PrintTime::printTime() << RED_BOLD << " --- Error while closing socket: " << strerror(errno) << END << std::endl;
+		std::cerr << Get::Time() << RED_BOLD << " --- Error while closing socket: " << strerror(errno) << END << std::endl;
 	else
 	{
 		if ( _socket != _serverSocket )
-			std::cout << PrintTime::printTime() << GREEN_BOLD << " --- Client [socket " << _socket << "] closed by server successfully" << END << std::endl;
+			std::cout << Get::Time() << GREEN_BOLD << " --- Client [socket " << _socket << "] closed by server successfully" << END << std::endl;
 		else
-			std::cout << PrintTime::printTime() << GREEN_BOLD << " --- Server's [socket " << _socket << "] closed successfully" << END << std::endl;
+			std::cout << Get::Time() << GREEN_BOLD << " --- Server's [socket " << _socket << "] closed successfully" << END << std::endl;
 	}
 	cleanClient();
 	return;
@@ -219,6 +219,7 @@ void	Client::printInfo( void ) {
 	std::cout << std::left << std::setw(15) << "Servname: " << _servname << std::endl;
 	std::cout << std::left << std::setw(15) << "Realname: " << _realname << std::endl;
 	std::cout << std::left << std::setw(15) << "Address: " << inet_ntoa(((struct sockaddr_in *)&_addr)->sin_addr) << std::endl;
+
 	std::cout << BLUE_BOLD  << "------------------------------------------------------" << END << std::endl;
 	return;
 }

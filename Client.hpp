@@ -26,6 +26,8 @@ public:
 
 	static int 			_serverSocket;
 
+	std::string getnickname() const;
+
 	void		setServer( const int & socket );
 	void		setConnecion( const int & socket, const struct sockaddr & addr, const socklen_t & addrlen );
 	void		setRegistered( bool );

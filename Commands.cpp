@@ -30,6 +30,7 @@ void	Commands::initAvailableCommands( std::vector< std::string > & availableComm
 	availableCommands.push_back( "MODE" );
 	availableCommands.push_back( "PING" );
 	availableCommands.push_back( "WHOIS" );
+	availableCommands.push_back( "KICK" );
 	return ;
 }
 
@@ -107,6 +108,10 @@ void Commands::choose_command( std::vector <std::string> & command, Client & cli
 		WHOIS( command, client, server );
 	}
 	else if ( command[0] == "PING" )
+	{
+		PING( command, client, server );
+	}
+	else if ( command[0] == "KICK" )
 	{
 		PING( command, client, server );
 	}
@@ -257,4 +262,68 @@ void Commands::PING( std::vector< std::string > & command, Client & client, Serv
 	std::cout << Get::Time() << YELLOW_BOLD << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
 
 	return ;
+}
+
+void Commands::KICK( std::vector< std::string > & command, Client & client, Server &server )
+{
+	(void)command;
+	(void)client;
+	(void)server;
+//	std::string channel = command[1];
+//	std::string nickname = command[2];
+//
+//	// Check if the channel exists and the user is available in the channel
+//	Channel* ch = server.getChannel(channel);
+//	if (ch && ch->isClientInChannel( nickname )) {
+//		std::cout<<"the client "<< nickname<< " is join to channel."<<std::endl;
+//		// Check if the user has operator status in the channel
+//		if (ch->isClientIsOperator(nickname)) {
+//			// Remove the user from the channel
+//			std::cout<<"found operator"<<std::endl;
+//			ch->removeUser(nickname);
+//			// Send message to all users in the channel about the kick
+//			std::string kickMessage = "KICK " + channel + " " + nickname;
+//			server.sendToChannel(kickMessage, channel);
+//		}
+//		//  else {
+//		// //     // User does not have operator status
+//		// //     // Send ERR_CHANOPRIVSNEEDED message
+//		//     server.sendErrorToUser(nickname, "ERR_CHANOPRIVSNEEDED", "You do not have operator status in the channel");
+//		// }
+//	}
+//	else {
+//		std::cout<<"the client "<<nickname<< " is not joined to channel."<<std::endl;
+//
+//		// Either channel doesn't exist or user is not available in the channel
+//		// Send appropriate error messages
+//		// if (!ch) {
+//		//     // Channel does not exist
+//		//     server.sendErrorToUser(nickname, "ERR_NOSUCHCHANNEL", "No such channel");
+//		// } else {
+//		//     // User is not available in the channel
+//		//     server.sendErrorToUser(nickname, "ERR_USERNOTINCHANNEL", "You are not in that channel");
+//	}
+}
+
+void	Commands::JOIN( std::vector< std::string > & command, Client & client, Server & server ) {
+
+	(void)command;
+	(void)client;
+	(void)server;
+
+//	int i = 1;
+//	Channel channel;
+//	std::vector<Channel > &	channels = server.getChannels();
+//
+//	for ( ; i < command.size(); i++ )
+//	{
+//		if (command[i] == ",")
+//			i++;
+//		if ( !server.channelExists (command[i]))
+//			channel = server.addChannel(command[i]);
+//		else
+//			channel = server.getChannel(command[i]);
+//		if (!channel.isClientChannel(client))
+//			channel.addClient(client);
+//	}
 }

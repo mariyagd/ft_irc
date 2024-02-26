@@ -17,4 +17,5 @@ add_executable(
         RPL.hpp
         Commands.hpp
         Commands.cpp
+        Channel.cpp
 )

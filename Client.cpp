@@ -5,6 +5,14 @@
 
 int Client::_serverSocket = -1;
 
+// used to get the client in chanel add const
+/// @return
+std::string Client::getnickname() const
+{
+	return _nickname;
+}
+
+
 // Coplien's form -------------------------------------------------------------------------------------------------------
 Client::Client( void ) {
 

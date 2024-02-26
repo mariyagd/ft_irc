@@ -1,0 +1,61 @@
+#ifndef CLIENT_HPP
+# define CLIENT_HPP
+
+# include "Irc.hpp"
+
+class Client  {
+
+private:
+
+	int 				_socket;
+	bool				_is_registered;
+	bool				_gave_password;
+	std::string			_nickname;
+	std::string			_username;
+	std::string			_hostname;
+	std::string			_servname;
+	std::string			_realname;
+	struct sockaddr		_addr;
+	socklen_t 			_addrlen;
+
+public:
+	Client( void );
+	Client( int socket );
+	Client( const std::string& nickname );
+	// Allow Channel class to access _nickname directly
+    // friend bool Channel::isClientInChannel(const std::string& nickname) const;
+	~Client( void );
+
+	static int 			_serverSocket;
+
+	void		setServerSocket( int socket );
+
+	void		setSocket( int socket );
+	void		setRegistered( bool );
+	void		setNickname( std::string nick );
+	void		setUsername( std::string user );
+	void		setHostname( std::string hostname );
+	void		setServname( std::string servname );
+	void		setRealname( std::string realname );
+	void		setGavePassword( bool status );
+
+	bool		getGavePassword( void ) const;
+	int			getSocket( void ) const;
+	bool		isRegistered( void ) const;
+	std::string	getNickname( void ) const;
+	std::string getnickname() const;
+	std::string	getUsername( void ) const;
+	std::string	getHostname( void ) const;
+	std::string	getServname( void ) const;
+	std::string	getRealname( void ) const;
+	void		sendMessage(std::string& kickMessage);
+
+	void		cleanClient( void );
+
+	void		closeSocket( void );
+
+	void 		printInfo( void );
+
+};
+
+#endif

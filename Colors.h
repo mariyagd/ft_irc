@@ -31,6 +31,7 @@
 # define YELLOW			"\033[33m"
 # define BLUE			"\033[34m"
 # define MAGNETA		"\033[35m"
+# define MAGNETA2		"\x1b[38;5;224m"
 # define CYAN			"\033[36m"
 # define WHITE			"\033[37m"
 

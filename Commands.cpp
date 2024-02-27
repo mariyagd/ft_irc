@@ -30,7 +30,7 @@ void	Commands::initAvailableCommands( std::vector< std::string > & availableComm
 	availableCommands.push_back( "MODE" );
 	availableCommands.push_back( "PING" );
 	availableCommands.push_back( "WHOIS" );
-	availableCommands.push_back( "KICK" );
+	availableCommands.push_back( "JOIN" );
 	return ;
 }
 
@@ -68,7 +68,8 @@ void	Commands::process_command( std::string & msg, Client & client, Server & ser
 		{
 			token.erase( pos, 1 );
 		}
-		tokens.push_back( token );
+		if ( !token.empty() )
+			tokens.push_back( token );
 	}
 
 	for ( size_t i = 0; i < tokens.size(); i++ )
@@ -87,6 +88,7 @@ void	Commands::process_command( std::string & msg, Client & client, Server & ser
 		}
 	}
 	return ;
+
 }
 
 void Commands::choose_command( std::vector <std::string> & command, Client & client, Server & server ) {
@@ -111,9 +113,13 @@ void Commands::choose_command( std::vector <std::string> & command, Client & cli
 	{
 		PING( command, client, server );
 	}
-	else if ( command[0] == "KICK" )
+	else if ( command[0] == "JOIN" )
 	{
-		PING( command, client, server );
+		JOIN( command, client, server );
+	}
+	else if ( command[0] == "MODE" )
+	{
+		MODE( command, client, server );
 	}
 	return ;
 }
@@ -173,6 +179,7 @@ void Commands::NICK( std::vector< std::string > & command, Client & client, Serv
 		return;
 	}
 
+	// if ( nickname.find_first_of(":+-&") != std::string::npos
 	for ( size_t i = 0; i < nickname.length(); i++ )
 	{
 		if ( std::isspace(nickname[i]) || nickname[i] == '+' || nickname[i] == '-' || \
@@ -263,67 +270,142 @@ void Commands::PING( std::vector< std::string > & command, Client & client, Serv
 
 	return ;
 }
-
-void Commands::KICK( std::vector< std::string > & command, Client & client, Server &server )
-{
-	(void)command;
-	(void)client;
-	(void)server;
-//	std::string channel = command[1];
-//	std::string nickname = command[2];
 //
-//	// Check if the channel exists and the user is available in the channel
-//	Channel* ch = server.getChannel(channel);
-//	if (ch && ch->isClientInChannel( nickname )) {
-//		std::cout<<"the client "<< nickname<< " is join to channel."<<std::endl;
-//		// Check if the user has operator status in the channel
-//		if (ch->isClientIsOperator(nickname)) {
-//			// Remove the user from the channel
-//			std::cout<<"found operator"<<std::endl;
-//			ch->removeUser(nickname);
-//			// Send message to all users in the channel about the kick
-//			std::string kickMessage = "KICK " + channel + " " + nickname;
-//			server.sendToChannel(kickMessage, channel);
-//		}
-//		//  else {
-//		// //     // User does not have operator status
-//		// //     // Send ERR_CHANOPRIVSNEEDED message
-//		//     server.sendErrorToUser(nickname, "ERR_CHANOPRIVSNEEDED", "You do not have operator status in the channel");
-//		// }
-//	}
-//	else {
-//		std::cout<<"the client "<<nickname<< " is not joined to channel."<<std::endl;
-//
-//		// Either channel doesn't exist or user is not available in the channel
-//		// Send appropriate error messages
-//		// if (!ch) {
-//		//     // Channel does not exist
-//		//     server.sendErrorToUser(nickname, "ERR_NOSUCHCHANNEL", "No such channel");
-//		// } else {
-//		//     // User is not available in the channel
-//		//     server.sendErrorToUser(nickname, "ERR_USERNOTINCHANNEL", "You are not in that channel");
-//	}
-}
+//void Commands::KICK( std::vector< std::string > & command, Client & client, Server &server )
+//{
+//	(void)command;
+//	(void)client;
+//	(void)server;
+////	std::string channel = command[1];
+////	std::string nickname = command[2];
+////
+////	// Check if the channel exists and the user is available in the channel
+////	Channel* ch = server.getChannel(channel);
+////	if (ch && ch->isClientInChannel( nickname )) {
+////		std::cout<<"the client "<< nickname<< " is join to channel."<<std::endl;
+////		// Check if the user has operator status in the channel
+////		if (ch->isClientIsOperator(nickname)) {
+////			// Remove the user from the channel
+////			std::cout<<"found operator"<<std::endl;
+////			ch->removeUser(nickname);
+////			// Send message to all users in the channel about the kick
+////			std::string kickMessage = "KICK " + channel + " " + nickname;
+////			server.sendToChannel(kickMessage, channel);
+////		}
+////		//  else {
+////		// //     // User does not have operator status
+////		// //     // Send ERR_CHANOPRIVSNEEDED message
+////		//     server.sendErrorToUser(nickname, "ERR_CHANOPRIVSNEEDED", "You do not have operator status in the channel");
+////		// }
+////	}
+////	else {
+////		std::cout<<"the client "<<nickname<< " is not joined to channel."<<std::endl;
+////
+////		// Either channel doesn't exist or user is not available in the channel
+////		// Send appropriate error messages
+////		// if (!ch) {
+////		//     // Channel does not exist
+////		//     server.sendErrorToUser(nickname, "ERR_NOSUCHCHANNEL", "No such channel");
+////		// } else {
+////		//     // User is not available in the channel
+////		//     server.sendErrorToUser(nickname, "ERR_USERNOTINCHANNEL", "You are not in that channel");
+////	}
+//}
 
 void	Commands::JOIN( std::vector< std::string > & command, Client & client, Server & server ) {
 
+	std::cout << Get::Time() << GREEN << " --- Processing JOIN command" << END << std::endl;
+
+	for ( size_t i = 0; i < command.size(); i++ )
+	{
+		std::cout << RED_BG << "command[" << i << "] = [" << command[i] << "]" << END << std::endl;
+	}
+
+
 	(void)command;
 	(void)client;
 	(void)server;
 
-//	int i = 1;
-//	Channel channel;
-//	std::vector<Channel > &	channels = server.getChannels();
-//
-//	for ( ; i < command.size(); i++ )
-//	{
-//		if (command[i] == ",")
-//			i++;
-//		if ( !server.channelExists (command[i]))
-//			channel = server.addChannel(command[i]);
-//		else
-//			channel = server.getChannel(command[i]);
-//		if (!channel.isClientChannel(client))
-//			channel.addClient(client);
-//	}
+	size_t i = 0;
+	Channel * channel = NULL;
+	
+	std::vector< std::string > channels;
+	std::istringstream iss( command[1] );
+	
+	while ( !iss.eof() )
+	{
+		std::string token;
+		getline(iss, token, ',' ); // split by comas
+		if ( !token.empty() )
+			channels.push_back( token );
+	}
+
+	std::cout << Get::Time() << RED_BG << " --- Requested to JOIN this(these) channel(s)" << END << std::endl;
+	for ( size_t i = 0; i < channels.size(); i++ )
+	{
+		std::cout << Get::Time() << RED_BG << " --- " << channels[i] << END << std::endl;
+	}
+
+
+	for ( ; i < channels.size(); i++ )
+	{
+		if ( !server.channelExists (channels[i]))
+		{
+			std::cout << Get::Time() << BOLD << " --- Channel doesn't exists. Create a new channel" << END << std::endl;
+			channel = server.createChannel(channels[i]);
+		}
+		else
+		{
+			std::cout << Get::Time() << BOLD << " --- Channel already exists" << END << std::endl;
+			channel = server.getChannel(channels[i]);
+			server.addOperator( client.getNicknameId() );
+		}
+		if ( !channel->isClientInChannel( &client ) )
+		{
+			std::cout << Get::Time() << BOLD << " --- Add " << client.getNickname() << " in channel " << channels[i] << END << std::endl;
+			RPL::RPL_JOIN( client, channels[i]);
+			RPL::RPL_NAMREPLY(client,channels[i]);
+			RPL::RPL_ENDOFNAMES(client,channels[i]);
+			channel->addClient( client );
+		}
+	}
+}
+
+void	Commands::MODE( std::vector< std::string > & command, Client & client, Server & server ) {
+
+	(void)command;
+	(void)client;
+	(void)server;
+
+	std::cout << Get::Time() << GREEN << " --- Processing MODE command" << END << std::endl;
+	
+	
+	if ( command.size() == 1 )
+	{
+		RPL::ERR_NEEDMOREPARAMS( client, "MODE" );
+	}
+	if ( command[1].find_first_of("&#+!") == 0 )
+	{
+		std::cout << Get::Time() << BOLD << " --- Requested Channel MODE " << END << std::endl;
+		
+		if ( !server.channelExists( command[1] ) )
+		{
+			RPL::ERR_NOSUCHCHANNEL( client, command[1] );
+		}
+		else
+		{
+			std::cout << Get::Time() << BOLD << " --- Channel exist" << END << std::endl;
+			
+			RPL::RPL_CHANNELMODEIS( client, command[1]);
+			RPL::RPL_CREATIONTIME( client, command[1]);
+		}
+	}
+	if ( command[1] == client.getNickname() && command.size() == 3)
+	{
+		std::cout << Get::Time() << BOLD << " --- Send User MODE " << END << std::endl;
+		RPL::ERR_UMODEUNKNOWNFLAG( client );
+	}
+	// else is nickname
+
+	return ;
 }

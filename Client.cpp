@@ -19,6 +19,7 @@ Client::Client( void ) {
 	_is_registered = false;
 	_gave_password = false;
 	_socket = -1;
+	_id = -1;
 	_nickname = "";
 	_username = "";
 	_realname = "";
@@ -40,6 +41,7 @@ Client::Client( int socket ) : _socket(socket) {
 	_gave_password = false;
 	_socket = -1;
 	_nickname = "";
+	_id = -1;
 	_username = "";
 	_realname = "";
 	memset(&_addr, 0, sizeof( struct sockaddr ) );
@@ -78,6 +80,7 @@ void	Client::setNickname( std::string nick ) {
 		_nickname.clear();
 
 	_nickname = nick;
+	_id = getNicknameId( );
 	return;
 }
 
@@ -86,7 +89,7 @@ void	Client::setUsername( std::string user ) {
 	if ( !_username.empty() )
 		_username.clear();
 
-	_username = user;
+	_username = user.substr(0, 8);
 	return;
 }
 
@@ -134,9 +137,14 @@ const int &		Client::getSocket( void ) const {
 	return _socket;
 }
 
-bool	Client::isRegistered( void ) const {
+int	Client::getNicknameId( void ) const {
 
-	return _is_registered;
+	// Simple hash function to convert the string to an integer
+	int hash = 0;
+	for ( size_t i = 0; i < _nickname.length(); ++i ) {
+		hash = (hash * 31) + _nickname[i]; // A simple hash function
+	}
+	return hash;
 }
 
 std::string	Client::getNickname( void ) const {
@@ -164,11 +172,20 @@ std::string	Client::getRealname( void ) const {
 	return _realname;
 }
 
+// Bool------------------------------------------------------------------------------------------------------------------
+
+bool	Client::isRegistered( void ) const {
+
+	return _is_registered;
+}
+
+
 // Member functions -----------------------------------------------------------------------------------------------------
 
 void	Client::cleanClient( void ) {
 
 	_socket = -1;
+	_id = -1;
 	_is_registered = false;
 	_gave_password = false;
 	_nickname.clear();
@@ -190,10 +207,10 @@ void	Client::closeSocket( void ) {
 		std::cerr << Get::Time() << RED_BOLD << " --- Error while closing socket: " << strerror(errno) << END << std::endl;
 	else
 	{
-		if ( _socket != _serverSocket )
-			std::cout << Get::Time() << GREEN_BOLD << " --- Client [socket " << _socket << "] closed by server successfully" << END << std::endl;
-		else
+		if ( _socket == _serverSocket )
 			std::cout << Get::Time() << GREEN_BOLD << " --- Server's [socket " << _socket << "] closed successfully" << END << std::endl;
+		else
+			std::cout << Get::Time() << GREEN_BOLD << " --- Client [socket " << _socket << "] closed by server successfully" << END << std::endl;
 	}
 	cleanClient();
 	return;
@@ -219,3 +236,15 @@ void	Client::printInfo( void ) {
 	std::cout << BLUE_BOLD  << "------------------------------------------------------" << END << std::endl;
 	return;
 }
+
+
+// Overload operator == ------------------------------------------------------------------------------------------------
+
+bool	Client::operator==(const Client & rhs) const {
+
+	if ( this->_nickname == rhs._nickname && this->_socket == rhs._socket )
+		return true;
+	return false;
+}
+
+

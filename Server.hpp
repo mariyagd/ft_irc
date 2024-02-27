@@ -1,21 +1,22 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
+# include "Irc.hpp"
 # include "Client.hpp"
 # include "Commands.hpp"
-# include "Channel.hpp"
+# include "ChannelMenager.hpp"
 
 class Client;
 class Commands;
+//class ChannelMenager;
 
-class Server {
+class Server : public ChannelMenager {
 
-protected:
+private:
 	int									_port;
 	std::string 						_password;
 	fd_set								_read_fd_set;
 	std::vector< Client >				_connections;
-	std::vector< Channel >				_channels;
 	static volatile std::sig_atomic_t 	_shutdown_server;
 
 public:
@@ -44,11 +45,7 @@ public:
 	std::vector< Client > &				getConnections( void );
 	std::string							getProtocolFamilyName(int family);
 
-	Channel &							addChannel( std::string name);
-	Channel	&							getChannel(const std::string& channelName);
-	std::vector< Channel > &			getChannels( void );
-//	void 								addClientToChannel(const std::string& channelname, Client* client);
-//	void								sendToChannel(std::string&kickMessage, std::string& channel);
+//	ChannelMenager &						getChanneltMenager( void );
 
 
 	class ServerException : public std::exception {

@@ -2,6 +2,8 @@
 # define RPL_HPP
 
 # include "Server.hpp"
+# include <sys/time.h>
+
 
 class Server;
 class Client;
@@ -35,6 +37,23 @@ public:
 
 	// PING
 	static void ERR_NOORIGIN( Client const & client );
+
+	//JOIN
+	static void RPL_NAMREPLY( Client const & client, std::string & channelName );
+	static void RPL_ENDOFNAMES( Client const & client, std::string & channelName );
+
+	//NORMAL
+	static void RPL_JOIN( Client const & client, std::string & channelName );
+
+	//CHANNEL MODE
+	static void ERR_NOSUCHCHANNEL( Client const & client, std::string & channelName );
+	static void RPL_CHANNELMODEIS( Client const & client, std::string & channelName );
+	static void RPL_CREATIONTIME( Client const & client, std::string & channelName );
+
+	// NICK MODE
+	static void ERR_UMODEUNKNOWNFLAG( Client const & client );
+
+
 
 };
 

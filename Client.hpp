@@ -10,6 +10,7 @@ private:
 	int 				_socket;
 	bool				_is_registered;
 	bool				_gave_password;
+	int					_id;
 	std::string			_nickname;
 	std::string			_username;
 	std::string			_hostname;
@@ -38,20 +39,25 @@ public:
 	void		setRealname( std::string realname );
 	void		setGavePassword( bool status );
 
-	bool		getGavePassword( void ) const;
+	bool			getGavePassword( void ) const;
 	const int &		getSocket( void ) const;
-	bool		isRegistered( void ) const;
-	std::string	getNickname( void ) const;
-	std::string	getUsername( void ) const;
-	std::string	getHostname( void ) const;
-	std::string	getServname( void ) const;
-	std::string	getRealname( void ) const;
+	int				getNicknameId( void ) const;
+	std::string		getNickname( void ) const;
+	std::string		getUsername( void ) const;
+	std::string		getHostname( void ) const;
+	std::string		getServname( void ) const;
+	std::string		getRealname( void ) const;
+
+	bool			isRegistered( void ) const;
+
 
 	void		cleanClient( void );
 
 	void		closeSocket( void );
 
 	void 		printInfo( void );
+
+	bool		operator==(const Client & rhs) const;
 
 };
 

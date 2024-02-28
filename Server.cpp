@@ -99,8 +99,8 @@ void	Server::socket()
 }
 
 /*
- 	 SO_REUSEADDR    enables local address reuse, il you close the server,
-	 and open it immediatly after that, you will be able to
+ 	 SO_REUSEADDR: Binding allowed (under certain conditions) to an address or port already in use
+ 	 il you close the server, and open it immediatly after that, you will be able to
 	 instanciate again your server on the same port
  */
 

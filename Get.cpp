@@ -87,14 +87,14 @@ int	Get::Addrinfo()
 	_hints.ai_socktype = SOCK_STREAM;					// TCP stream sockets
 	_hints.ai_protocol = 0;								// any protocol
 
-	int	status = getaddrinfo( hostname, NULL, &_hints, &_servinfo );
+	ret = getaddrinfo( hostname, NULL, &_hints, &_servinfo );
 
 	if ( hostname != NULL )
 		free( hostname );
 
-	if (status != 0)
+	if (ret != 0)
 	{
-		std::string error_msg = Get::Time() + " Getaddrinfo error: " + std::string( gai_strerror(status) );
+		std::string error_msg = Get::Time() + " Getaddrinfo error: " + std::string( gai_strerror(ret) );
 		freeaddrinfo( _servinfo );
 		return -1;
 	}

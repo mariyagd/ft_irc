@@ -81,12 +81,12 @@ clean: CMakeFiles/ft_irc.dir/clean
 CMakeFiles/ft_irc.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target ft_irc"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9 "Built target ft_irc"
 .PHONY : CMakeFiles/ft_irc.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/ft_irc.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/CMakeFiles 9
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/ft_irc.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/ft_irc.dir/rule

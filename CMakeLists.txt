@@ -19,4 +19,5 @@ add_executable(
         Commands.cpp
         Channel.cpp
         ChannelMenager.cpp
+        Get.cpp
 )

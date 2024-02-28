@@ -225,6 +225,30 @@ Commands.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Commands.cpp.s
 .PHONY : Commands.cpp.s
 
+Get.o: Get.cpp.o
+.PHONY : Get.o
+
+# target to build an object file
+Get.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Get.cpp.o
+.PHONY : Get.cpp.o
+
+Get.i: Get.cpp.i
+.PHONY : Get.i
+
+# target to preprocess a source file
+Get.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Get.cpp.i
+.PHONY : Get.cpp.i
+
+Get.s: Get.cpp.s
+.PHONY : Get.s
+
+# target to generate assembly for a file
+Get.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Get.cpp.s
+.PHONY : Get.cpp.s
+
 RPL.o: RPL.cpp.o
 .PHONY : RPL.o
 
@@ -318,6 +342,9 @@ help:
 	@echo "... Commands.o"
 	@echo "... Commands.i"
 	@echo "... Commands.s"
+	@echo "... Get.o"
+	@echo "... Get.i"
+	@echo "... Get.s"
 	@echo "... RPL.o"
 	@echo "... RPL.i"
 	@echo "... RPL.s"

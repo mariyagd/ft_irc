@@ -105,6 +105,12 @@
 		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Commands.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Get.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Get.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
 		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Irc.hpp">
 			<Option target="ft_irc"/>
 		</Unit>

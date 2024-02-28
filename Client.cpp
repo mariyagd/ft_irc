@@ -64,7 +64,13 @@ void	Client::setConnecion(const int & socket, const struct sockaddr & addr, cons
 	_addr = addr;
 	_addrlen = addrlen;
 
-	fcntl(_socket, F_SETFL, O_NONBLOCK);
+	int ret = 0;
+	ret = fcntl(_socket, F_SETFL, O_NONBLOCK);
+	if ( ret < 0 )
+	{
+		std::cerr << Get::Time() << RED_BOLD << " --- fcntl() failed: " << strerror(errno) << END << std::endl;
+		closeSocket();
+	}
 	return;
 }
 

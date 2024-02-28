@@ -57,10 +57,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/mdanchev/Desktop/ft_irc
+CMAKE_SOURCE_DIR = /Users/mariyadancheva/Documents/GitHub/ft_irc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/mdanchev/Desktop/ft_irc/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mdanchev/Desktop/ft_irc/cmake-build-debug/CMakeFiles /Users/mdanchev/Desktop/ft_irc/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/CMakeFiles /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mdanchev/Desktop/ft_irc/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -129,6 +129,54 @@ ft_irc/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/build
 .PHONY : ft_irc/fast
 
+Channel.o: Channel.cpp.o
+.PHONY : Channel.o
+
+# target to build an object file
+Channel.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Channel.cpp.o
+.PHONY : Channel.cpp.o
+
+Channel.i: Channel.cpp.i
+.PHONY : Channel.i
+
+# target to preprocess a source file
+Channel.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Channel.cpp.i
+.PHONY : Channel.cpp.i
+
+Channel.s: Channel.cpp.s
+.PHONY : Channel.s
+
+# target to generate assembly for a file
+Channel.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Channel.cpp.s
+.PHONY : Channel.cpp.s
+
+ChannelMenager.o: ChannelMenager.cpp.o
+.PHONY : ChannelMenager.o
+
+# target to build an object file
+ChannelMenager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/ChannelMenager.cpp.o
+.PHONY : ChannelMenager.cpp.o
+
+ChannelMenager.i: ChannelMenager.cpp.i
+.PHONY : ChannelMenager.i
+
+# target to preprocess a source file
+ChannelMenager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/ChannelMenager.cpp.i
+.PHONY : ChannelMenager.cpp.i
+
+ChannelMenager.s: ChannelMenager.cpp.s
+.PHONY : ChannelMenager.s
+
+# target to generate assembly for a file
+ChannelMenager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/ChannelMenager.cpp.s
+.PHONY : ChannelMenager.cpp.s
+
 Client.o: Client.cpp.o
 .PHONY : Client.o
 
@@ -153,29 +201,53 @@ Client.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Client.cpp.s
 .PHONY : Client.cpp.s
 
-Registration.o: Registration.cpp.o
-.PHONY : Registration.o
+Commands.o: Commands.cpp.o
+.PHONY : Commands.o
 
 # target to build an object file
-Registration.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Registration.cpp.o
-.PHONY : Registration.cpp.o
+Commands.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Commands.cpp.o
+.PHONY : Commands.cpp.o
 
-Registration.i: Registration.cpp.i
-.PHONY : Registration.i
+Commands.i: Commands.cpp.i
+.PHONY : Commands.i
 
 # target to preprocess a source file
-Registration.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Registration.cpp.i
-.PHONY : Registration.cpp.i
+Commands.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Commands.cpp.i
+.PHONY : Commands.cpp.i
 
-Registration.s: Registration.cpp.s
-.PHONY : Registration.s
+Commands.s: Commands.cpp.s
+.PHONY : Commands.s
 
 # target to generate assembly for a file
-Registration.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Registration.cpp.s
-.PHONY : Registration.cpp.s
+Commands.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Commands.cpp.s
+.PHONY : Commands.cpp.s
+
+RPL.o: RPL.cpp.o
+.PHONY : RPL.o
+
+# target to build an object file
+RPL.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/RPL.cpp.o
+.PHONY : RPL.cpp.o
+
+RPL.i: RPL.cpp.i
+.PHONY : RPL.i
+
+# target to preprocess a source file
+RPL.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/RPL.cpp.i
+.PHONY : RPL.cpp.i
+
+RPL.s: RPL.cpp.s
+.PHONY : RPL.s
+
+# target to generate assembly for a file
+RPL.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/RPL.cpp.s
+.PHONY : RPL.cpp.s
 
 Server.o: Server.cpp.o
 .PHONY : Server.o
@@ -234,12 +306,21 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... ft_irc"
+	@echo "... Channel.o"
+	@echo "... Channel.i"
+	@echo "... Channel.s"
+	@echo "... ChannelMenager.o"
+	@echo "... ChannelMenager.i"
+	@echo "... ChannelMenager.s"
 	@echo "... Client.o"
 	@echo "... Client.i"
 	@echo "... Client.s"
-	@echo "... Registration.o"
-	@echo "... Registration.i"
-	@echo "... Registration.s"
+	@echo "... Commands.o"
+	@echo "... Commands.i"
+	@echo "... Commands.s"
+	@echo "... RPL.o"
+	@echo "... RPL.i"
+	@echo "... RPL.s"
 	@echo "... Server.o"
 	@echo "... Server.i"
 	@echo "... Server.s"

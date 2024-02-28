@@ -75,6 +75,7 @@ void	Server::launch()
 	sig_handler();
 
 	socket();
+	socket_options();
 	bind();
 	listen();
 	loop();
@@ -97,6 +98,45 @@ void	Server::socket()
 
 }
 
+/*
+ 	 SO_REUSEADDR    enables local address reuse, il you close the server,
+	 and open it immediatly after that, you will be able to
+	 instanciate again your server on the same port
+ */
+
+// Socket options --------------------------------------------------------------------------------------------------------
+
+void	Server::socket_options()
+{
+	const int & _servSock = _connections[0].getSocket();
+	int ret = 0;
+
+	bool		optval = true;
+	socklen_t	optval_lent = sizeof (optval);
+
+	ret = getsockopt(_servSock, SOL_SOCKET, SO_REUSEADDR, &optval, &optval_lent);
+	if ( ret < 0)
+	{
+		std::string error_msg = Get::Time() + " --- getsockopt() failed: " + std::string( strerror(errno) );
+		shutdown();
+		throw ServerException( error_msg.c_str() );
+	}
+	if ( optval == true ) // it means that SE_REUSEADDR is already set
+		return;
+
+	optval = true;
+	optval_lent = sizeof( optval );
+	ret = setsockopt( _servSock, SOL_SOCKET, SO_REUSEADDR, &optval, optval_lent );
+	if ( ret < 0 )
+	{
+		std::string error_msg = Get::Time() + " --- setsockopt() failed: " + std::string( strerror(errno) );
+		shutdown();
+		throw ServerException( error_msg.c_str() );
+	}
+	std::cout << Get::Time( ) << " --- Socket set SO_REUSEADDR option successfully" << std::endl;
+
+}
+
 // Bind ---------------------------------------------------------------------------------------------------------------
 
 void	Server::bind()
@@ -116,11 +156,14 @@ void	Server::bind()
 	if (status < 0 )
 	{
 		std::string error_msg = Get::Time()  + " --- error: " + std::string( strerror(errno) );
-		shutdown();  																				// close the server socket
+		shutdown();  // close the server socket
 		throw ServerException( error_msg.c_str() );
 	}
 	if ( Get::Addrinfo() < 0 )
+	{
 		shutdown();
+		throw ServerException( "Could not access IP adresses of the host machine" );
+	}
 
 	std::cout	<< Get::Time()
 				<< " --- Server bound successfully to all available IP addresses" << std::endl

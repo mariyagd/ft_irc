@@ -31,6 +31,7 @@ public:
 
 	void	launch( void );
 	void	socket( void );
+	void	socket_options( void );
 	void	bind( void );
 	void	listen( void );
 	void	loop( void );

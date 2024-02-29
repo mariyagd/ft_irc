@@ -1,8 +1,12 @@
 #include "Client.hpp"
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
 
 // Static member --------------------------------------------------------------------------------------------------------
 // helps to close the server socket when the server is shut down
 
+int Client::_id_num = 0;
 int Client::_serverSocket = -1;
 
 // used to get the client in chanel add const
@@ -86,7 +90,8 @@ void	Client::setNickname( std::string nick ) {
 		_nickname.clear();
 
 	_nickname = nick;
-	_id = getNicknameId( );
+//	_id = getNicknameId( );
+	_id = ++_id_num;
 	return;
 }
 
@@ -95,10 +100,11 @@ void	Client::setUsername( std::string user ) {
 	if ( !_username.empty() )
 		_username.clear();
 
-	_username = user.substr(0, 8);
+	_username = user.substr(0, 9);
 	return;
 }
 
+// the name of the host machine of the user
 void	Client::setHostname( std::string hostname ) {
 
 	if ( !_hostname.empty() )
@@ -132,7 +138,6 @@ void	Client::setGavePassword( bool status ) {
 
 // Getters --------------------------------------------------------------------------------------------------------------
 
-
 bool	Client::getGavePassword( void ) const {
 
 	return _gave_password;
@@ -145,13 +150,14 @@ const int &		Client::getSocket( void ) const {
 
 int	Client::getNicknameId( void ) const {
 
-	// Simple hash function to convert the string to an integer
-	int hash = 0;
-	for ( size_t i = 0; i < _nickname.length(); ++i ) {
-		hash = (hash * 31) + _nickname[i]; // A simple hash function
-	}
-	std::cout << "Nickname id from getNicknameId: " << hash << std::endl;
-	return hash;
+//	// Simple hash function to convert the string to an integer
+//	int hash = 0;
+//	for ( size_t i = 0; i < _nickname.length(); ++i ) {
+//		hash = (hash * 31) + _nickname[i]; // A simple hash function
+//	}
+//	std::cout << "Nickname id from getNicknameId: " << hash << std::endl;
+//	return hash;
+	return _id;
 }
 
 std::string	Client::getNickname( void ) const {
@@ -177,6 +183,11 @@ std::string	Client::getServname( void ) const {
 std::string	Client::getRealname( void ) const {
 
 	return _realname;
+}
+
+int Client::getId( ) const {
+
+	return _id;
 }
 
 // Bool------------------------------------------------------------------------------------------------------------------

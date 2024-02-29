@@ -389,3 +389,15 @@ int	Server::getSocketByNickname( std::string &nickname )
 	}
 	return -1;
 }
+
+Client &	Server::getClientByNickname( std::string &nickname )
+{
+	size_t i = 0;
+	for ( ; i < _connections.size(); ++i )
+	{
+		if ( _connections[i].getNickname() == nickname )
+			break;
+	}
+	return _connections[i];
+
+}

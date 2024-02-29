@@ -25,6 +25,8 @@ public:
 	Client( int socket );
 	~Client( void );
 
+	static int  _id_num;
+
 	static int 			_serverSocket;
 
 	std::string getnickname() const;
@@ -42,6 +44,7 @@ public:
 	bool			getGavePassword( void ) const;
 	const int &		getSocket( void ) const;
 	int				getNicknameId( void ) const;
+	int				getId( void ) const;
 	std::string		getNickname( void ) const;
 	std::string		getUsername( void ) const;
 	std::string		getHostname( void ) const;

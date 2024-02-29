@@ -72,6 +72,22 @@ const long &Channel::getCreationTime(void) const
 	return this->_creation_time;
 }
 
+const std::vector< std::string >	Channel::getOperatorsName( void ) const {
+
+	std::vector< std::string > operatorNames;
+	for ( size_t i = 0; i < _operators.size(); ++i )
+	{
+		std::cout << BLUE_BG << "Operator ID: " << _operators[i] << END << std::endl;
+		for ( size_t j = 0; i < _clients.size(); ++i )
+		{
+			if ( _operators[i] == _clients[j]->getNicknameId() )
+				operatorNames.push_back( _clients[j]->getNickname() );
+		}
+	}
+	return operatorNames;
+}
+
+
 
 ////Bool ------------------------------------------------------------------------------------------------------------------
 //
@@ -120,4 +136,21 @@ void Channel::removeClient(const std::string &nickname)
 			break;
 		}
 	}
+}
+
+void Channel::addOperator( int id )
+{
+	std::cout << Get::Time() << " --- Client " << id << " is now an operator" << std::endl;
+	_operators.push_back( id );
+
+}
+
+int Channel::getOperatorSocket( int operator_id ) const {
+
+	for ( size_t i = 0; i < _clients.size(); ++i )
+	{
+		if ( _clients[i]->getNicknameId() == operator_id )
+			return _clients[i]->getSocket();
+	}
+	return -1;
 }

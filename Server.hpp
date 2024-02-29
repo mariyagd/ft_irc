@@ -42,10 +42,11 @@ public:
 
 	void register_client( int i );
 
-	const std::string &					getPassword( void ) const;
-	std::vector< Client > &				getConnections( void );
-	std::string							getProtocolFamilyName(int family);
-	int 								getSocketByNickname( std::string &nickname );
+	const std::string &							getPassword( void ) const;
+	std::vector< Client > &						getConnections( void );
+	std::string									getProtocolFamilyName(int family);
+	int 										getSocketByNickname( std::string &nickname );
+	Client & 									getClientByNickname( std::string &nickname );
 	bool	sendToChannel(std::string &message, std::string& channel);
 
 //	ChannelMenager &						getChanneltMenager( void );

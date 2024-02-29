@@ -90,23 +90,23 @@ void	ChannelMenager::print_channels_info() {
 	}
 }
 
-void ChannelMenager::addOperator( int id )
-{
-	std::cout << Get::Time() << " --- Client " << id << " is now an operator" << std::endl;
-	_operators.push_back( id );
-	 std::cout << "Added operator with ID: " <<id << " to channel" << std::endl;
+//void ChannelMenager::addOperator( int id )
+//{
+//	std::cout << Get::Time() << " --- Client " << id << " is now an operator" << std::endl;
+//	_operators.push_back( id );
+//	 std::cout << "Added operator with ID: " <<id << " to channel" << std::endl;
+//
+//}
 
-}
 
-
-int ChannelMenager::getOperatorSocket() const
-{
-	if (_operators.size() > 0)
-	{
-		return _operators[0];
-	}
-	return -1;
-}
+//int ChannelMenager::getOperatorSocket() const
+//{
+//	if (_operators.size() > 0)
+//	{
+//		return _operators[0];
+//	}
+//	return -1;
+//}
 
 //
 //Channel* ChannelMenager::getChannel(const std::string& channelName)

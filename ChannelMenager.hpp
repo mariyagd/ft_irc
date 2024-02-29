@@ -17,7 +17,7 @@ public:
 //	ChannelMenager( Server & server );
 
 	std::vector< Channel * >			_channels;
-	std::vector< int >					_operators;
+//	std::vector< int >					_operators;
 	~ChannelMenager( void );
 
 	std::vector< Channel * > &	getAllChannels( void );
@@ -26,13 +26,13 @@ public:
 	bool						channelExists(const std::string& channelName);
 
 	void						removeClientFromAllChannels(Client* client);
-	void 						addOperator( int id );
+//	void 						addOperator( int id );
 	//getOperatorSocket
-	int getOperatorSocket()const;
+	int 						getOperatorSocket()const;
 
 //	void 						addClientToChannel(const std::string& channelname, Client* client);
 //	void						sendToChannel(std::string&kickMessage, std::string& channel);
-	void	print_channels_info();
+	void						print_channels_info();
 
 };
 

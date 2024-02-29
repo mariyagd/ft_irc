@@ -38,7 +38,7 @@ public:
 	static void ERR_NOORIGIN( Client const & client );
 
 	//JOIN
-	static void RPL_NAMREPLY( Client const & client, std::string & channelName );
+	static void RPL_NAMREPLY( Client const & client, std::string & channelName, const std::vector< std::string > & operatorsNames );
 	static void RPL_ENDOFNAMES( Client const & client, std::string & channelName );
 
 	//NORMAL
@@ -64,10 +64,11 @@ public:
 
 	// KICK
 	static void ERR_CHANOPRIVSNEEDED( Client const & client, std::string & channelName );
-	static void RPL_KICK( Client const & client, std::string & channelName, std::string & nickname, std::string & comment );
+	static void RPL_KICK( Client const & client, std::string & channelName, std::string & nickname, std::string & comment, const Client & client2 );
 	static void ERR_NOTONCHANNEL( Client const & client, std::string & channelName );
 	static void ERR_USERNOTINCHANNEL( Client const & client, std::string & nickname, std::string & channelName );
 
+	static void RPL_MODE_OP(Client const & client, const std::string channelName );
 
 
 

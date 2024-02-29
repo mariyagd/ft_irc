@@ -113,9 +113,15 @@ void RPL::ERR_NOORIGIN( Client const & client ) {
 
 
 //JOIN
-void  RPL::RPL_NAMREPLY(const Client &client, std::string &channelName ) {
+void  RPL::RPL_NAMREPLY(const Client &client, std::string &channelName, const std::vector< std::string > & operatorNames ) {
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 353 " + client.getNickname() + " = " + channelName + " :" + client.getNickname() + "\r\n";
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 353 " + client.getNickname() + " = " + channelName + " :" + client.getNickname();
+	for ( size_t i = 0; i < operatorNames.size(); ++i )
+	{
+		message += " @" + operatorNames[i];
+		std::cout << CYAN_BG << operatorNames[i] << END << std::endl;
+	}
+	message += "\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
@@ -130,7 +136,7 @@ void  RPL::RPL_ENDOFNAMES(const Client &client, std::string &channelName) {
 
 void  RPL::RPL_JOIN(const Client &client, std::string &channelName) {
 
-	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getServname();
+	std::string msgto = client.getNickname() + "!~" + client.getUsername() + "@" + client.getServname();
 	std::string message = "@time=" + Get::Time() + ":" + msgto + " " + "JOIN " + channelName + " * " + client.getRealname() + "\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
@@ -195,11 +201,12 @@ void RPL::ERR_NOSUCHNICK( Client const & client, std::string & nickname ) {
 }
 
 //kick<channel> <user>
-void RPL::RPL_KICK( const Client & client, std::string & channelName, std::string & nickname, std::string & comment) {
+void RPL::RPL_KICK( const Client & client, std::string & channelName, std::string & nickname, std::string & comment, const Client & client2) {
 
 	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getServname();
 	std::string msg = "@time=" + Get::Time() + ":" + msgto + " KICK " + channelName + " " + nickname + comment + "\r\n";
 	send_message( client.getSocket(), msg.c_str(), msg.size() );
+	send_message( client2.getSocket(), msg.c_str(), msg.size() );
 }
 
 void RPL::ERR_CHANOPRIVSNEEDED( Client const & client, std::string & channelName ) {
@@ -218,4 +225,11 @@ void RPL::ERR_USERNOTINCHANNEL( Client const & client, std::string & nickname, s
 
 	std::string msg = "@time=" + Get::Time() + ":" + client.getServname() + " 441 " + client.getNickname() + " " + nickname + " " + channelName + " :They aren't on that channel\r\n";
 	send_message( client.getSocket(), msg.c_str(), msg.size() );
+}
+
+
+void RPL::RPL_MODE_OP( const Client & client, const std::string channelName ) {
+
+	std::string msg = "@time=" + Get::Time() + ":" + client.getServname() + " MODE " + channelName + " +Cnst\r\n";
+	send_message(client.getSocket(), msg.c_str(), msg.size() );
 }

@@ -179,3 +179,10 @@ void RPL::ERR_UMODEUNKNOWNFLAG( Client const & client ) {
 	send_message( client.getSocket(), message.c_str(), message.size() );
 
 }
+
+// PRIVMSG
+void RPL::ERR_CANNOTSENDTOCHAN( Client const & client, std::string & channelName ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 404 " + client.getNickname() + " " + channelName + " :Cannot send to channel\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}

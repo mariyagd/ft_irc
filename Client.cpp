@@ -254,3 +254,14 @@ bool	Client::operator==(const Client & rhs) const {
 }
 
 
+void	Client::sendMessage( std::string & message ) {
+
+	int ret;
+
+	ret = send( _socket, message.c_str(), message.length(), 0 );
+	if ( ret < 0 )
+		std::cerr << Get::Time() << RED_BOLD << " --- Error while sending message: " << strerror(errno) << END << std::endl;
+	else
+		std::cout << Get::Time() << GREEN_BOLD << " --- Message sent successfully" << END << std::endl;
+	return;
+}

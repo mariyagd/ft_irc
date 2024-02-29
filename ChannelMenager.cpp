@@ -96,6 +96,7 @@ void ChannelMenager::addOperator( int id )
 	_operators.push_back( id );
 }
 
+
 //
 //Channel* ChannelMenager::getChannel(const std::string& channelName)
 //{

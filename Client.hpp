@@ -58,6 +58,7 @@ public:
 	void 		printInfo( void );
 
 	bool		operator==(const Client & rhs) const;
+	void 		sendMessage( std::string & message );
 
 };
 

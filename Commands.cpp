@@ -31,6 +31,8 @@ void	Commands::initAvailableCommands( std::vector< std::string > & availableComm
 	availableCommands.push_back( "PING" );
 	availableCommands.push_back( "WHOIS" );
 	availableCommands.push_back( "JOIN" );
+	availableCommands.push_back( "PRIVMSG" );
+
 	return ;
 }
 
@@ -120,6 +122,10 @@ void Commands::choose_command( std::vector <std::string> & command, Client & cli
 	else if ( command[0] == "MODE" )
 	{
 		MODE( command, client, server );
+	}
+	else if ( command[0] == "MODE" )
+	{
+		PRIVMSG( command, client, server );
 	}
 	return ;
 }
@@ -408,4 +414,26 @@ void	Commands::MODE( std::vector< std::string > & command, Client & client, Serv
 	// else is nickname
 
 	return ;
+}
+
+void Commands::PRIVMSG(std::vector<std::string>& command, Client& client, Server& server) 
+{
+    if (command.size() < 3) {
+        std::cerr << Get::Time() << RED << " Error: Insufficient parameters for PRIVMSG command" << END << std::endl;
+        return;
+    }
+
+	std::cout << Get::Time() << GREEN << " --- Processing PRIVMSG command" << END << std::endl;
+
+	std::string& target = command[1];
+	std::string& message = command[2];
+
+	if (target.find_first_of("#&") == 0) {
+		std::cout << Get::Time() << BOLD << " --- Sending message to channel " << target << END << std::endl;
+		// Call sendToChannel method on server object
+		server.sendToChannel(message, target);
+	} else {
+		std::cout << Get::Time() << BOLD << " --- Sending private message to " << target << END << std::endl;
+		client.sendMessage(message);
+	}
 }

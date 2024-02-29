@@ -354,3 +354,18 @@ std::vector< Client > &	Server::getConnections( void ) {
 	return _connections;
 }
 
+
+void Server:: sendToChannel(std::string &message, std::string &channel)
+{
+	// Get the list of clients in the specified channel
+	Channel * ch = getChannel(channel);
+	if (ch) {
+		std::vector< Client * > clients = ch->getAllClients();
+
+		// Send the kick message to each client in the channel
+		for (size_t i = 0; i < clients.size(); ++i) {
+			std::cout << "Sending message to " << clients[i]->getNickname() << std::endl;
+			clients[i]->sendMessage(message);
+		}
+	}
+}

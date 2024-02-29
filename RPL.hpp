@@ -53,6 +53,17 @@ public:
 	// NICK MODE
 	static void ERR_UMODEUNKNOWNFLAG( Client const & client );
 
+	// PRIVMSG
+	static void ERR_NORECIPIENT( Client const & client );
+	static void ERR_NOTEXTTOSEND( Client const & client );
+	static void ERR_NOSUCHNICK( Client const & client, std::string & nickname );
+	static void RPL_PRIVMSG( Client const & client, std::string & nickname, std::string & message );
+	static void RPL_PRIVMSG_CHANNEL( Client const & client, std::string & channelName, std::string & message );
+	static void RPL_PRIVMSG_SELF( Client const & client, std::string & nickname, std::string & message );
+	static void RPL_PRIVMSG_SELF_CHANNEL( Client const & client, std::string & channelName, std::string & message );
+	static void ERR_CANNOTSENDTOCHAN ( Client const & client, std::string & channelName ); 
+
+
 
 
 };

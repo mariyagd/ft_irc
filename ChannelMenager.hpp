@@ -26,12 +26,13 @@ public:
 	bool						channelExists(const std::string& channelName);
 
 	void						removeClientFromAllChannels(Client* client);
-	void 						addOperator( int );
+	void 						addOperator( int id );
+	//getOperatorSocket
+	int getOperatorSocket()const;
 
 //	void 						addClientToChannel(const std::string& channelname, Client* client);
 //	void						sendToChannel(std::string&kickMessage, std::string& channel);
 	void	print_channels_info();
-	void	sendToChannel(std::string&message, std::string& channel);
 
 };
 

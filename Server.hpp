@@ -45,7 +45,8 @@ public:
 	const std::string &					getPassword( void ) const;
 	std::vector< Client > &				getConnections( void );
 	std::string							getProtocolFamilyName(int family);
-	void	sendToChannel(std::string&message, std::string& channel);
+	int 								getSocketByNickname( std::string &nickname );
+	bool	sendToChannel(std::string &message, std::string& channel);
 
 //	ChannelMenager &						getChanneltMenager( void );
 
@@ -60,5 +61,7 @@ public:
 		virtual const char *what() const throw();
 	};
 };
+
+
 
 #endif

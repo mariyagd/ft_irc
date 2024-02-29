@@ -150,6 +150,7 @@ int	Client::getNicknameId( void ) const {
 	for ( size_t i = 0; i < _nickname.length(); ++i ) {
 		hash = (hash * 31) + _nickname[i]; // A simple hash function
 	}
+	std::cout << "Nickname id from getNicknameId: " << hash << std::endl;
 	return hash;
 }
 
@@ -254,14 +255,18 @@ bool	Client::operator==(const Client & rhs) const {
 }
 
 
-void	Client::sendMessage( std::string & message ) {
+// bool	Client::sendMessage( std::string & message ) {
 
-	int ret;
-
-	ret = send( _socket, message.c_str(), message.length(), 0 );
-	if ( ret < 0 )
-		std::cerr << Get::Time() << RED_BOLD << " --- Error while sending message: " << strerror(errno) << END << std::endl;
-	else
-		std::cout << Get::Time() << GREEN_BOLD << " --- Message sent successfully" << END << std::endl;
-	return;
-}
+// 	int ret;
+// 	for ( size_t i = 0; i < message.length(); ++i )
+// 	{
+// 		if ( message[i] == '\n' )
+// 			message[i] = '\r';
+// 			ret = send( _socket, message.c_str(), message.length(), 0 );
+// 	}
+// 	if ( ret < 0 )
+// 		std::cerr << Get::Time() << RED_BOLD << " --- Error while sending message: " << strerror(errno) << END << std::endl;
+// 	else
+// 		std::cout << Get::Time() << GREEN_BOLD << " --- Message sent successfully" << END << std::endl;
+// 	return ( ret < 0 ? false : true );
+// }967214913

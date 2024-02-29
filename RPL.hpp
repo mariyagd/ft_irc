@@ -16,7 +16,7 @@ private:
 public:
 	~RPL( void );
 
-	static void send_message( const int socket, const char * message, const size_t msg_size );
+	static void send_message( const int & socket, const char * message, const size_t msg_size );
 
 	// Registration
 	static void RPL_WELCOME( Client const & client );
@@ -47,7 +47,7 @@ public:
 	//CHANNEL MODE
 	static void ERR_NOSUCHCHANNEL( Client const & client, std::string & channelName );
 	static void RPL_CHANNELMODEIS( Client const & client, std::string & channelName );
-	static void RPL_CREATIONTIME( Client const & client, std::string & channelName );
+	static void RPL_CREATIONTIME( Client const & client, std::string & channelName, const long & creationTime );
 
 	// NICK MODE
 	static void ERR_UMODEUNKNOWNFLAG( Client const & client );
@@ -56,11 +56,19 @@ public:
 	static void ERR_NORECIPIENT( Client const & client );
 	static void ERR_NOTEXTTOSEND( Client const & client );
 	static void ERR_NOSUCHNICK( Client const & client, std::string & nickname );
-	static void RPL_PRIVMSG( Client const & client, std::string & nickname, std::string & message );
+	static void RPL_PRIVMSG( Client const & client, std::string  nickname, std::string & message, const int & socket );
 	static void RPL_PRIVMSG_CHANNEL( Client const & client, std::string & channelName, std::string & message );
 	static void RPL_PRIVMSG_SELF( Client const & client, std::string & nickname, std::string & message );
 	static void RPL_PRIVMSG_SELF_CHANNEL( Client const & client, std::string & channelName, std::string & message );
 	static void ERR_CANNOTSENDTOCHAN ( Client const & client, std::string & channelName ); 
+
+	// KICK
+	static void ERR_CHANOPRIVSNEEDED( Client const & client, std::string & channelName );
+	static void RPL_KICK( Client const & client, std::string & channelName, std::string & nickname, std::string & comment );
+	static void ERR_NOTONCHANNEL( Client const & client, std::string & channelName );
+	static void ERR_USERNOTINCHANNEL( Client const & client, std::string & nickname, std::string & channelName );
+
+
 
 
 

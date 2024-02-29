@@ -6,6 +6,7 @@
 # include <string>
 # include "Client.hpp"
 # include "Get.hpp"
+# include <sys/time.h>
 
 class Client;
 
@@ -15,6 +16,7 @@ private:
 	std::string					_name;
 	std::vector< Client * >		_clients;
 	std::vector< int >			_operators;
+	long						_creation_time;
 	//modes
 	//topic
 public:
@@ -26,18 +28,13 @@ public:
 
 	const std::string &			getChannelName( void );
 	std::vector< Client * > &	getAllClients( void );
-//	Client &					getClient( const std::string & nickname );
-//	std::vector<int>			getOperator( int id );
-//
-//	void					setName( std::string name );
-//
-	bool					isClientInChannel( const Client * client ) const;
-//	bool					isClientInChannel( const std::string & nickname ) const;
-//	bool					isOperator( const std::string& nickname );
-//	bool 					isClientIsOperator( const std::string& nickname );
+	const long &				getCreationTime( void ) const;
 
+	bool					isClientInChannel( const Client * client ) const;
+	int 					isClientIsOperator(int clientId)const;
 	void					addClient( Client & client );
 	void					removeClient( const std::string & nickname );
+	int getOperatorSocket()const;
 
 };
 

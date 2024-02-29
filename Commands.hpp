@@ -38,8 +38,9 @@ public:
 	static void 	PING( std::vector< std::string > & command, Client & client, Server &server );
 
 	static void 	JOIN( std::vector< std::string > & command, Client & client, Server &server );
-	static void			MODE( std::vector< std::string > & command, Client & client, Server & server );
-	static void	 PRIVMSG( std::vector< std::string > & command, Client & client, Server & server );
+	static void		MODE( std::vector< std::string > & command, Client & client, Server & server );
+	static void		PRIVMSG( std::vector< std::string > & command, Client & client, Server & server );
+	static void 	KICK( std::vector< std::string > & command, Client & client, Server & server );
 
 
 

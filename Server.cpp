@@ -355,17 +355,37 @@ std::vector< Client > &	Server::getConnections( void ) {
 }
 
 
-void Server:: sendToChannel(std::string &message, std::string &channel)
-{
-	// Get the list of clients in the specified channel
-	Channel * ch = getChannel(channel);
-	if (ch) {
-		std::vector< Client * > clients = ch->getAllClients();
+// bool Server:: sendToChannel(std::string &message, std::string &channel)
+// {
+// 	// Get the list of clients in the specified channel
+// 	printf("Sending message to channel %s\n", channel.c_str());
+// 	printf("content of mesg to send %s\n", message.c_str());
+// 	Channel * ch = getChannel(channel);
+// 	std::string cl;
+// 	if (ch) {
+// 		printf("Channel found\n");
+// 		std::vector< Client * > clients = ch->getAllClients();
+		
+// 		printf("Got clients\n");
 
-		// Send the kick message to each client in the channel
-		for (size_t i = 0; i < clients.size(); ++i) {
-			std::cout << "Sending message to " << clients[i]->getNickname() << std::endl;
-			clients[i]->sendMessage(message);
-		}
+// 		// Send the kick message to each client in the channel
+// 		for (size_t i = 0; i < clients.size(); ++i) {
+// 			// std::cout << "Sending message to " << clients[i]->getNickname() << std::endl;
+// 			RPL::RPL_PRIVMSG(*clients[i], clients[i]->getnickname(), message);
+// 			// clients[i]->sendMessage(message);
+// 			std::cout << "Message sent"<< std::endl;
+// 		}
+// 		return true;
+// 	}
+// 	return false;
+// }
+
+int	Server::getSocketByNickname( std::string &nickname )
+{
+	for ( size_t i = 0; i < _connections.size(); ++i )
+	{
+		if ( _connections[i].getNickname() == nickname )
+			return _connections[i].getSocket();
 	}
+	return -1;
 }

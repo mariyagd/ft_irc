@@ -1,5 +1,4 @@
 # ninja log v5
 1	549	1708699077000000000	CMakeFiles/ft_irc.dir/main.cpp.o	3daa74cc0031ac93
 1	573	1708699077000000000	CMakeFiles/ft_irc.dir/Client.cpp.o	9ec52f14c4461e7f
-1	651	1708699077000000000	CMakeFiles/ft_irc.dir/Registration.cpp.o	eb91ed8c86699c65
 1	684	1708699077000000000	CMakeFiles/ft_irc.dir/Server.cpp.o	bf0d61c561048e6f

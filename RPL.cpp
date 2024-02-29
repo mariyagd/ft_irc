@@ -89,12 +89,6 @@ void RPL::RPL_NICK( Client const & client, std::string & newNickname ) {
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
-void RPL::RPL_SAVENICK( Client const & client ) {
-
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 043 " + client.getNickname() + client.getNickname() + "\r\n";
-	send_message( client.getSocket(), message.c_str(), message.size() );
-}
-
 // For WHOIS ------------------------------------------------------------------------------------------------------------
 
 void RPL::RPL_WHOISUSER( Client const & client ) {

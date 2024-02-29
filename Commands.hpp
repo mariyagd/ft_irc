@@ -18,7 +18,8 @@ private:
 public:
 	~Commands( void );
 
-	static void		splitMsgIntoTokens( std::string &msg, std::vector< std::string > &tokens );
+	static void		splitMsgOnSpace( std::string &msg, std::vector< std::string > &tokens );
+	static void		splitMsgOnComma( std::string &msg, std::vector< std::string > &tokens );
 	static int		countNbCommands( std::vector< std::string > & tokens );
 	static bool		isCommand( const std::string & token, std::vector< std::string > & availableCommands );
 	static void 	deleteCommandFromList( std::string & token, std::vector< std::string > & availableCommands );

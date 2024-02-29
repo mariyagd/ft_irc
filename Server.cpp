@@ -111,7 +111,7 @@ void	Server::socket_options()
 	const int & _servSock = _connections[0].getSocket();
 	int ret = 0;
 
-	bool		optval = true;
+	int		optval = 1;
 	socklen_t	optval_lent = sizeof (optval);
 
 	ret = getsockopt(_servSock, SOL_SOCKET, SO_REUSEADDR, &optval, &optval_lent);
@@ -124,7 +124,7 @@ void	Server::socket_options()
 	if ( optval == true ) // it means that SE_REUSEADDR is already set
 		return;
 
-	optval = true;
+	optval = 1;
 	optval_lent = sizeof( optval );
 	ret = setsockopt( _servSock, SOL_SOCKET, SO_REUSEADDR, &optval, optval_lent );
 	if ( ret < 0 )

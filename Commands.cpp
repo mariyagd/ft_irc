@@ -10,7 +10,39 @@ Commands::~Commands( void ) {
 	return ;
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
+//  Helpers ---------------------------------------------------------------------------------------------------------------------
+
+void	Commands::splitMsgOnSpace( std::string & msg, std::vector< std::string > & tokens ) {
+
+	std::istringstream iss( msg );
+	size_t pos = 0;
+
+	while ( !iss.eof() )
+	{
+		std::string token;
+		iss >> token;
+		if ( (pos = token.find( "\n" )) != std::string::npos )
+		{
+			token.erase( pos, 1 );
+		}
+		if ( !token.empty() )
+			tokens.push_back( token );
+	}
+	return ;
+}
+
+void Commands::splitMsgOnComma( std::string & msg, std::vector< std::string > & tokens ) {
+
+	std::istringstream iss( msg );
+
+	while ( !iss.eof() )
+	{
+		std::string token;
+		getline(iss, token, ',' ); // split by comas
+		if ( !token.empty() )
+			tokens.push_back( token );
+	}
+}
 
 bool	Commands::isCommand( const std::string &token, std::vector< std::string > & availableCommands ) {
 
@@ -49,6 +81,10 @@ void	Commands::deleteCommandFromList( std::string & token, std::vector< std::str
 	return ;
 }
 
+
+
+// Process command------------------------------------------------------------------------------------------------------
+
 void	Commands::process_command( std::string & msg, Client & client, Server & server )
 {
 //	std::cout << Get::Time() << " --- Processing message" << std::endl;
@@ -58,21 +94,7 @@ void	Commands::process_command( std::string & msg, Client & client, Server & ser
 	std::vector< std::string > availableCommands;
 
 	initAvailableCommands( availableCommands );
-	std::istringstream iss( msg );
-
-	size_t pos = 0;
-
-	while ( !iss.eof() )
-	{
-		std::string token;
-		iss >> token;
-		if ( (pos = token.find( "\n" )) != std::string::npos )
-		{
-			token.erase( pos, 1 );
-		}
-		if ( !token.empty() )
-			tokens.push_back( token );
-	}
+	splitMsgOnSpace( msg, tokens );
 
 	for ( size_t i = 0; i < tokens.size(); i++ )
 	{
@@ -123,7 +145,7 @@ void Commands::choose_command( std::vector <std::string> & command, Client & cli
 	{
 		MODE( command, client, server );
 	}
-	else if ( command[0] == "MODE" )
+	else if ( command[0] == "PRIVMSG" )
 	{
 		PRIVMSG( command, client, server );
 	}
@@ -205,10 +227,6 @@ void Commands::NICK( std::vector< std::string > & command, Client & client, Serv
 	{
 		std::cout << Get::Time() << BOLD << " --- socket " << client.getSocket() << " Nick: " << nickname << " nickname is use" << END << std::endl;
 		RPL::ERR_NICKNAMEINUSE( client, nickname );
-	}
-	else if ( !client.isRegistered() )
-	{
-		client.setNickname( nickname );
 	}
 	else
 	{
@@ -336,15 +354,8 @@ void	Commands::JOIN( std::vector< std::string > & command, Client & client, Serv
 	Channel * channel = NULL;
 	
 	std::vector< std::string > channels;
-	std::istringstream iss( command[1] );
-	
-	while ( !iss.eof() )
-	{
-		std::string token;
-		getline(iss, token, ',' ); // split by comas
-		if ( !token.empty() )
-			channels.push_back( token );
-	}
+	splitMsgOnComma( command[1], channels );
+
 
 	std::cout << Get::Time() << RED_BG << " --- Requested to JOIN this(these) channel(s)" << END << std::endl;
 	for ( size_t i = 0; i < channels.size(); i++ )
@@ -418,22 +429,31 @@ void	Commands::MODE( std::vector< std::string > & command, Client & client, Serv
 
 void Commands::PRIVMSG(std::vector<std::string>& command, Client& client, Server& server) 
 {
-    if (command.size() < 3) {
+
+	std::cout << Get::Time() << GREEN << " --- Processing PRIVMSG command" << END << std::endl;
+    if (command.size() < 3)
+	{
         std::cerr << Get::Time() << RED << " Error: Insufficient parameters for PRIVMSG command" << END << std::endl;
         return;
     }
 
-	std::cout << Get::Time() << GREEN << " --- Processing PRIVMSG command" << END << std::endl;
+	std::vector< std::string > target;
+	splitMsgOnComma( command[1], target );
 
-	std::string& target = command[1];
 	std::string& message = command[2];
 
-	if (target.find_first_of("#&") == 0) {
-		std::cout << Get::Time() << BOLD << " --- Sending message to channel " << target << END << std::endl;
-		// Call sendToChannel method on server object
-		server.sendToChannel(message, target);
-	} else {
-		std::cout << Get::Time() << BOLD << " --- Sending private message to " << target << END << std::endl;
-		client.sendMessage(message);
+	for (size_t i = 0; i < target.size(); ++i )
+	{
+		if (target[i].find_first_of("&#") == 0)
+		{
+			std::cout << Get::Time() << BOLD << " --- Sending message to channel " << target[i] << END << std::endl;
+			// Call sendToChannel method on server object
+			server.sendToChannel(message, target[i]);
+		}
+		else
+		{
+			std::cout << Get::Time() << BOLD << " --- Sending private message to " << target[i] << END << std::endl;
+			client.sendMessage(message);
+		}
 	}
 }

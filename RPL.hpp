@@ -28,7 +28,6 @@ public:
 	static void ERR_NICKNAMEINUSE( Client const & client, std::string & wantedNickname );
 	static void ERR_NONICKNAMEGIVEN( Client const & client );
 	static void ERR_ERRONEUSNICKNAME( Client const & client );
-	static void RPL_SAVENICK( Client const & client );
 	static void RPL_NICK( Client const & client, std::string & newNickname );
 
 	// WHOIS

@@ -8,21 +8,17 @@ ChannelMenager::ChannelMenager( void ) : _channels() {
 	return ;
 }
 
-//ChannelMenager::ChannelMenager( Server & server ) {
-//
-//	return ;
-//}
-
 // Destructor-----------------------------------------------------------------------------------------------------------
 
 ChannelMenager::~ChannelMenager( void ) {
 
+	for (size_t i = 0; i < _channels.size(); ++i)
+		delete _channels[i];
 	return ;
 }
 
 
-// Channels--------------------------------------------------------------------------------------------------------------
-
+// Getters --------------------------------------------------------------------------------------------------------------
 
 std::vector< Channel * > &		ChannelMenager::getAllChannels( void ) {
 
@@ -44,10 +40,12 @@ Channel * ChannelMenager::getChannel(const std::string & channelName)
 	for ( ; i < _channels.size(); ++i)
 	{
 		if ( _channels[i]->getChannelName() == channelName )
-			break; // Return pointer to the Channel object
+			return _channels[i]; // Return pointer to the Channel object
 	}
-	return _channels[i]; // Return dereferenced pointer as alias
+	return nullptr; // Return null if it doesn't exist
 }
+
+// Bool ------------------------------------------------------------------------------------------------------------------
 
 bool	ChannelMenager::channelExists(const std::string & channelName)
 {
@@ -75,6 +73,7 @@ void	ChannelMenager::removeClientFromAllChannels( Client * client )
 
 }
 
+// Printing --------------------------------------------------------------------------------------------------------------
 
 void	ChannelMenager::print_channels_info() {
 
@@ -89,66 +88,3 @@ void	ChannelMenager::print_channels_info() {
 		std::cout << "---------------------------" << std::endl;
 	}
 }
-
-//void ChannelMenager::addOperator( int id )
-//{
-//	std::cout << Get::Time() << " --- Client " << id << " is now an operator" << std::endl;
-//	_operators.push_back( id );
-//	 std::cout << "Added operator with ID: " <<id << " to channel" << std::endl;
-//
-//}
-
-
-//int ChannelMenager::getOperatorSocket() const
-//{
-//	if (_operators.size() > 0)
-//	{
-//		return _operators[0];
-//	}
-//	return -1;
-//}
-
-//
-//Channel* ChannelMenager::getChannel(const std::string& channelName)
-//{
-//	// Find the channel in the vector
-//	for (size_t i = 0; i < _channels.size(); ++i) {
-//		if (_channels[i]->getChannelName() == channelName) {
-//			return _channels[i]; // Return pointer to the Channel object
-//		}
-//	}
-//	return nullptr; // Return nullptr if channel not found
-//}
-//
-//void ChannelMenager:: addClientToChannel(const std::string& channelname, Client* client)
-//{
-//	for (size_t i = 0; i < _channels.size(); ++i)
-//	{
-//		if (_channels[i]->getChannelName() == channelname)
-//		{
-//			_channels[i]->addClient(client);
-//			std::cout<<"Added client "<< client->getNickname()<< " to channel "<<channelname<<std::endl;
-//			return;
-//		}
-//	}
-//	std::cerr<< "channel "<< channelname <<" not found. "<<std::endl;
-//}
-//
-//void ChannelMenager::addChannel(Channel *channel)
-//{
-//	_channels.push_back(channel);
-//}
-//
-//void	ChannelMenager::sendToChannel(std::string&kickMessage, std::string& channel)
-//{
-//	// Get the list of clients in the specified channel
-//	Channel* ch = getChannel(channel);
-//	if (ch) {
-//		std::vector<Client*> clients = ch->getClient();
-//
-//		// Send the kick message to each client in the channel
-//		for (size_t i = 0; i < clients.size(); ++i) {
-//			clients[i]->sendMessage(kickMessage);
-//		}
-//	}
-

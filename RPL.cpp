@@ -105,6 +105,12 @@ void RPL::ERR_NEEDMOREPARAMS( Client const & client, std::string const & command
 
 // PING PONG
 
+void	RPL::RPL_PING( Client const & client ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " PONG " + client.getServname() + " :" + client.getServname() +"\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
 void RPL::ERR_NOORIGIN( Client const & client ) {
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 409 :No origin specified\r\n";
@@ -152,7 +158,7 @@ void RPL::ERR_NOSUCHCHANNEL( Client const & client, std::string & channelName ) 
 
 void  RPL::RPL_CHANNELMODEIS(const Client &client, std::string &channelName) {
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 324 " + client.getNickname() + " " + channelName + " +nt\r\n";
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 324 " + client.getNickname() + " " + channelName + " +Cnst\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 void  RPL::RPL_CREATIONTIME(const Client &client, std::string &channelName, const long & creationTime) {
@@ -201,12 +207,20 @@ void RPL::ERR_NOSUCHNICK( Client const & client, std::string & nickname ) {
 }
 
 //kick<channel> <user>
-void RPL::RPL_KICK( const Client & client, std::string & channelName, std::string & nickname, std::string & comment, const Client & client2) {
+void RPL::RPL_KICK( const Client & client, std::string & channelName, std::string & nickname, std::string & comment, std::vector< Client * > allClients ) {
 
 	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getServname();
-	std::string msg = "@time=" + Get::Time() + ":" + msgto + " KICK " + channelName + " " + nickname + comment + "\r\n";
-	send_message( client.getSocket(), msg.c_str(), msg.size() );
-	send_message( client2.getSocket(), msg.c_str(), msg.size() );
+	std::string msg = "@time=" + Get::Time() + ":" + msgto + " KICK " + channelName + " " + nickname + " :";
+	if (comment.empty())
+		msg += nickname + "\r\n";
+	else
+		msg += comment + "\r\n";
+//	send_message( client.getSocket(), msg.c_str(), msg.size() );
+	for ( size_t i = 0; i < allClients.size(); ++i )
+	{
+//		if ( allClients[i]->getNicknameId() != client.getNicknameId()
+		send_message( allClients[i]->getSocket(), msg.c_str(), msg.size() );
+	}
 }
 
 void RPL::ERR_CHANOPRIVSNEEDED( Client const & client, std::string & channelName ) {

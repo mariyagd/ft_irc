@@ -2,49 +2,40 @@
 
 // Coplien's form------------------------------------------------------------------------------------------------------
 
-Channel::Channel(void) : _name(""), _clients(), _operators(), _creation_time(0)
-{
-	std::cout << "Create a channel instance" << std::endl;
-	// this->setName("");
-	std::cout << "Channel instanced created" << std::endl;
+Channel::Channel(void) : _name(""), _clients(), _operators(), _creation_time(0) {
 	return;
 }
 
-Channel::Channel(const std::string &channelName) : _name(channelName), _clients(), _operators(), _creation_time(0)
-{
+Channel::Channel(const std::string &channelName) : _name(channelName), _clients(), _operators(), _creation_time(0) {
 
 	struct timeval tp;
 	if (gettimeofday(&tp, NULL) < 0)
 	{
-		std::cerr << RED << " --- gettimeofday() failed" << strerror(errno) << END << std::endl;
+		std::cerr << Get::Time() << RED << " --- gettimeofday() failed" << strerror(errno) << END << std::endl;
 		return;
 	}
 
 	_creation_time = (tp.tv_sec) + (tp.tv_usec / 1000);
 }
-Channel::Channel(Channel const &src)
-{
-
+Channel::Channel(Channel const &src) {
 	(void)src;
 	return;
 }
 
-Channel &Channel::operator=(Channel const &rhs)
-{
+Channel &Channel::operator=( Channel const &rhs ) {
 
 	(void)rhs;
 	return *this;
 }
 
-Channel::~Channel(void)
-{
+Channel::~Channel( void ) {
+	
 	return;
 }
 
 // Getters --------------------------------------------------------------------------------------------------------------
 
-const std::string &Channel::getChannelName(void)
-{
+const std::string &Channel::getChannelName( void ) {
 	return this->_name;
 }
 
@@ -60,14 +51,12 @@ const std::string &Channel::getChannelName(void)
 //	}
 // }
 
-std::vector<Client *> &Channel::getAllClients(void)
-{
+std::vector<Client *> &Channel::getAllClients(void) {
 
 	return this->_clients;
 }
 
-const long &Channel::getCreationTime(void) const
-{
+const long &Channel::getCreationTime( void ) const {
 
 	return this->_creation_time;
 }
@@ -75,9 +64,10 @@ const long &Channel::getCreationTime(void) const
 const std::vector< std::string >	Channel::getOperatorsName( void ) const {
 
 	std::vector< std::string > operatorNames;
+
 	for ( size_t i = 0; i < _operators.size(); ++i )
 	{
-		std::cout << BLUE_BG << "Operator ID: " << _operators[i] << END << std::endl;
+		std::cout << Get::Time() << BLUE_BG << " --- Operator ID: " << _operators[i] << "" << END << std::endl;
 		for ( size_t j = 0; i < _clients.size(); ++i )
 		{
 			if ( _operators[i] == _clients[j]->getNicknameId() )
@@ -87,21 +77,18 @@ const std::vector< std::string >	Channel::getOperatorsName( void ) const {
 	return operatorNames;
 }
 
-
-
 ////Bool ------------------------------------------------------------------------------------------------------------------
-//
 
-//
-int Channel::isClientIsOperator(int clientId) const
-{
-	// Check if clientId is present in _operators vector
+// Check if clientId is present in _operators vector
+
+int Channel::isClientIsOperator(int clientId) const {
+
 	if (std::find(_operators.begin(), _operators.end(), clientId) != _operators.end())
 	{
-		std::cout << "Checking operator status for client ID: " << clientId << " is an operator" << std::endl;
+		std::cout << Get::Time() << BLUE_BG << " --- Client ID: " << clientId << " is an operator" << END << std::endl;
 		return clientId;
 	}
-	std::cout << "Client " << clientId << " is not an operator" << std::endl;
+	std::cout << Get::Time() << BLUE_BG << "Client ID" << clientId << " is NOT an operator" << END << std::endl;
 	return -1;
 }
 
@@ -117,14 +104,12 @@ bool Channel::isClientInChannel(const Client *client) const
 }
 
 //// Method to add a client to the channel---------------------------------------------------------------------------------
-void Channel::addClient(Client &client)
-{
+void Channel::addClient(Client &client) {
 
 	_clients.push_back(&client);
 }
 
-void Channel::removeClient(const std::string &nickname)
-{
+void Channel::removeClient(const std::string &nickname) {
 
 	std::cout << Get::Time() << MAGNETA_BOLD << " --- Removing client " << BOLD << nickname << END << MAGNETA_BOLD << " from channel " << BOLD << this->getChannelName() << END << std::endl;
 
@@ -138,9 +123,9 @@ void Channel::removeClient(const std::string &nickname)
 	}
 }
 
-void Channel::addOperator( int id )
-{
-	std::cout << Get::Time() << " --- Client " << id << " is now an operator" << std::endl;
+void Channel::addOperator( int id ) {
+	
+	std::cout << Get::Time() << " --- Client ID" << id << " is now an operator" << std::endl;
 	_operators.push_back( id );
 
 }

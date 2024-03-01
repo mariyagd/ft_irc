@@ -5,14 +5,16 @@
 
 volatile std::sig_atomic_t 	Server::_shutdown_server = false;   // <------ static member initialization for signal handling
 
+/*
+ 	 initialize the connections table
+	 the first element of the table is the server socket
+	 this is why we initialize the table with MAX_CONNECTIONS + 1 elements
+ */
+
 Server::Server(int port, char *password) : _port(port), _password(password) {
 
-	// initialize structures to 0
 	memset(&_read_fd_set, 0, sizeof(fd_set));
 
-	// initialize the connections table
-	// the first element of the table is the server socket
-	// this is why we initialize the table with MAX_CONNECTIONS + 1 elements
 	for ( int i = 0; i < MAX_CONNECTIONS + 1; ++i )
 		_connections.push_back( Client() );
 }
@@ -133,8 +135,6 @@ void	Server::socket_options()
 		shutdown();
 		throw ServerException( error_msg.c_str() );
 	}
-	std::cout << Get::Time( ) << " --- Socket set SO_REUSEADDR option successfully" << std::endl;
-
 }
 
 // Bind ---------------------------------------------------------------------------------------------------------------
@@ -174,8 +174,6 @@ void	Server::bind()
 
 	return;
 }
-
-
 
 // Listen ---------------------------------------------------------------------------------------------------------------
 
@@ -235,7 +233,7 @@ void Server::accept( void )
 	if (clientSocket >= 0)
 	{
 		std::cout << Get::Time() << GREEN_BOLD << " --- Accepted a new connection [socket " << clientSocket << "]" << END << std::endl;
-		for (int i = 0; i < MAX_CONNECTIONS; i++)                    // save the fd in the table, find available cell
+		for (int i = 0; i < MAX_CONNECTIONS + 1; i++)                    // save the fd in the table, find available cell
 		{
 			if ( _connections[i].getSocket() < 0 )
 			{
@@ -244,7 +242,6 @@ void Server::accept( void )
 			}
 		}
 		std::cout << RED_BOLD << Get::Time() << " --- Error: No room for new connection" << END << std::endl;
-		// send a message to the client
 		close( clientSocket );
 	}
 	else
@@ -331,8 +328,6 @@ void	Server::loop()
 	}
 }
 
-
-
 // Getters ------------------------------------------------------------------------------------------------------
 
 std::string	Server::getProtocolFamilyName(int family) {
@@ -354,34 +349,9 @@ std::vector< Client > &	Server::getConnections( void ) {
 	return _connections;
 }
 
+//maybe put in a class Channel
+int	Server::getSocketByNickname( std::string &nickname ) {
 
-// bool Server:: sendToChannel(std::string &message, std::string &channel)
-// {
-// 	// Get the list of clients in the specified channel
-// 	printf("Sending message to channel %s\n", channel.c_str());
-// 	printf("content of mesg to send %s\n", message.c_str());
-// 	Channel * ch = getChannel(channel);
-// 	std::string cl;
-// 	if (ch) {
-// 		printf("Channel found\n");
-// 		std::vector< Client * > clients = ch->getAllClients();
-		
-// 		printf("Got clients\n");
-
-// 		// Send the kick message to each client in the channel
-// 		for (size_t i = 0; i < clients.size(); ++i) {
-// 			// std::cout << "Sending message to " << clients[i]->getNickname() << std::endl;
-// 			RPL::RPL_PRIVMSG(*clients[i], clients[i]->getnickname(), message);
-// 			// clients[i]->sendMessage(message);
-// 			std::cout << "Message sent"<< std::endl;
-// 		}
-// 		return true;
-// 	}
-// 	return false;
-// }
-
-int	Server::getSocketByNickname( std::string &nickname )
-{
 	for ( size_t i = 0; i < _connections.size(); ++i )
 	{
 		if ( _connections[i].getNickname() == nickname )
@@ -390,8 +360,9 @@ int	Server::getSocketByNickname( std::string &nickname )
 	return -1;
 }
 
-Client &	Server::getClientByNickname( std::string &nickname )
-{
+//maybe put in a class Channel
+Client &	Server::getClientByNickname( std::string &nickname ) {
+
 	size_t i = 0;
 	for ( ; i < _connections.size(); ++i )
 	{
@@ -399,5 +370,4 @@ Client &	Server::getClientByNickname( std::string &nickname )
 			break;
 	}
 	return _connections[i];
-
 }

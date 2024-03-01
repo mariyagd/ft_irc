@@ -35,6 +35,7 @@ public:
 	static void ERR_NEEDMOREPARAMS( Client const & client, std::string const & command );
 
 	// PING
+	static void RPL_PING( Client const & client );
 	static void ERR_NOORIGIN( Client const & client );
 
 	//JOIN
@@ -64,14 +65,11 @@ public:
 
 	// KICK
 	static void ERR_CHANOPRIVSNEEDED( Client const & client, std::string & channelName );
-	static void RPL_KICK( Client const & client, std::string & channelName, std::string & nickname, std::string & comment, const Client & client2 );
+	static void RPL_KICK( Client const & client, std::string & channelName, std::string & nickname, std::string & comment, std::vector< Client * > allClients);
 	static void ERR_NOTONCHANNEL( Client const & client, std::string & channelName );
 	static void ERR_USERNOTINCHANNEL( Client const & client, std::string & nickname, std::string & channelName );
 
 	static void RPL_MODE_OP(Client const & client, const std::string channelName );
-
-
-
 
 
 };

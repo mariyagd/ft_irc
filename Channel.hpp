@@ -20,13 +20,14 @@ private:
 	//modes
 	//topic
 public:
-	Channel(void);
-	Channel(const std::string& channelName);
-	Channel(Channel const & src);
-	Channel & operator=(Channel const & rhs);
+	Channel( void );
+	Channel( const std::string& channelName );
+	Channel( Channel const & src) ;
+	Channel & operator=( Channel const & rhs );
 	~Channel( void );
 
 	const std::string &					getChannelName( void );
+//	Client &							getClient( const std::string & nickname );
 	std::vector< Client * > &			getAllClients( void );
 	const long &						getCreationTime( void ) const;
 	const std::vector< std::string >	getOperatorsName( void ) const;
@@ -35,12 +36,10 @@ public:
 	void 								addOperator( int id );
 
 
-
-	bool					isClientInChannel( const Client * client ) const;
-	int 					isClientIsOperator(int clientId)const;
-	void					addClient( Client & client );
-	void					removeClient( const std::string & nickname );
-//	int getOperatorSocket()const;
+	bool								isClientInChannel( const Client * client ) const;
+	int 								isClientIsOperator(int clientId)const;
+	void								addClient( Client & client );
+	void								removeClient( const std::string & nickname );
 
 };
 

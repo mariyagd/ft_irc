@@ -69,20 +69,6 @@ void	Commands::initAvailableCommands( std::vector< std::string > & availableComm
 	return ;
 }
 
-void	Commands::deleteCommandFromList( std::string & token, std::vector< std::string > & availableCommands ) {
-
-	for ( size_t i = 0; i < availableCommands.size(); i++ )
-	{
-		if ( token == availableCommands[i] )
-		{
-			availableCommands.erase( availableCommands.begin() + i );
-			return ;
-		}
-	}
-	return ;
-}
-
-
 
 // Process command------------------------------------------------------------------------------------------------------
 
@@ -101,7 +87,6 @@ void	Commands::process_command( std::string & msg, Client & client, Server & ser
 	{
 		if ( isCommand( tokens[i], availableCommands ) )
 		{
-			deleteCommandFromList( tokens[i], availableCommands );
 			command.push_back( tokens[i] );
 			for ( ++i; i < tokens.size() && !isCommand( tokens[i], availableCommands ); i++ )
 			{
@@ -281,21 +266,13 @@ void Commands::WHOIS( std::vector< std::string > & command, Client & client, Ser
 void Commands::PING( std::vector< std::string > & command, Client & client, Server & server ) {
 
 	(void)server;
-	( void )command;
-	std::string message = "";
 
 	if ( command.size() == 1 )
-	{
 		RPL::ERR_NOORIGIN( client );
-	}
-	message = "@time=" + Get::Time() + ":" + client.getServname() + " PONG " + client.getServname() + " :" + client.getServname() +"\r\n";
-	send( client.getSocket(), message.c_str(), message.size(), 0 );
-	std::cout << Get::Time() << YELLOW_BOLD << " --- Send msg to [socket " << client.getSocket() << "] " << message << END;
-
+	else
+		RPL::RPL_PING( client );
 	return ;
 }
-//
-//
 
 void	Commands::JOIN( std::vector< std::string > & command, Client & client, Server & server ) {
 
@@ -305,14 +282,6 @@ void	Commands::JOIN( std::vector< std::string > & command, Client & client, Serv
 	std::vector< std::string > channelsNames;
 	splitMsgOnComma( command[1], channelsNames );
 
-
-	std::cout << Get::Time() << RED_BG << " --- Requested to JOIN this(these) channel(s)" << END << std::endl;
-	for ( size_t i = 0; i < channelsNames.size(); i++ )
-	{
-		std::cout << Get::Time() << RED_BG << " --- " << channelsNames[i] << END << std::endl;
-	}
-
-
 	for ( ; i < channelsNames.size(); i++ )
 	{
 		if ( !server.channelExists (channelsNames[i]))
@@ -320,12 +289,7 @@ void	Commands::JOIN( std::vector< std::string > & command, Client & client, Serv
 			std::cout << Get::Time() << BOLD << " --- Channel doesn't exists. Create a new channel" << END << std::endl;
 			channel = server.createChannel(channelsNames[i]);
 			channel->addOperator( client.getNicknameId() );
-			int operatorSocket = channel->getOperatorSocket(client.getNicknameId());
-			std::cout << "the operator socket is " << operatorSocket << std::endl;
 			std::cout << Get::Time() << BOLD << " --- " << client.getNickname() << " created the channel " << channelsNames[i] << END << std::endl;
-			//print added operatorsocket
-			std::cout << "the operator socket is " << operatorSocket << std::endl;
-
 		}
 		else
 		{
@@ -338,18 +302,9 @@ void	Commands::JOIN( std::vector< std::string > & command, Client & client, Serv
 			RPL::RPL_JOIN( client, channelsNames[i]);
 			channel->addClient( client );
 
-			if ( channel->isClientIsOperator(client.getNicknameId() ))
+			if ( channel->isClientIsOperator(client.getNicknameId() ) != -1 )
 			{
 				RPL::RPL_MODE_OP(client, channelsNames[i] );
-			}
-			std::vector< std::string > operatorNames = channel->getOperatorsName();
-			if ( operatorNames.size() == 0 )
-			{
-				std::cout << CYAN_BG << "no operator" << END << std::endl;
-			}
-			for ( size_t i = 0; i < operatorNames.size(); ++i )
-			{
-				std::cout << CYAN_BG << operatorNames[i] << END << std::endl;
 			}
 			RPL::RPL_NAMREPLY(client,channelsNames[i], channel->getOperatorsName());
 			RPL::RPL_ENDOFNAMES(client,channelsNames[i]);
@@ -420,18 +375,22 @@ void Commands::PRIVMSG(std::vector<std::string>& command, Client& client, Server
 		if ( ( i + 1 ) != command.size() )
 			message += " ";
 	}
-	// if (message[0] == ':')
-	// 	message = message.erase(0, 1);
 
 	for (size_t i = 0; i < target.size(); ++i )
 	{
 		
-		if (target[i].find_first_of("&#") == 0)
+		if (target[i].find_first_of("&#") == 0) //if the destination is a channel
 		{
-			if ( server.channelExists( target[i] ) )
+			Channel * channel = server.getChannel( target[i] );
+			if (! channel )
+			{
+				std::cerr << Get::Time() << RED << " --- Error: Failed to send message to channel. Channel doesnt't exist " << target[i] << END << std::endl;
+				RPL::ERR_NOSUCHNICK( client, target[i] );
+
+			}
+			else if ( channel->isClientInChannel( &client ) )
 			{
 				std::cout << Get::Time() << BOLD << " --- Sending message to channel " << target[i] << END << std::endl;
-				Channel * channel = server.getChannel( target[i] );
 				for ( size_t j = 0; j < channel->getAllClients().size(); j++ )
 				{
 					int receiverSocket = channel->getAllClients()[j]->getSocket();
@@ -443,9 +402,8 @@ void Commands::PRIVMSG(std::vector<std::string>& command, Client& client, Server
 			}
 			else
 			{
-				std::cerr << Get::Time() << RED << " --- Error: Failed to send message to channel " << target[i] << END << std::endl;
-				RPL::ERR_NOSUCHNICK( client, target[i] );
-
+				std::cerr << Get::Time() << RED << " --- Error: Failed to send message to channel. Cannot send to channel " << target[i] << END << std::endl;
+				RPL::ERR_CANNOTSENDTOCHAN( client, target[i] );
 			}
 		}
 		else
@@ -468,34 +426,32 @@ void Commands::PRIVMSG(std::vector<std::string>& command, Client& client, Server
 // >> @time=2024-02-29T14:22:13.784Z :hkahsay__!~hkahsay@185.25.195.181 KICK #newchnl hkahsay_ :hkahsay_
 void Commands::KICK( std::vector< std::string > & command, Client & client, Server &server )
 {
+//	std::cout << Get::Time() << GREEN << " --- Processing KICK command" << END << std::endl;
 
-	std::string channelName = command[1];
-	std::vector< std::string > nickname;
+	std::string & channelName = command[1];
+	std::string & nickname = command[2];
 	std::string comment = "";
+
 	Channel *channel = nullptr;
 
-	if ( !server.channelExists( channelName ) )
+	channel = server.getChannel( channelName );
+	if ( !channel )
 	{
 		RPL::ERR_NOSUCHNICK( client, channelName );
 		return;
 	}
-
-	channel = server.getChannel(channelName);
 	if ( !channel->isClientInChannel( &client ) )
 	{
 		RPL::ERR_NOTONCHANNEL( client, channelName );
 		return;
 	}
-//	int operatorSocket = channel->getOperatorSocket( client.getNicknameId() );
-	//call int  ChannelMenager::getOperatorSocket()const in channel->isClientIsOperator()
 	if ( channel->isClientIsOperator(client.getNicknameId()) == -1 )
 	{
-		std::cout << "check that its not operator status for client ID: " << client.getSocket() << std::endl;
+		std::cout << Get::Time() << RED << " --- Client " << client.getNickname() << " [socket "<< client.getSocket() << "] is NOT operator" << END << std::endl;
 		RPL::ERR_CHANOPRIVSNEEDED( client, channelName );
 		return;
 	}
-	std::cout << "the client with socket" << client.getSocket() << " is operator" << std::endl;
-	splitMsgOnComma( command[2], nickname );
+	std::cout << Get::Time() << GREEN << " --- Client " << client.getNickname() << " [socket "<< client.getSocket() << "] is operator" << END << std::endl;
 
 	for (size_t i = 3; i < command.size(); i++)
 	{
@@ -503,25 +459,22 @@ void Commands::KICK( std::vector< std::string > & command, Client & client, Serv
 		if ( ( i + 1 ) != command.size() )
 			comment += " ";
 	}
-
-	std::cout << Get::Time() << GREEN << " --- Processing KICK command" << END << std::endl;
+	if (comment[0] == ':')
+		comment.erase(0, 1);
 
 	for (size_t i = 0; i < channel->getAllClients().size(); i++)
 	{
-		for ( size_t j = 0; j < nickname.size(); j++ )
+		if (channel->getAllClients()[i]->getNickname() == nickname)
 		{
-			if ( channel->getAllClients()[i]->getNickname() == nickname[j])
-			{
-				std::cout << "the client " << nickname[j] << " will be kicked from the channel" << std::endl;
-				channel->removeClient(nickname[j]);
-				RPL::RPL_KICK(client, channelName, nickname[j], comment, server.getSocketByNickname(nickname[j]) );
-				nickname.erase(nickname.begin() + j);
-			}
+			std::cout << Get::Time() << BOLD << " --- Client " << nickname  << " is kicked from the channel" << END << std::endl;
+			RPL::RPL_KICK(client, channelName, nickname, comment, channel->getAllClients());
+			channel->removeClient(nickname);
 		}
 	}
 	for ( size_t i = 0; i < nickname.size(); i++ )
 	{
-		RPL::ERR_USERNOTINCHANNEL( client, nickname[i], channelName );
+		std::cout << Get::Time() << RED << " --- Client " << nickname << " is NOT in the channel" << END << std::endl;
+		RPL::ERR_USERNOTINCHANNEL( client, nickname, channelName );
 	}
 	return;
 }

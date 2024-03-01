@@ -9,14 +9,6 @@
 int Client::_id_num = 0;
 int Client::_serverSocket = -1;
 
-// used to get the client in chanel add const
-/// @return
-std::string Client::getnickname() const
-{
-	return _nickname;
-}
-
-
 // Coplien's form -------------------------------------------------------------------------------------------------------
 Client::Client( void ) {
 
@@ -90,7 +82,6 @@ void	Client::setNickname( std::string nick ) {
 		_nickname.clear();
 
 	_nickname = nick;
-//	_id = getNicknameId( );
 	_id = ++_id_num;
 	return;
 }
@@ -150,13 +141,6 @@ const int &		Client::getSocket( void ) const {
 
 int	Client::getNicknameId( void ) const {
 
-//	// Simple hash function to convert the string to an integer
-//	int hash = 0;
-//	for ( size_t i = 0; i < _nickname.length(); ++i ) {
-//		hash = (hash * 31) + _nickname[i]; // A simple hash function
-//	}
-//	std::cout << "Nickname id from getNicknameId: " << hash << std::endl;
-//	return hash;
 	return _id;
 }
 
@@ -185,18 +169,12 @@ std::string	Client::getRealname( void ) const {
 	return _realname;
 }
 
-int Client::getId( ) const {
-
-	return _id;
-}
-
 // Bool------------------------------------------------------------------------------------------------------------------
 
 bool	Client::isRegistered( void ) const {
 
 	return _is_registered;
 }
-
 
 // Member functions -----------------------------------------------------------------------------------------------------
 
@@ -255,29 +233,11 @@ void	Client::printInfo( void ) {
 	return;
 }
 
-
 // Overload operator == ------------------------------------------------------------------------------------------------
 
 bool	Client::operator==(const Client & rhs) const {
 
-	if ( this->_nickname == rhs._nickname && this->_socket == rhs._socket )
+	if ( this->_socket == rhs._socket )
 		return true;
 	return false;
 }
-
-
-// bool	Client::sendMessage( std::string & message ) {
-
-// 	int ret;
-// 	for ( size_t i = 0; i < message.length(); ++i )
-// 	{
-// 		if ( message[i] == '\n' )
-// 			message[i] = '\r';
-// 			ret = send( _socket, message.c_str(), message.length(), 0 );
-// 	}
-// 	if ( ret < 0 )
-// 		std::cerr << Get::Time() << RED_BOLD << " --- Error while sending message: " << strerror(errno) << END << std::endl;
-// 	else
-// 		std::cout << Get::Time() << GREEN_BOLD << " --- Message sent successfully" << END << std::endl;
-// 	return ( ret < 0 ? false : true );
-// }967214913

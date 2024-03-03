@@ -48,7 +48,7 @@ public:
 
 	//maybe put in a class Channel
 	int 										getSocketByNickname( std::string &nickname );
-	Client & 									getClientByNickname( std::string &nickname );
+	Client * 									getClientByNickname( std::string &nickname );
 
 
 	class ServerException : public std::exception {

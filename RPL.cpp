@@ -25,7 +25,7 @@ void RPL::send_message( const int & socket, const char * message, const size_t m
 		std::cerr << Get::Time() << RED << " --- send() failed" << strerror( errno ) << END << std::endl;
 		return;
 	}
-	std::cout << Get::Time() << YELLOW_BOLD << " --- Send msg to [socket " << socket << "] " << message << END;
+	std::cout << YELLOW_BOLD << " --- Send msg to [socket " << socket << "] " << message << END;
 	return;
 }
 
@@ -93,7 +93,13 @@ void RPL::RPL_NICK( Client const & client, std::string & newNickname ) {
 
 void RPL::RPL_WHOISUSER( Client const & client ) {
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 311 " + client.getNickname() + " " + client.getUsername() + " " + client.getHostname() + " * " + client.getRealname() + "\r\n";
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 311 " + client.getNickname() + " " + client.getNickname() + " " + client.getUsername() + " " + client.getHostname() + " * " + client.getRealname() + "\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+void RPL::RPL_ENDOFWHOIS( Client const & client ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 318 " + client.getNickname() + " :End of /WHOIS list\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
@@ -138,6 +144,37 @@ void  RPL::RPL_ENDOFNAMES(const Client &client, std::string &channelName) {
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
+void RPL::ERR_INVITEONLYCHAN(const Client &client, std::string &channelName) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 473 " + client.getNickname() + " " + channelName + " :Cannot join channel (+i)\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+
+void RPL::ERR_CHANNELISFULL( const Client &client, std::string &channelName ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 471 " + client.getNickname() + " " + channelName + " :Cannot join channel (+l)\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+void RPL::RPL_TOPIC( const Client &client, const std::string &channelName, const std::string &topic ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 332 " + client.getNickname() + " " + channelName + " :" + topic + "\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+void RPL::RPL_TOPICWHOTIME( const Client &client, const Client & setter, const std::string &channelName, const long &creationTime ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 333 " + client.getNickname() + " " + channelName + " " + setter.getNickname() + " " + setter.getUsername() + "@" + setter.getHostname() + " " + std::to_string(creationTime) + "\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+void RPL::RPL_BADCHANNELKEY( const Client &client, std::string &channelName ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 475 " + client.getNickname() + " " + channelName + " :Cannot join channel (+k)\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
 //NORMAL
 
 void  RPL::RPL_JOIN(const Client &client, std::string &channelName) {
@@ -153,12 +190,20 @@ void RPL::ERR_NOSUCHCHANNEL( Client const & client, std::string & channelName ) 
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 403 " + client.getNickname() + " " + channelName + " :No such channel\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
-
 }
 
-void  RPL::RPL_CHANNELMODEIS(const Client &client, std::string &channelName) {
+/*
+ * RPL_CHANNELMODEIS (324)
+  "<client> <channel> <modestring> <mode arguments>..."
+ Sent to a client to inform them of the currently-set modes of a channel.
+ <channel> is the name of the channel. <modestring> and <mode arguments>
+ are a mode string and the mode arguments (delimited as separate parameters)
+ as defined in the MODE message description.
+ */
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 324 " + client.getNickname() + " " + channelName + " +Cnst\r\n";
+void  RPL::RPL_CHANNELMODEIS(const Client &client, const std::string & channelName, const std::string & allChannelModes ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 324 " + client.getNickname() + " " + channelName + " " + allChannelModes + "\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 void  RPL::RPL_CREATIONTIME(const Client &client, std::string &channelName, const long & creationTime) {
@@ -167,10 +212,32 @@ void  RPL::RPL_CREATIONTIME(const Client &client, std::string &channelName, cons
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
+void  RPL::ERR_UNKNOWNMODE(const Client &client, const char & mode) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 472 " + client.getNickname() + " " + mode + " :is unknown mode char to me for " + client.getServname() + "\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+void RPL::INFORM_CHANNELMODE( Client const & client, const std::string  & channelName, const std::vector< std::string > & command, const std::vector< Client * > & allClients ) {
+
+	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getServname();
+	std::string message = "@time=" + Get::Time() + ":" + msgto + " MODE " + channelName + " ";
+	for ( size_t i = 0; i < command.size(); ++i )
+	{
+		message += command[i] + " ";
+	}
+	message += "\r\n";
+	for ( size_t i = 0; i < allClients.size(); ++i )
+	{
+		RPL::send_message( allClients[i]->getSocket(), message.c_str(), message.size() );
+	}
+}
+
+
 // NICK MODE
 void RPL::ERR_UMODEUNKNOWNFLAG( Client const & client ) {
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 501 " + client.getNickname() + " :Unknown MODE flag\r\n";
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 501 " + client.getNickname() + " :Server doesn't support user modes\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 
 }
@@ -223,7 +290,7 @@ void RPL::RPL_KICK( const Client & client, std::string & channelName, std::strin
 	}
 }
 
-void RPL::ERR_CHANOPRIVSNEEDED( Client const & client, std::string & channelName ) {
+void RPL::ERR_CHANOPRIVSNEEDED( Client const & client, const std::string & channelName ) {
 
 	std::string msg = "@time=" + Get::Time() + ":" + client.getServname() + " 482 " + client.getNickname() + " " + channelName + " :You're not channel operator\r\n";
 	send_message( client.getSocket(), msg.c_str(), msg.size() );
@@ -242,8 +309,27 @@ void RPL::ERR_USERNOTINCHANNEL( Client const & client, std::string & nickname, s
 }
 
 
-void RPL::RPL_MODE_OP( const Client & client, const std::string channelName ) {
+void RPL::RPL_MODE_OP( const Client & client, const std::string channelName, const std::string & currentChannelModes ) {
 
-	std::string msg = "@time=" + Get::Time() + ":" + client.getServname() + " MODE " + channelName + " +Cnst\r\n";
+	std::string msg = "@time=" + Get::Time() + ":" + client.getServname() + " MODE " + channelName + " " + currentChannelModes + "\r\n";
 	send_message(client.getSocket(), msg.c_str(), msg.size() );
+}
+
+
+// INVITE
+
+void RPL::ERR_USERONCHANNEL( const Client & client, std::string & nickname, std::string & channelName ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 443 " + client.getNickname() + " " + nickname + " " + channelName + " :is already on channel\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+void RPL::RPL_INVITING( const Client & client, Client const & invited, std::string & channelName ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 341 " + client.getNickname() + " " + invited.getNickname() + " " + channelName + "\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+
+	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getServname();
+	message = "@time=" + Get::Time() + ":" + msgto + " INVITE " + invited.getNickname() + " " + channelName + "\r\n";
+	send_message( invited.getSocket(), message.c_str(), message.size() );
 }

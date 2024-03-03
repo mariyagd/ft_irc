@@ -20,9 +20,9 @@ private:
 public:
 	~Get( void );
 	static std::string		Time( void );
-	static int				Addrinfo( void );
+	static std::string		HostMachineAddrInfo( void );
 	static void				printConnectionInfo( struct addrinfo *& _servinfo );
-	static int			get_hostname( char **hostname );
+	static void				get_hostname( std::string & hostname );
 
 };
 

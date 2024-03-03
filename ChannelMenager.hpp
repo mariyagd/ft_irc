@@ -20,8 +20,10 @@ public:
 
 	std::vector< Channel * > &	getAllChannels( void );
 	Channel *					createChannel( std::string name );
-	Channel	*					getChannel( const std::string& channelName) ;
+//	Channel	*					getChannel( const std::string& channelName) ;
+	Channel	*					getChannelByName( const std::string& channelName) ;
 
+	bool						mode_already_set(Channel * channel, const char & mode, bool status );
 	bool						channelExists(const std::string& channelName);
 
 	void						removeClientFromAllChannels(Client* client);

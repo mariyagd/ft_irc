@@ -39,7 +39,7 @@ std::string	Get::Time(  )
    is guaranteed to be no less than {_POSIX_HOST_NAME_MAX}.
    you can also check the max value for namelen from the terminal with: getconf HOST_NAME_MAX
 */
-int Get::get_hostname( char **_hostname ) {
+void	Get::get_hostname( std::string & _hostname  ) {
 
 	char hostname[ _POSIX_HOST_NAME_MAX ];
 	memset( hostname, 0, _POSIX_HOST_NAME_MAX );
@@ -48,10 +48,10 @@ int Get::get_hostname( char **_hostname ) {
 	if ( ret < 0 )
 	{
 		std::cerr << Get::Time() << RED_BOLD << " --- gethostname() failed: " << strerror(errno) << END << std::endl;
-		return ( -1 );
+		return;
 	}
-	*_hostname = strdup( hostname );
-	return 0;
+	_hostname = std::string( hostname );
+	return;
 }
 
 /*
@@ -67,18 +67,15 @@ int Get::get_hostname( char **_hostname ) {
    -> this is why we don't use AI_PASSIVE
  */
 
-int	Get::Addrinfo()
+std::string	Get::HostMachineAddrInfo()
 {
 	int	ret;
 	struct addrinfo 	_hints;
 	struct addrinfo		*_servinfo;
-	char * 				hostname = NULL;
+	std::string			hostname;
 
-	ret = get_hostname( &hostname );
-	if ( ret < 0 )
-		return ret;
+	get_hostname( hostname );
 
-	// initialize the structures to 0
 	_servinfo = NULL;
 	memset( &_hints, 0, sizeof( struct addrinfo ) );
 
@@ -87,20 +84,14 @@ int	Get::Addrinfo()
 	_hints.ai_socktype = SOCK_STREAM;					// TCP stream sockets
 	_hints.ai_protocol = 0;								// any protocol
 
-	ret = getaddrinfo( hostname, NULL, &_hints, &_servinfo );
-
-	if ( hostname != NULL )
-		free( hostname );
-
+	ret = getaddrinfo( hostname.c_str(), NULL, &_hints, &_servinfo );
 	if (ret != 0)
-	{
 		std::string error_msg = Get::Time() + " Getaddrinfo error: " + std::string( gai_strerror(ret) );
-		freeaddrinfo( _servinfo );
-		return -1;
-	}
-	printConnectionInfo( _servinfo );
+	else
+		printConnectionInfo( _servinfo );
+
 	freeaddrinfo( _servinfo );
-	return 0;
+	return std::string (hostname );
 }
 
 void	Get::printConnectionInfo( struct addrinfo *& _servinfo ) {

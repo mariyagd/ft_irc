@@ -33,7 +33,7 @@ Channel * ChannelMenager::createChannel( std::string name )
 }
 
 
-Channel * ChannelMenager::getChannel(const std::string & channelName)
+Channel * ChannelMenager::getChannelByName(const std::string & channelName)
 {
 	// Find the channel in the vector
 	size_t i = 0;
@@ -77,14 +77,20 @@ void	ChannelMenager::removeClientFromAllChannels( Client * client )
 
 void	ChannelMenager::print_channels_info() {
 
+
 	for (size_t i = 0; i < _channels.size(); ++i )
 	{
-		std::cout << "Channel name: " << _channels[i]->getChannelName() << std::endl;
+		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << "" << END << std::endl;
+		std::cout << BLUE_BOLD << " Channel : [" << END << _channels[i]->getChannelName() << "]" << std::endl;
+		std::cout << BLUE_BOLD << " Modes : ["  << END << _channels[i]->getCurrentChannelModes() << "]" << std::endl;
+		std::cout << BLUE_BOLD << " Clients: " << END << std::endl;
 		std::vector< Client * > & clients =  _channels[i]->getAllClients();
 		for ( size_t j = 0; j < clients.size(); ++j )
 		{
-			std::cout << "Client: " << " socket [" << clients[j]->getSocket() << "] nick [" << clients[j]->getNickname() << "]" << std::endl;
+			std::cout << " id [" << clients[j]->getNicknameId() << "] nick [" << clients[j]->getNickname() << "]" << std::endl;
 		}
-		std::cout << "---------------------------" << std::endl;
+		std::cout << BLUE_BOLD << " Operators: " << END << std::endl;
+		_channels[i]->getOperatorsName();
+		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << ""  << END << std::endl;
 	}
 }

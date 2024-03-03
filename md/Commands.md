@@ -13,7 +13,7 @@
 - USER message consist of:
 	- username -> wich will be the name of your machine
 	- hostname -> the name of your host machine ( your computer )
-	- servname -> the server you use to connect (localhost)
+	- servname -> the server you connect to
 	- realname -> your real name ( based on your machine )
 - Upon success, the client will receive an RPL_WELCOME
 - If the selected nickname during registration is already in use, the server must iteratively modify it until an available one is found and must **send error message to the client `ERR_NICKNAMEINUSE`**.  The procedure is illustrated using the example nickname `lola`:
@@ -80,6 +80,19 @@ ERR_RESTRICTED
 ###### Successful change:
 ```
 :<oldNick>!<user>@<host> NICK <newNick>
+```
+#### USER
+- The `USER` command is used at the beginning of a connection to specify the username and realname of a new user.
+- `<realname>` must be the last parameter because it may contain SPACE `(' ')` characters, and should be prefixed with a colon (`:`) if required.
+- Servers MAY use the [Ident Protocol](http://tools.ietf.org/html/rfc1413) to look up the ‘real username’ of clients. If username lookups are enabled and a client does not have an Identity Server enabled, **the username provided by the client SHOULD be prefixed by a tilde `'~'` to show that this value is user-set.**
+- to change your nick and username upon registration:
+```
+/set nick votrenom
+/set user_name votrenom
+
+/save
+
+reconnect
 ```
 #### OPER
 `/OPER <name> <password>`

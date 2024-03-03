@@ -95,7 +95,7 @@ void	Server::socket()
 		throw ServerException( error_msg.c_str() );
 	}
 
-	_connections[0].setServer( _servSock );	// set the first element of the table to the server socket
+	_connections[0].setServer( _servSock, Get::HostMachineAddrInfo() );	// set the first element of the table to the server socket
 	std::cout << Get::Time() << GREEN_BOLD << " --- Server's socket created successfully [socket " << _servSock << "]" END << std::endl;
 
 }
@@ -159,11 +159,7 @@ void	Server::bind()
 		shutdown();  // close the server socket
 		throw ServerException( error_msg.c_str() );
 	}
-	if ( Get::Addrinfo() < 0 )
-	{
-		shutdown();
-		throw ServerException( "Could not access IP adresses of the host machine" );
-	}
+
 
 	std::cout	<< Get::Time()
 				<< " --- Server bound successfully to all available IP addresses" << std::endl
@@ -237,7 +233,7 @@ void Server::accept( void )
 		{
 			if ( _connections[i].getSocket() < 0 )
 			{
-				_connections[i].setConnecion( clientSocket, clientAddress, addrlen );
+				_connections[i].setConnecion( clientSocket, clientAddress /*, addrlen */ );
 				return;
 			}
 		}
@@ -361,13 +357,13 @@ int	Server::getSocketByNickname( std::string &nickname ) {
 }
 
 //maybe put in a class Channel
-Client &	Server::getClientByNickname( std::string &nickname ) {
+Client *	Server::getClientByNickname( std::string &nickname ) {
 
 	size_t i = 0;
 	for ( ; i < _connections.size(); ++i )
 	{
 		if ( _connections[i].getNickname() == nickname )
-			break;
+			return &_connections[i];
 	}
-	return _connections[i];
+	return nullptr;
 }

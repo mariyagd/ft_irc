@@ -2,12 +2,17 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
+#include <sys/ioctl.h>
+#include <net/if.h>
+#include <sys/socket.h>
+#include <curl/curl.h>
 
 // Static member --------------------------------------------------------------------------------------------------------
 // helps to close the server socket when the server is shut down
 
 int Client::_id_num = 0;
 int Client::_serverSocket = -1;
+std::string Client::_serverName = "localhost";
 
 // Coplien's form -------------------------------------------------------------------------------------------------------
 Client::Client( void ) {
@@ -19,8 +24,8 @@ Client::Client( void ) {
 	_nickname = "";
 	_username = "";
 	_realname = "";
-	memset(&_addr, 0, sizeof( struct sockaddr ) );
-	_addrlen = sizeof(_addr);
+//	memset(&_addr, 0, sizeof( struct sockaddr ) );
+//	_addrlen = sizeof(_addr);
 	return;
 }
 
@@ -40,25 +45,38 @@ Client::Client( int socket ) : _socket(socket) {
 	_id = -1;
 	_username = "";
 	_realname = "";
-	memset(&_addr, 0, sizeof( struct sockaddr ) );
-	_addrlen = sizeof(_addr);
+//	memset(&_addr, 0, sizeof( struct sockaddr ) );
+//	_addrlen = sizeof(_addr);
 	return;
 }
 
 // Setters --------------------------------------------------------------------------------------------------------------
 
-void	Client::setServer( const int & socket ) {
+void	Client::setServer( const int & socket,  const std::string & serverName ) {
 
 	_socket = socket;
 	_serverSocket = socket;
+	if ( !_serverName.empty() )
+		_serverName = serverName;
+	std::cout << CYAN_BG << serverName  << END << std::endl;
 	return;
 }
 
-void	Client::setConnecion(const int & socket, const struct sockaddr & addr, const socklen_t & addrlen) {
+void	Client::setConnecion(const int & socket, const struct sockaddr & addr /*, const socklen_t & addrlen */) {
 
 	_socket = socket;
-	_addr = addr;
-	_addrlen = addrlen;
+//	_addr = addr;
+//	_addrlen = addrlen;
+
+	char clientIP[INET_ADDRSTRLEN];
+	const char * hostname =  inet_ntop(AF_INET, &reinterpret_cast< const struct sockaddr_in * >( &addr )->sin_addr, clientIP, INET_ADDRSTRLEN);
+	if ( !hostname )
+	{
+		std::cerr << Get::Time() << RED_BOLD << " --- inet_ntop() failed: " << strerror(errno) << END << std::endl;
+		_hostname = "localhost";
+	}
+	else
+		_hostname = std::string( hostname );
 
 	int ret = 0;
 	ret = fcntl(_socket, F_SETFL, O_NONBLOCK);
@@ -86,30 +104,34 @@ void	Client::setNickname( std::string nick ) {
 	return;
 }
 
-void	Client::setUsername( std::string user ) {
+void	Client::setUsername( const std::string & username ) {
 
 	if ( !_username.empty() )
 		_username.clear();
 
-	_username = user.substr(0, 9);
+	if ( username[0] == '~')
+		_username = username.substr(0, 10);
+	else
+		_username = username.substr(0, 9);
+
 	return;
 }
+
 
 // the name of the host machine of the user
-void	Client::setHostname( std::string hostname ) {
-
-	if ( !_hostname.empty() )
-		_hostname.clear();
-
-	_hostname = hostname;
-	return;
-}
-
-void	Client::setServname( std::string servname ) {
-
-	_servname = servname;
-	return;
-}
+//void	Client::setHostname( std::string hostname ) {
+//
+//	if ( !_hostname.empty() )
+//		_hostname.clear();
+//	_hostname = hostname;
+//
+//}
+//
+//void	Client::setServname( std::string servname ) {
+//
+//	_servname = servname;
+//	return;
+//}
 
 void	Client::setRealname( std::string realname ) {
 
@@ -161,7 +183,7 @@ std::string	Client::getHostname( void ) const {
 
 std::string	Client::getServname( void ) const {
 
-	return _servname;
+	return _serverName;
 }
 
 std::string	Client::getRealname( void ) const {
@@ -187,10 +209,10 @@ void	Client::cleanClient( void ) {
 	_nickname.clear();
 	_username.clear();
 	_hostname.clear();
-	_servname.clear();
+//	_servname.clear();
 	_realname.clear();
-	memset(&_addr, 0, sizeof( struct sockaddr ) );
-	_addrlen = sizeof(_addr);
+//	memset(&_addr, 0, sizeof( struct sockaddr ) );
+//	_addrlen = sizeof(_addr);
 	return;
 }
 
@@ -225,9 +247,9 @@ void	Client::printInfo( void ) {
 	std::cout << std::left << std::setw(15) << "Nickname: " << _nickname << std::endl;
 	std::cout << std::left << std::setw(15) << "Username: " << _username << std::endl;
 	std::cout << std::left << std::setw(15) << "Hostname: " << _hostname << std::endl;
-	std::cout << std::left << std::setw(15) << "Servname: " << _servname << std::endl;
+//	std::cout << std::left << std::setw(15) << "Servname: " << _servname << std::endl;
 	std::cout << std::left << std::setw(15) << "Realname: " << _realname << std::endl;
-	std::cout << std::left << std::setw(15) << "Address: " << inet_ntoa(((struct sockaddr_in *)&_addr)->sin_addr) << std::endl;
+//	std::cout << std::left << std::setw(15) << "Address: " << inet_ntoa(((struct sockaddr_in *)&_addr)->sin_addr) << std::endl;
 
 	std::cout << BLUE_BOLD  << "------------------------------------------------------" << END << std::endl;
 	return;

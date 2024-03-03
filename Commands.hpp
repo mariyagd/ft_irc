@@ -24,7 +24,7 @@ public:
 	static bool		isCommand( const std::string & token, std::vector< std::string > & availableCommands );
 	static void		initAvailableCommands( std::vector< std::string > & availableCommands );
 	static bool		is_unique_nickname(  std::string & nickname, int clientSocket, std::vector< Client > & connections );
-
+	static void		concatenate( std::vector< std::string > & tokens, size_t i, std::string & msg );
 
 
 	static void		choose_command( std::vector< std::string > & command, Client & client, Server &server );
@@ -39,9 +39,15 @@ public:
 	static void 	PING( std::vector< std::string > & command, Client & client, Server &server );
 
 	static void 	JOIN( std::vector< std::string > & command, Client & client, Server &server );
+
 	static void		MODE( std::vector< std::string > & command, Client & client, Server & server );
+	static void 	setChannelMode( Client & client,  std::vector< std::string > & command, Channel * channel );
+	static bool		errorsInModeCommand( std::vector< std::string > & command, Client & client, Channel * channel );
+
 	static void		PRIVMSG( std::vector< std::string > & command, Client & client, Server & server );
 	static void 	KICK( std::vector< std::string > & command, Client & client, Server & server );
+	static void 	INVITE( std::vector< std::string > & command, Client & client, Server & server );
+	static void 	TOPIC( std::vector< std::string > & command, Client & client, Server & server );
 	static void 	CAP( std::vector< std::string > & command, Client & client, Server & server );
 
 };

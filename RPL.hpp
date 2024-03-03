@@ -32,6 +32,7 @@ public:
 
 	// WHOIS
 	static void RPL_WHOISUSER( Client const & client );
+	static void RPL_ENDOFWHOIS( Client const & client );
 	static void ERR_NEEDMOREPARAMS( Client const & client, std::string const & command );
 
 	// PING
@@ -41,14 +42,22 @@ public:
 	//JOIN
 	static void RPL_NAMREPLY( Client const & client, std::string & channelName, const std::vector< std::string > & operatorsNames );
 	static void RPL_ENDOFNAMES( Client const & client, std::string & channelName );
+	static void ERR_INVITEONLYCHAN( Client const & client, std::string & channelName );
+	static void ERR_CHANNELISFULL( Client const & client, std::string & channelName );
+	static void RPL_TOPIC( Client const & client, const std::string & channelName, const std::string & topic );
+	static void RPL_TOPICWHOTIME( Client const & client, const Client & setter, const std::string & channelName, const long & creationTime );
+	static void RPL_BADCHANNELKEY( Client const & client, std::string & channelName );
 
 	//NORMAL
 	static void RPL_JOIN( Client const & client, std::string & channelName );
 
 	//CHANNEL MODE
+	static void RPL_CHANNELMODEIS( Client const & client, const std::string & channelName, const std::string & allChannelModes );
 	static void ERR_NOSUCHCHANNEL( Client const & client, std::string & channelName );
-	static void RPL_CHANNELMODEIS( Client const & client, std::string & channelName );
 	static void RPL_CREATIONTIME( Client const & client, std::string & channelName, const long & creationTime );
+	static void ERR_UNKNOWNMODE( Client const & client, const char & mode );
+	static void INFORM_CHANNELMODE( Client const & client, const std::string  & channelName, const std::vector< std::string > & command, const std::vector< Client * > & allClients );
+
 
 	// NICK MODE
 	static void ERR_UMODEUNKNOWNFLAG( Client const & client );
@@ -61,16 +70,19 @@ public:
 	static void RPL_PRIVMSG_CHANNEL( Client const & client, std::string & channelName, std::string & message );
 	static void RPL_PRIVMSG_SELF( Client const & client, std::string & nickname, std::string & message );
 	static void RPL_PRIVMSG_SELF_CHANNEL( Client const & client, std::string & channelName, std::string & message );
-	static void ERR_CANNOTSENDTOCHAN ( Client const & client, std::string & channelName ); 
+	static void ERR_CANNOTSENDTOCHAN ( Client const & client, std::string & channelName );
 
 	// KICK
-	static void ERR_CHANOPRIVSNEEDED( Client const & client, std::string & channelName );
+	static void ERR_CHANOPRIVSNEEDED( Client const & client, const std::string & channelName );
 	static void RPL_KICK( Client const & client, std::string & channelName, std::string & nickname, std::string & comment, std::vector< Client * > allClients);
 	static void ERR_NOTONCHANNEL( Client const & client, std::string & channelName );
 	static void ERR_USERNOTINCHANNEL( Client const & client, std::string & nickname, std::string & channelName );
 
-	static void RPL_MODE_OP(Client const & client, const std::string channelName );
+	static void RPL_MODE_OP(Client const & client, const std::string channelName, const std::string & currentChannelModes );
 
+	// INVITE
+	static void ERR_USERONCHANNEL( Client const & client, std::string & nickname, std::string & channelName );
+	static void RPL_INVITING( Client const & client, Client const & invited, std::string & channelName );
 
 };
 

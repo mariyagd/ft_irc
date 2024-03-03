@@ -48,8 +48,11 @@ public:
 	static void RPL_TOPICWHOTIME( Client const & client, const Client & setter, const std::string & channelName, const long & creationTime );
 	static void RPL_BADCHANNELKEY( Client const & client, std::string & channelName );
 
+	// TOPIC
+	static void RPL_NORMAL( Client const & client, const std::vector< Client * > & allClients, const std::string & channelName, const std::string & command, std::string & topic );
+
 	//NORMAL
-	static void RPL_JOIN( Client const & client, std::string & channelName );
+	static void RPL_JOIN( Client const & client, const std::vector< Client *> allClients, std::string & channelName );
 
 	//CHANNEL MODE
 	static void RPL_CHANNELMODEIS( Client const & client, const std::string & channelName, const std::string & allChannelModes );

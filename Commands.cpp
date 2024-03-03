@@ -337,12 +337,12 @@ void	Commands::JOIN( std::vector< std::string > & command, Client & client, Serv
 				RPL::ERR_CHANNELISFULL( client, channelsNames[i] );
 			else
 			{
-				if ( channel->getKeyMode() && command.size() == 3 && command[2] != channel->getKey() )
+				if ( channel->getKeyMode() && (command.size() != 3 || command[2] != channel->getKey()) )
 				{
 					RPL::RPL_BADCHANNELKEY( client, channelsNames[i] );
 					return;
 				}
-				RPL::RPL_JOIN( client, channelsNames[i] );
+				RPL::RPL_JOIN( client, channel->getAllClients(), channelsNames[i] );
 				channel->addClient( client );
 
 				if ( channel->isClientIsOperator( client.getNicknameId( ) ) != -1 )
@@ -740,10 +740,11 @@ void Commands::TOPIC( std::vector< std::string > & command, Client & client, Ser
 		RPL::RPL_TOPIC( client, channelName, channel->getTopic() );
 		RPL::RPL_TOPICWHOTIME( client, *channel->getTopicSetter(), channelName, channel->getTopicCreationTime( ) );
 	}
-	else if ( !channel->getTopicMode() || channel->isClientIsOperator( client.getNicknameId() ) )
+	else if ( !channel->getTopicMode() || channel->isClientIsOperator( client.getNicknameId() ) != -1 )
 	{
-		std::cout << Get::Time() << BOLD << " --- Set channel topic " << END << std::endl;
+		std::cout << Get::Time() << BOLD << " --- Set channel topic hrhr" << END << std::endl;
 		channel->setTopic( topic, client.getNicknameId() );
+		RPL::RPL_NORMAL( client, channel->getAllClients(), channelName, "TOPIC", topic );
 		RPL::RPL_TOPIC( client, channelName, topic );
 	}
 	else
@@ -752,5 +753,3 @@ void Commands::TOPIC( std::vector< std::string > & command, Client & client, Ser
 		RPL::ERR_CHANOPRIVSNEEDED( client, channelName );
 	}
 }
-
-

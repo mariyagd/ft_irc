@@ -29,6 +29,16 @@ void RPL::send_message( const int & socket, const char * message, const size_t m
 	return;
 }
 
+void RPL::RPL_NORMAL( const Client & client, const std::vector< Client * > & allClients, const std::string & channelName, const std::string & command, std::string & topic ) {
+
+	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getServname();
+	std::string message = "@time=" + Get::Time() + ":" + msgto + " " + command + " " + channelName + " " + topic + "\r\n";
+	for ( size_t i = 0; i < allClients.size(); ++i )
+	{
+		send_message( allClients[i]->getSocket(), message.c_str(), message.size() );
+	}
+}
+
 // Upon registration------------------------------------------------------------------------------------------------------
 
 
@@ -159,13 +169,14 @@ void RPL::ERR_CHANNELISFULL( const Client &client, std::string &channelName ) {
 
 void RPL::RPL_TOPIC( const Client &client, const std::string &channelName, const std::string &topic ) {
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 332 " + client.getNickname() + " " + channelName + " :" + topic + "\r\n";
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 332 " + client.getNickname() + " " + channelName + topic + "\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
 void RPL::RPL_TOPICWHOTIME( const Client &client, const Client & setter, const std::string &channelName, const long &creationTime ) {
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 333 " + client.getNickname() + " " + channelName + " " + setter.getNickname() + " " + setter.getUsername() + "@" + setter.getHostname() + " " + std::to_string(creationTime) + "\r\n";
+	std::string msgto = setter.getNickname() + "!" + setter.getUsername() + "@" + setter.getServname();
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 333 " + client.getNickname() + " " + channelName + " " + msgto + " " + std::to_string(creationTime) + "\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
@@ -177,11 +188,14 @@ void RPL::RPL_BADCHANNELKEY( const Client &client, std::string &channelName ) {
 
 //NORMAL
 
-void  RPL::RPL_JOIN(const Client &client, std::string &channelName) {
+void  RPL::RPL_JOIN(const Client &client, const std::vector< Client * > allClients, std::string &channelName) {
 
-	std::string msgto = client.getNickname() + "!~" + client.getUsername() + "@" + client.getServname();
+	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getServname();
 	std::string message = "@time=" + Get::Time() + ":" + msgto + " " + "JOIN " + channelName + " * " + client.getRealname() + "\r\n";
-	send_message( client.getSocket(), message.c_str(), message.size() );
+	for ( size_t i = 0; i < allClients.size(); ++i )
+	{
+		send_message( allClients[i]->getSocket(), message.c_str(), message.size() );
+	}
 }
 
 // CHANNEL MODE

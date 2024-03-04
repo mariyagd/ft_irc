@@ -105,6 +105,34 @@ build CMakeFiles/ft_irc.dir/Get.cpp.o: CXX_COMPILER__ft_irc_unscanned_Debug /Use
   OBJECT_DIR = CMakeFiles/ft_irc.dir
   OBJECT_FILE_DIR = CMakeFiles/ft_irc.dir
 
+build CMakeFiles/ft_irc.dir/ACommand.cpp.o: CXX_COMPILER__ft_irc_unscanned_Debug /Users/mdanchev/Desktop/ft_irc/ACommand.cpp || cmake_object_order_depends_target_ft_irc
+  DEP_FILE = CMakeFiles/ft_irc.dir/ACommand.cpp.o.d
+  FLAGS = -g -std=gnu++14 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk -mmacosx-version-min=10.15 -fcolor-diagnostics
+  INCLUDES = -I/Users/mdanchev/Desktop/ft_irc/.
+  OBJECT_DIR = CMakeFiles/ft_irc.dir
+  OBJECT_FILE_DIR = CMakeFiles/ft_irc.dir
+
+build CMakeFiles/ft_irc.dir/PASS.cpp.o: CXX_COMPILER__ft_irc_unscanned_Debug /Users/mdanchev/Desktop/ft_irc/PASS.cpp || cmake_object_order_depends_target_ft_irc
+  DEP_FILE = CMakeFiles/ft_irc.dir/PASS.cpp.o.d
+  FLAGS = -g -std=gnu++14 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk -mmacosx-version-min=10.15 -fcolor-diagnostics
+  INCLUDES = -I/Users/mdanchev/Desktop/ft_irc/.
+  OBJECT_DIR = CMakeFiles/ft_irc.dir
+  OBJECT_FILE_DIR = CMakeFiles/ft_irc.dir
+
+build CMakeFiles/ft_irc.dir/NICK.cpp.o: CXX_COMPILER__ft_irc_unscanned_Debug /Users/mdanchev/Desktop/ft_irc/NICK.cpp || cmake_object_order_depends_target_ft_irc
+  DEP_FILE = CMakeFiles/ft_irc.dir/NICK.cpp.o.d
+  FLAGS = -g -std=gnu++14 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk -mmacosx-version-min=10.15 -fcolor-diagnostics
+  INCLUDES = -I/Users/mdanchev/Desktop/ft_irc/.
+  OBJECT_DIR = CMakeFiles/ft_irc.dir
+  OBJECT_FILE_DIR = CMakeFiles/ft_irc.dir
+
+build CMakeFiles/ft_irc.dir/USER.cpp.o: CXX_COMPILER__ft_irc_unscanned_Debug /Users/mdanchev/Desktop/ft_irc/USER.cpp || cmake_object_order_depends_target_ft_irc
+  DEP_FILE = CMakeFiles/ft_irc.dir/USER.cpp.o.d
+  FLAGS = -g -std=gnu++14 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk -mmacosx-version-min=10.15 -fcolor-diagnostics
+  INCLUDES = -I/Users/mdanchev/Desktop/ft_irc/.
+  OBJECT_DIR = CMakeFiles/ft_irc.dir
+  OBJECT_FILE_DIR = CMakeFiles/ft_irc.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target ft_irc
@@ -113,7 +141,7 @@ build CMakeFiles/ft_irc.dir/Get.cpp.o: CXX_COMPILER__ft_irc_unscanned_Debug /Use
 #############################################
 # Link the executable ft_irc
 
-build ft_irc: CXX_EXECUTABLE_LINKER__ft_irc_Debug CMakeFiles/ft_irc.dir/main.cpp.o CMakeFiles/ft_irc.dir/Server.cpp.o CMakeFiles/ft_irc.dir/Client.cpp.o CMakeFiles/ft_irc.dir/RPL.cpp.o CMakeFiles/ft_irc.dir/Commands.cpp.o CMakeFiles/ft_irc.dir/Channel.cpp.o CMakeFiles/ft_irc.dir/ChannelMenager.cpp.o CMakeFiles/ft_irc.dir/Get.cpp.o
+build ft_irc: CXX_EXECUTABLE_LINKER__ft_irc_Debug CMakeFiles/ft_irc.dir/main.cpp.o CMakeFiles/ft_irc.dir/Server.cpp.o CMakeFiles/ft_irc.dir/Client.cpp.o CMakeFiles/ft_irc.dir/RPL.cpp.o CMakeFiles/ft_irc.dir/Commands.cpp.o CMakeFiles/ft_irc.dir/Channel.cpp.o CMakeFiles/ft_irc.dir/ChannelMenager.cpp.o CMakeFiles/ft_irc.dir/Get.cpp.o CMakeFiles/ft_irc.dir/ACommand.cpp.o CMakeFiles/ft_irc.dir/PASS.cpp.o CMakeFiles/ft_irc.dir/NICK.cpp.o CMakeFiles/ft_irc.dir/USER.cpp.o
   FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk -mmacosx-version-min=10.15
   OBJECT_DIR = CMakeFiles/ft_irc.dir
   POST_BUILD = :

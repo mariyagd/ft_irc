@@ -20,4 +20,14 @@ add_executable(
         Channel.cpp
         ChannelMenager.cpp
         Get.cpp
+        ACommand.hpp
+        ACommand.hpp
+        ACommand.hpp
+        ACommand.cpp
+        PASS.hpp
+        PASS.cpp
+        NICK.cpp
+        NICK.cpp
+        USER.hpp
+        USER.cpp
 )

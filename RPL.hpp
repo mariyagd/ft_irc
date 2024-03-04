@@ -34,6 +34,7 @@ public:
 	static void RPL_WHOISUSER( Client const & client );
 	static void RPL_ENDOFWHOIS( Client const & client );
 	static void ERR_NEEDMOREPARAMS( Client const & client, std::string const & command );
+	static void RPL_ENDOFWHO( Client const & client, const std::string & channelName );
 
 	// PING
 	static void RPL_PING( Client const & client );
@@ -50,6 +51,8 @@ public:
 
 	// TOPIC
 	static void RPL_NORMAL( Client const & client, const std::vector< Client * > & allClients, const std::string & channelName, const std::string & command, std::string & topic );
+	static void RPL_NOTOPIC( Client const & client, std::string & channelName );
+
 
 	//NORMAL
 	static void RPL_JOIN( Client const & client, const std::vector< Client *> allClients, std::string & channelName );
@@ -86,6 +89,8 @@ public:
 	// INVITE
 	static void ERR_USERONCHANNEL( Client const & client, std::string & nickname, std::string & channelName );
 	static void RPL_INVITING( Client const & client, Client const & invited, std::string & channelName );
+
+	static void RPL_PART( Client const & client, const std::vector< Client *> allClients, const std::string & channelName, const std::string & comment );
 
 };
 

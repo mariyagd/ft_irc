@@ -1,6 +1,20 @@
 #include "Commands.hpp"
+# include "PASS.hpp"
+# include "USER.hpp"
+# include "NICK.hpp"
+# include "WHOIS.hpp"
+# include "PING.hpp"
+# include "JOIN.hpp"
+# include "MODE.hpp"
+# include "PRIVMSG.hpp"
+# include "KICK.hpp"
+# include "INVITE.hpp"
+# include "TOPIC.hpp"
+# include "PART.hpp"
+# include "WHO.hpp"
 
-std::map< std::string, ACommand * > availableCommands;
+std::map< std::string, ACommand * > Commands::availableCommands;
+
 
 // Coplien's form------------------------------------------------------------------------------------------------------
 
@@ -69,9 +83,20 @@ void Commands::splitMsgOnComma( std::string & msg, std::vector< std::string > & 
 void	Commands::initAvailableCommands( ) {
 
 
-	availableCommands.insert( std::make_pair ("PASS", new PASS ) );
-//	availableCommands.insert( std::make_pair ("NICK", new NICK ) );
-//	availableCommands.insert( std::make_pair ("USER", new USER ) );
+	availableCommands.insert( std::make_pair ("PASS", new PASS() ) );
+	availableCommands.insert( std::make_pair ("NICK", new NICK() ) );
+	availableCommands.insert( std::make_pair ("USER", new USER() ) );
+	// availableCommands.insert( std::make_pair ("WHOIS", new WHOIS() ) );
+	availableCommands.insert( std::make_pair ("PING", new PING() ) );
+	// availableCommands.insert( std::make_pair ("JOIN", new JOIN() ) );
+	// availableCommands.insert( std::make_pair ("MODE", new MODE() ) );
+	// availableCommands.insert( std::make_pair ("PRIVMSG", new PRIVMSG() ) );
+	// availableCommands.insert( std::make_pair ("KICK", new KICK() ) );
+	// availableCommands.insert( std::make_pair ("INVITE", new INVITE() ) );
+	// availableCommands.insert( std::make_pair ("TOPIC", new TOPIC() ) );
+	// availableCommands.insert( std::make_pair ("PART", new PART() ) );
+	// availableCommands.insert( std::make_pair ("WHO", new WHO() ) );
+	
 	return ;
 }
 

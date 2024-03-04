@@ -2,8 +2,9 @@
 # define USER_HPP
 
 # include "ACommand.hpp"
+# include "Server.hpp"
+# include "Client.hpp"
 
-class ACommand;
 
 class USER : public ACommand {
 

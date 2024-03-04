@@ -1,15 +1,15 @@
 #ifndef COMMANDS_HPP
 # define COMMANDS_HPP
 
-# include "Server.hpp"
-# include "RPL.hpp"
+// # include "Server.hpp"
+// # include "RPL.hpp"
 # include "Client.hpp"
-# include "ChannelMenager.hpp"
+// # include "ChannelMenager.hpp"
 # include <map>
-//# include "ACommand.hpp"
-# include "PASS.hpp"
-//# include "USER.hpp"
-//# include "NICK.hpp"
+# include "ACommand.hpp"
+// # include "PASS.hpp"
+// # include "USER.hpp"
+// # include "NICK.hpp"
 
 class Server;
 class Client;
@@ -20,11 +20,11 @@ class PASS;
 class Commands {
 
 private:
-	Commands( void );
 
 public:
-	~Commands( void );
 	static std::map< std::string, ACommand * > availableCommands;
+	Commands( void );
+	~Commands( void );
 
 	static void		splitMsgOnSpace( std::string &msg, std::vector< std::string > &tokens );
 	static void		splitMsgOnComma( std::string &msg, std::vector< std::string > &tokens );

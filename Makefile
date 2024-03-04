@@ -5,6 +5,7 @@ SRCS = 	main.cpp  Server.cpp Client.cpp \
 		PASS.cpp \
 		NICK.cpp \
 		USER.cpp \
+		PING.cpp \
 
 CPPF = c++ -Wall -Werror -Wextra -std=c++98 -g
 

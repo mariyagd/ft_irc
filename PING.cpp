@@ -3,17 +3,14 @@
 PING::PING() {
 }
 
-PING::PING( std::string &line ) : ACommand( line ){
-	return ;
-}
-
 PING::~PING( void ) {
 }
 
 
-void PING::execute( std::string & line, Client & client, Server &server ) {
-	(void)line;
+void PING::execute( std::vector< std::string > & command, Client & client, Server &server ) {
+
 	(void)server;
+
 	if ( command.size() == 1 )
 		RPL::ERR_NOORIGIN( client );
 	else

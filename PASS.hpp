@@ -15,8 +15,7 @@ public:
 	PASS( void );
 	PASS( std::string &line );
 	~PASS( void );
-//	PASS( std::vector< std::string > &params, Client &client, Server &server );
-	void execute( std::string & line, Client & client, Server &server );
+	void execute( std::vector< std::string > & command, Client & client, Server &server );
 };
 
 #endif

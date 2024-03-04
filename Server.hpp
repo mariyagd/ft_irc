@@ -9,15 +9,20 @@
 class Client;
 class Commands;
 //class ChannelMenager;
+class ACommand;
 
 class Server : public ChannelMenager {
 
 private:
-	int									_port;
-	std::string 						_password;
-	fd_set								_read_fd_set;
-	std::vector< Client >				_connections;
-	static volatile std::sig_atomic_t 	_shutdown_server;
+	int											_port;
+	std::string 								_password;
+	fd_set										_read_fd_set;
+	std::vector< Client >						_connections;
+	static volatile std::sig_atomic_t 			_shutdown_server;
+
+	std::map< std::string, ACommand * >			_command_executor;
+
+
 
 public:
 	// signal handling
@@ -36,9 +41,9 @@ public:
 	void	listen( void );
 	void	loop( void );
 
-	void reset_fds( void );
-	void accept( void );
-	void receive( int i );
+	void 	reset_fds( void );
+	void 	accept( void );
+	void 	receive( int i );
 
 	void register_client( int i );
 
@@ -49,6 +54,9 @@ public:
 	//maybe put in a class Channel
 	int 										getSocketByNickname( std::string &nickname );
 	Client * 									getClientByNickname( std::string &nickname );
+
+	void										splitMsgOnSpace( std::string & line, std::vector< std::string > & tokens  );
+	void										process_command( const std::string & msg, Client & client );
 
 
 	class ServerException : public std::exception {

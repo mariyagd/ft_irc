@@ -78,6 +78,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/ACommand.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/ACommand.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
 		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Channel.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
@@ -111,7 +117,61 @@
 		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Get.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/INVITE.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/INVITE.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
 		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Irc.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/JOIN.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/JOIN.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/KICK.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/KICK.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/MODE.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/MODE.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/NICK.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/NICK.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PART.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PART.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PASS.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PASS.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PING.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PING.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PRIVMSG.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PRIVMSG.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
 		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/RPL.cpp">
@@ -124,6 +184,30 @@
 			<Option target="ft_irc"/>
 		</Unit>
 		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Server.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/TOPIC.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/TOPIC.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/USER.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/USER.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/WHO.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/WHO.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/WHOIS.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/WHOIS.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
 		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/main.cpp">

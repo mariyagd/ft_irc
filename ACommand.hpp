@@ -12,16 +12,16 @@ class Client;
 
 class ACommand {
 
-protected:
-	std::vector< std::string > command;
-
 public:
 	ACommand( void );
-	ACommand( std::string & line );
-	virtual ~ACommand( void );
-	virtual void execute( std::string & line, Client & client, Server &server ) = 0;
-	static void		splitMsgOnSpace( std::string &msg, std::vector< std::string > &tokens );
-	static void		splitMsgOnComma( std::string &msg, std::vector< std::string > &tokens );
+
+	virtual		~ACommand( void );
+	virtual		void execute( std::vector< std::string > & command, Client & client, Server &server ) = 0;
+
+	void		splitMsgOnComma( std::string &msg, std::vector< std::string > &tokens );
+	void		concatenate( std::vector< std::string > & tokens, size_t i, std::string & msg );
+
+	void		printVector( std::vector< std::string > & tokens );
 };
 
 #endif

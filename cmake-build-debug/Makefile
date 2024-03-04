@@ -129,6 +129,30 @@ ft_irc/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/build
 .PHONY : ft_irc/fast
 
+ACommand.o: ACommand.cpp.o
+.PHONY : ACommand.o
+
+# target to build an object file
+ACommand.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/ACommand.cpp.o
+.PHONY : ACommand.cpp.o
+
+ACommand.i: ACommand.cpp.i
+.PHONY : ACommand.i
+
+# target to preprocess a source file
+ACommand.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/ACommand.cpp.i
+.PHONY : ACommand.cpp.i
+
+ACommand.s: ACommand.cpp.s
+.PHONY : ACommand.s
+
+# target to generate assembly for a file
+ACommand.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/ACommand.cpp.s
+.PHONY : ACommand.cpp.s
+
 Channel.o: Channel.cpp.o
 .PHONY : Channel.o
 
@@ -249,6 +273,222 @@ Get.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Get.cpp.s
 .PHONY : Get.cpp.s
 
+INVITE.o: INVITE.cpp.o
+.PHONY : INVITE.o
+
+# target to build an object file
+INVITE.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/INVITE.cpp.o
+.PHONY : INVITE.cpp.o
+
+INVITE.i: INVITE.cpp.i
+.PHONY : INVITE.i
+
+# target to preprocess a source file
+INVITE.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/INVITE.cpp.i
+.PHONY : INVITE.cpp.i
+
+INVITE.s: INVITE.cpp.s
+.PHONY : INVITE.s
+
+# target to generate assembly for a file
+INVITE.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/INVITE.cpp.s
+.PHONY : INVITE.cpp.s
+
+JOIN.o: JOIN.cpp.o
+.PHONY : JOIN.o
+
+# target to build an object file
+JOIN.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/JOIN.cpp.o
+.PHONY : JOIN.cpp.o
+
+JOIN.i: JOIN.cpp.i
+.PHONY : JOIN.i
+
+# target to preprocess a source file
+JOIN.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/JOIN.cpp.i
+.PHONY : JOIN.cpp.i
+
+JOIN.s: JOIN.cpp.s
+.PHONY : JOIN.s
+
+# target to generate assembly for a file
+JOIN.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/JOIN.cpp.s
+.PHONY : JOIN.cpp.s
+
+KICK.o: KICK.cpp.o
+.PHONY : KICK.o
+
+# target to build an object file
+KICK.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/KICK.cpp.o
+.PHONY : KICK.cpp.o
+
+KICK.i: KICK.cpp.i
+.PHONY : KICK.i
+
+# target to preprocess a source file
+KICK.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/KICK.cpp.i
+.PHONY : KICK.cpp.i
+
+KICK.s: KICK.cpp.s
+.PHONY : KICK.s
+
+# target to generate assembly for a file
+KICK.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/KICK.cpp.s
+.PHONY : KICK.cpp.s
+
+MODE.o: MODE.cpp.o
+.PHONY : MODE.o
+
+# target to build an object file
+MODE.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/MODE.cpp.o
+.PHONY : MODE.cpp.o
+
+MODE.i: MODE.cpp.i
+.PHONY : MODE.i
+
+# target to preprocess a source file
+MODE.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/MODE.cpp.i
+.PHONY : MODE.cpp.i
+
+MODE.s: MODE.cpp.s
+.PHONY : MODE.s
+
+# target to generate assembly for a file
+MODE.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/MODE.cpp.s
+.PHONY : MODE.cpp.s
+
+NICK.o: NICK.cpp.o
+.PHONY : NICK.o
+
+# target to build an object file
+NICK.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/NICK.cpp.o
+.PHONY : NICK.cpp.o
+
+NICK.i: NICK.cpp.i
+.PHONY : NICK.i
+
+# target to preprocess a source file
+NICK.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/NICK.cpp.i
+.PHONY : NICK.cpp.i
+
+NICK.s: NICK.cpp.s
+.PHONY : NICK.s
+
+# target to generate assembly for a file
+NICK.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/NICK.cpp.s
+.PHONY : NICK.cpp.s
+
+PART.o: PART.cpp.o
+.PHONY : PART.o
+
+# target to build an object file
+PART.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/PART.cpp.o
+.PHONY : PART.cpp.o
+
+PART.i: PART.cpp.i
+.PHONY : PART.i
+
+# target to preprocess a source file
+PART.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/PART.cpp.i
+.PHONY : PART.cpp.i
+
+PART.s: PART.cpp.s
+.PHONY : PART.s
+
+# target to generate assembly for a file
+PART.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/PART.cpp.s
+.PHONY : PART.cpp.s
+
+PASS.o: PASS.cpp.o
+.PHONY : PASS.o
+
+# target to build an object file
+PASS.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/PASS.cpp.o
+.PHONY : PASS.cpp.o
+
+PASS.i: PASS.cpp.i
+.PHONY : PASS.i
+
+# target to preprocess a source file
+PASS.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/PASS.cpp.i
+.PHONY : PASS.cpp.i
+
+PASS.s: PASS.cpp.s
+.PHONY : PASS.s
+
+# target to generate assembly for a file
+PASS.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/PASS.cpp.s
+.PHONY : PASS.cpp.s
+
+PING.o: PING.cpp.o
+.PHONY : PING.o
+
+# target to build an object file
+PING.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/PING.cpp.o
+.PHONY : PING.cpp.o
+
+PING.i: PING.cpp.i
+.PHONY : PING.i
+
+# target to preprocess a source file
+PING.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/PING.cpp.i
+.PHONY : PING.cpp.i
+
+PING.s: PING.cpp.s
+.PHONY : PING.s
+
+# target to generate assembly for a file
+PING.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/PING.cpp.s
+.PHONY : PING.cpp.s
+
+PRIVMSG.o: PRIVMSG.cpp.o
+.PHONY : PRIVMSG.o
+
+# target to build an object file
+PRIVMSG.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/PRIVMSG.cpp.o
+.PHONY : PRIVMSG.cpp.o
+
+PRIVMSG.i: PRIVMSG.cpp.i
+.PHONY : PRIVMSG.i
+
+# target to preprocess a source file
+PRIVMSG.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/PRIVMSG.cpp.i
+.PHONY : PRIVMSG.cpp.i
+
+PRIVMSG.s: PRIVMSG.cpp.s
+.PHONY : PRIVMSG.s
+
+# target to generate assembly for a file
+PRIVMSG.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/PRIVMSG.cpp.s
+.PHONY : PRIVMSG.cpp.s
+
 RPL.o: RPL.cpp.o
 .PHONY : RPL.o
 
@@ -297,6 +537,102 @@ Server.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/Server.cpp.s
 .PHONY : Server.cpp.s
 
+TOPIC.o: TOPIC.cpp.o
+.PHONY : TOPIC.o
+
+# target to build an object file
+TOPIC.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/TOPIC.cpp.o
+.PHONY : TOPIC.cpp.o
+
+TOPIC.i: TOPIC.cpp.i
+.PHONY : TOPIC.i
+
+# target to preprocess a source file
+TOPIC.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/TOPIC.cpp.i
+.PHONY : TOPIC.cpp.i
+
+TOPIC.s: TOPIC.cpp.s
+.PHONY : TOPIC.s
+
+# target to generate assembly for a file
+TOPIC.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/TOPIC.cpp.s
+.PHONY : TOPIC.cpp.s
+
+USER.o: USER.cpp.o
+.PHONY : USER.o
+
+# target to build an object file
+USER.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/USER.cpp.o
+.PHONY : USER.cpp.o
+
+USER.i: USER.cpp.i
+.PHONY : USER.i
+
+# target to preprocess a source file
+USER.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/USER.cpp.i
+.PHONY : USER.cpp.i
+
+USER.s: USER.cpp.s
+.PHONY : USER.s
+
+# target to generate assembly for a file
+USER.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/USER.cpp.s
+.PHONY : USER.cpp.s
+
+WHO.o: WHO.cpp.o
+.PHONY : WHO.o
+
+# target to build an object file
+WHO.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/WHO.cpp.o
+.PHONY : WHO.cpp.o
+
+WHO.i: WHO.cpp.i
+.PHONY : WHO.i
+
+# target to preprocess a source file
+WHO.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/WHO.cpp.i
+.PHONY : WHO.cpp.i
+
+WHO.s: WHO.cpp.s
+.PHONY : WHO.s
+
+# target to generate assembly for a file
+WHO.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/WHO.cpp.s
+.PHONY : WHO.cpp.s
+
+WHOIS.o: WHOIS.cpp.o
+.PHONY : WHOIS.o
+
+# target to build an object file
+WHOIS.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/WHOIS.cpp.o
+.PHONY : WHOIS.cpp.o
+
+WHOIS.i: WHOIS.cpp.i
+.PHONY : WHOIS.i
+
+# target to preprocess a source file
+WHOIS.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/WHOIS.cpp.i
+.PHONY : WHOIS.cpp.i
+
+WHOIS.s: WHOIS.cpp.s
+.PHONY : WHOIS.s
+
+# target to generate assembly for a file
+WHOIS.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/WHOIS.cpp.s
+.PHONY : WHOIS.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -330,6 +666,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... ft_irc"
+	@echo "... ACommand.o"
+	@echo "... ACommand.i"
+	@echo "... ACommand.s"
 	@echo "... Channel.o"
 	@echo "... Channel.i"
 	@echo "... Channel.s"
@@ -345,12 +684,51 @@ help:
 	@echo "... Get.o"
 	@echo "... Get.i"
 	@echo "... Get.s"
+	@echo "... INVITE.o"
+	@echo "... INVITE.i"
+	@echo "... INVITE.s"
+	@echo "... JOIN.o"
+	@echo "... JOIN.i"
+	@echo "... JOIN.s"
+	@echo "... KICK.o"
+	@echo "... KICK.i"
+	@echo "... KICK.s"
+	@echo "... MODE.o"
+	@echo "... MODE.i"
+	@echo "... MODE.s"
+	@echo "... NICK.o"
+	@echo "... NICK.i"
+	@echo "... NICK.s"
+	@echo "... PART.o"
+	@echo "... PART.i"
+	@echo "... PART.s"
+	@echo "... PASS.o"
+	@echo "... PASS.i"
+	@echo "... PASS.s"
+	@echo "... PING.o"
+	@echo "... PING.i"
+	@echo "... PING.s"
+	@echo "... PRIVMSG.o"
+	@echo "... PRIVMSG.i"
+	@echo "... PRIVMSG.s"
 	@echo "... RPL.o"
 	@echo "... RPL.i"
 	@echo "... RPL.s"
 	@echo "... Server.o"
 	@echo "... Server.i"
 	@echo "... Server.s"
+	@echo "... TOPIC.o"
+	@echo "... TOPIC.i"
+	@echo "... TOPIC.s"
+	@echo "... USER.o"
+	@echo "... USER.i"
+	@echo "... USER.s"
+	@echo "... WHO.o"
+	@echo "... WHO.i"
+	@echo "... WHO.s"
+	@echo "... WHOIS.o"
+	@echo "... WHOIS.i"
+	@echo "... WHOIS.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

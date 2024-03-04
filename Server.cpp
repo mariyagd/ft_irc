@@ -1,5 +1,18 @@
 
 #include "Server.hpp"
+# include "PASS.hpp"
+# include "USER.hpp"
+# include "NICK.hpp"
+# include "WHOIS.hpp"
+# include "PING.hpp"
+# include "JOIN.hpp"
+# include "MODE.hpp"
+# include "PRIVMSG.hpp"
+# include "KICK.hpp"
+# include "INVITE.hpp"
+# include "TOPIC.hpp"
+# include "PART.hpp"
+# include "WHO.hpp"
 
 // Coplien's form --------------------------------------------------------------------------------------------------------
 
@@ -17,6 +30,20 @@ Server::Server(int port, char *password) : _port(port), _password(password) {
 
 	for ( int i = 0; i < MAX_CONNECTIONS + 1; ++i )
 		_connections.push_back( Client() );
+
+	_command_executor.insert(std::make_pair("PASS", new PASS()));
+	_command_executor.insert(std::make_pair("USER", new USER()));
+	_command_executor.insert(std::make_pair("NICK", new NICK()));
+	_command_executor.insert(std::make_pair("WHOIS", new WHOIS()));
+	_command_executor.insert(std::make_pair("PING", new PING()));
+	_command_executor.insert(std::make_pair("JOIN", new JOIN()));
+	_command_executor.insert(std::make_pair("MODE", new MODE()));
+	_command_executor.insert(std::make_pair("PRIVMSG", new PRIVMSG()));
+	_command_executor.insert(std::make_pair("KICK", new KICK()));
+	_command_executor.insert(std::make_pair("INVITE", new INVITE()));
+	_command_executor.insert(std::make_pair("TOPIC", new TOPIC()));
+	_command_executor.insert(std::make_pair("PART", new PART()));
+	_command_executor.insert(std::make_pair("WHO", new WHO()));
 }
 
 Server::~Server()
@@ -26,6 +53,10 @@ Server::~Server()
 		if ( _connections[i].getSocket() > 0 )
 			_connections[i].closeSocket();
 	}
+
+	for ( std::map< std::string, ACommand * >::iterator it = _command_executor.begin(); it != _command_executor.end(); it++ )
+		delete it->second;
+	
 	std::cout << Get::Time() << BOLD << " --- Exit Server" << END << std::endl;
 }
 
@@ -287,7 +318,8 @@ void	Server::receive( int i )
 		msg = buf;
 		std::cout << Get::Time() << CYAN_BOLD << " --- Received msg from [socket " << _connections[i].getSocket() << "] " << msg << END;
 
-		Commands::process_command(msg, _connections[i], *this );
+		process_command(msg, _connections[i] );
+
 		if ( !_connections[i].isRegistered() )
 			register_client(i);
 		ChannelMenager::print_channels_info();
@@ -366,4 +398,51 @@ Client *	Server::getClientByNickname( std::string &nickname ) {
 			return &_connections[i];
 	}
 	return nullptr;
+}
+
+void	Server::splitMsgOnSpace( std::string & line, std::vector< std::string > & tokens ) {
+
+	std::istringstream iss( line );
+	size_t pos = 0;
+
+	while ( !iss.eof() )
+	{
+		std::string token;
+		iss >> token;
+		if ( (pos = token.find( "\n" )) != std::string::npos )
+		{
+			token.erase( pos, 1 );
+		}
+		if ( !token.empty() )
+			tokens.push_back( token );
+	}
+	return ;
+}
+
+void	Server::process_command( const std::string & msg, Client & client )
+{
+//	std::cout << Get::Time() << " --- Processing message" << std::endl;
+
+	std::istringstream iss(msg);
+
+	while ( !iss.eof() )
+	{
+		std::vector< std::string > command;
+		std::vector< std::string > tokens;
+		std::string line;
+
+		getline(iss, line, '\n' );
+		if ( line.empty() )
+			break;
+		splitMsgOnSpace( line, tokens );
+
+		std::map< std::string, ACommand * >::iterator it = _command_executor.find( tokens[0] );
+		if ( it != _command_executor.end() )
+		{
+			std::cout << CYAN_BG << "found command " << tokens[0] << END << std::endl;
+			it->second->execute( tokens, client, *this );
+
+		}
+	}
+	return ;
 }

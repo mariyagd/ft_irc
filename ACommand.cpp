@@ -1,33 +1,11 @@
 #include "ACommand.hpp"
 
-ACommand::ACommand( void ) : command() {
-}
-
-ACommand::ACommand( std::string & line ) {
-
-	splitMsgOnSpace( line, command );
+ACommand::ACommand( void ) {
+	return;
 }
 
 ACommand::~ACommand( void ) {
-}
-
-void	ACommand::splitMsgOnSpace( std::string & msg, std::vector< std::string > & tokens ) {
-
-	std::istringstream iss( msg );
-	size_t pos = 0;
-
-	while ( !iss.eof() )
-	{
-		std::string token;
-		iss >> token;
-		if ( (pos = token.find( "\n" )) != std::string::npos )
-		{
-			token.erase( pos, 1 );
-		}
-		if ( !token.empty() )
-			tokens.push_back( token );
-	}
-	return ;
+	return;
 }
 
 void ACommand::splitMsgOnComma( std::string & msg, std::vector< std::string > & tokens ) {
@@ -41,4 +19,20 @@ void ACommand::splitMsgOnComma( std::string & msg, std::vector< std::string > & 
 		if ( !token.empty() )
 			tokens.push_back( token );
 	}
+}
+
+void ACommand::concatenate( std::vector< std::string > & tokens, size_t i, std::string & msg ) {
+
+	for ( ; i < tokens.size(); i++ )
+	{
+		msg += tokens[i];
+		if ( ( i + 1 ) != tokens.size() )
+			msg += " ";
+	}
+}
+
+void ACommand::printVector( std::vector< std::string > & tokens ) {
+
+	for ( size_t i = 0; i < tokens.size(); i++ )
+		std::cout << CYAN_BG << "[" << tokens[i] << "]" << END << std::endl;
 }

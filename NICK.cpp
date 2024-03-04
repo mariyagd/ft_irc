@@ -4,19 +4,14 @@ NICK::NICK( void ) : ACommand() {
 	return ;
 }
 
-NICK::NICK( std::string & line ) : ACommand( line ) {
-	return ;
-}
-
 NICK::~NICK( void ) {
 	return ;
 }
 
-void NICK::execute( std::string & line, Client & client, Server &server ) {
+void NICK::execute( std::vector< std::string > & command, Client & client, Server &server ) {
 
-//	std::cout << Get::Time() << GREEN << " --- Processing NICK command" << END << std::endl;
+	std::cout << Get::Time() << GREEN << " --- Processing NICK command" << END << std::endl;
 
-	splitMsgOnSpace( line, command );
 	std::string nickname = command[1];
 
 	if ( client.getSocket() < 0 )

@@ -3,16 +3,12 @@
 PASS::PASS( void ) : ACommand() {
 }
 
-PASS::PASS( std::string &line ) : ACommand( line ) {
-}
-
 PASS::~PASS( void ) {
 }
 
-void PASS::execute( std::string & line, Client & client, Server & server ) {
+void PASS::execute( std::vector< std::string > & command, Client & client, Server & server ) {
 
-//	std::cout << Get::Time() << GREEN << " --- Processing PASS command" << END << std::endl;
-	splitMsgOnSpace( line, command );
+	std::cout << Get::Time() << GREEN << " --- Processing PASS command" << END << std::endl;
 
 	if ( command.size() == 1 )
 	{

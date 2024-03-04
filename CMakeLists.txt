@@ -30,4 +30,15 @@ add_executable(
         NICK.cpp
         USER.hpp
         USER.cpp
+        JOIN.cpp
+        INVITE.cpp
+        KICK.cpp
+        MODE.cpp
+        PART.cpp
+        PART.cpp
+        PING.cpp
+        PRIVMSG.cpp
+        WHO.cpp
+        WHOIS.cpp
+        TOPIC.cpp
 )

@@ -2,19 +2,14 @@
 # define USER_HPP
 
 # include "ACommand.hpp"
-# include "Server.hpp"
-# include "Client.hpp"
 
 
 class USER : public ACommand {
 
-private:
-
 public:
 	USER(void);
-	USER( std::string &line );
 	~USER( void );
-	void execute( std::string & line, Client & client, Server &server );
+	void execute( std::vector< std::string > & command, Client & client, Server &server );
 };
 
 #endif

@@ -1,11 +1,20 @@
 NAME = ircserv
 SRCS = 	main.cpp  Server.cpp Client.cpp \
-		Commands.cpp Get.cpp RPL.cpp Channel.cpp ChannelMenager.cpp\
+		Get.cpp RPL.cpp Channel.cpp ChannelMenager.cpp\
 		ACommand.cpp \
 		PASS.cpp \
 		NICK.cpp \
 		USER.cpp \
 		PING.cpp \
+		PART.cpp \
+		JOIN.cpp \
+		PRIVMSG.cpp \
+		KICK.cpp \
+		WHO.cpp \
+		MODE.cpp \
+		TOPIC.cpp \
+		WHOIS.cpp \
+		INVITE.cpp \
 
 CPPF = c++ -Wall -Werror -Wextra -std=c++98 -g
 

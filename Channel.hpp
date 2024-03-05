@@ -47,6 +47,8 @@ public:
 	const long &						getCreationTime( void ) const;
 	const std::vector< std::string >	getOperatorsName( void ) const;
 	const std::vector< int > &			getOperatorsID( void ) const;
+	//getMembersName
+	const std::vector< std::string >	getMembersName( void ) const;
 
 	int									getOperatorSocket( int operator_id ) const;
 	void 								addOperator( int id );

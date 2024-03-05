@@ -637,6 +637,7 @@ void Commands::PRIVMSG(std::vector<std::string>& command, Client& client, Server
 					RPL::ERR_NOSUCHNICK( client, target[i] );
 				else
 				{
+					printf("hello\n");
 					RPL::RPL_PRIVMSG( client, target[i], message, receiverSocket );
 					std::cout << Get::Time() << BOLD << " --- Private message sent to " << target[i] << END << std::endl;
 				}

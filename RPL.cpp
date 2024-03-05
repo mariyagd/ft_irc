@@ -165,15 +165,40 @@ void RPL::ERR_NOORIGIN( Client const & client ) {
 
 
 //JOIN
-void  RPL::RPL_NAMREPLY(const Client &client, const std::string & channelName, const std::vector< std::string > & operatorNames ) {
+void RPL::RPL_NAMREPLY(const Client &client, const std::string &channelName, const std::vector<std::string> &operatorNames, const std::vector<std::string> &channelMembers) {
+    std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 353 " + client.getNickname() + " = " + channelName + " :";
+    
+    // Append operator names
+    for (size_t i = 0; i < operatorNames.size(); ++i)
+        message += " @" + operatorNames[i];
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 353 " + client.getNickname() + " = " + channelName + " :" + client.getNickname();
-	for ( size_t i = 0; i < operatorNames.size(); ++i )
-		message += " @" + operatorNames[i];
-
-	message += "\r\n";
-	send_message( client.getSocket(), message.c_str(), message.size() );
+    // Append channel members
+  	for (size_t i = 0; i < channelMembers.size(); ++i) {
+        bool isOperator = false;
+        for (size_t j = 0; j < operatorNames.size(); ++j) {
+            if (channelMembers[i] == operatorNames[j]) {
+                isOperator = true;
+                break;
+            }
+        }
+        if (isOperator)
+            message += " @" + channelMembers[i];
+        else
+            message += " " + channelMembers[i];
+    }
+    message += "\r\n";
+    send_message(client.getSocket(), message.c_str(), message.size());
 }
+
+// void  RPL::RPL_NAMREPLY(const Client &client, const std::string & channelName, const std::vector< std::string > & operatorNames ) {
+
+// 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 353 " + client.getNickname() + " = " + channelName + " :" + client.getNickname();
+// 	for ( size_t i = 0; i < operatorNames.size(); ++i )
+// 		message += " @" + operatorNames[i];
+
+// 	message += "\r\n";
+// 	send_message( client.getSocket(), message.c_str(), message.size() );
+// }
 
 
 void  RPL::RPL_ENDOFNAMES(const Client &client, const std::string & channelName) {

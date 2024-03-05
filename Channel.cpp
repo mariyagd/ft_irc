@@ -194,6 +194,19 @@ void Channel::removeInvited( int id ) {
 		_invited_list.erase( it );
 }
 
+//getMembersName
+const  std::vector< std::string >	Channel::getMembersName( void ) const
+{
+	std::vector< std::string > membersName;
+
+	for ( size_t i = 0; i < _clients.size(); ++i )
+	{
+		membersName.push_back( _clients[i]->getNickname() );
+	}
+	return membersName;
+
+}
+
 
 // Modes setters ---------------------------------------------------------------------------------------------------------------
 

@@ -48,7 +48,8 @@ public:
 	static void ERR_NOORIGIN( Client const & client );
 
 	//JOIN
-	static void RPL_NAMREPLY( Client const & client, const std::string & channelName, const std::vector< std::string > & operatorsNames );
+	// static void RPL_NAMREPLY( Client const & client, const std::string & channelName, const std::vector< std::string > & operatorsNames );
+	static void RPL_NAMREPLY(const Client &client, const std::string &channelName, const std::vector<std::string> &operatorNames, const std::vector<std::string> &channelMembers);
 	static void RPL_ENDOFNAMES( Client const & client, const std::string & channelName );
 	static void ERR_INVITEONLYCHAN( Client const & client, const std::string & channelName );
 	static void ERR_CHANNELISFULL( Client const & client, const std::string & channelName );

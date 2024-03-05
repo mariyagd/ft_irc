@@ -76,6 +76,7 @@ void PRIVMSG::send_to_client( Server & server, Client & client, const std::strin
 		RPL::ERR_NOSUCHNICK( client, target);
 	else
 	{
+		printf("receiverSocket = %d\n", receiverSocket);
 		RPL::RPL_PRIVMSG( client, target, message, receiverSocket );
 		std::cout << Get::Time() << BOLD << " --- Private message sent to " << target << END << std::endl;
 	}

@@ -72,7 +72,7 @@ void JOIN::join_and_send( Channel * channel, Client & client, const std::string 
 		RPL::RPL_TOPIC( client, channelName, channel->getTopic( ) );
 		RPL::RPL_TOPICWHOTIME( client, *channel->getTopicSetter(), channelName, channel->getTopicCreationTime( ) );
 	}
-	RPL::RPL_NAMREPLY( client, channelName, channel->getOperatorsName( ) );
+	RPL::RPL_NAMREPLY( client, channelName, channel->getOperatorsName( ), channel->getMembersName( ));
 	RPL::RPL_ENDOFNAMES( client, channelName );
 	channel->print_channels_info();
 }

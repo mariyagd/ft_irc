@@ -63,7 +63,7 @@ void ChannelMenager::deleteAllChannels( ) {
 	{
 		if ( *it != nullptr )
 		{
-			std::cout << Get::Time << GREEN_BOLD << " --- Deleting channel " << (*it)->getChannelName() << END << std::endl;
+			std::cout << Get::Time() << GREEN_BOLD << " --- Deleting channel " << (*it)->getChannelName() << END << std::endl;
 			delete *it;
 			*it = nullptr;
 		}

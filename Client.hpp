@@ -2,6 +2,10 @@
 # define CLIENT_HPP
 
 # include "Irc.hpp"
+# include "Channel.hpp"
+# include <set>
+
+class Channel;
 
 class Client  {
 
@@ -21,9 +25,7 @@ private:
 	static int 			_serverSocket;
 	static std::string	_serverName;
 
-	// we dont need them
-//	struct sockaddr		_addr;
-//	socklen_t 			_addrlen;
+	std::vector< Channel * > _channels;
 
 public:
 	Client( void );
@@ -52,6 +54,11 @@ public:
 	std::string		getServname( void ) const;
 	std::string		getRealname( void ) const;
 
+	// CHANNELS-------------------------------------------------------------------------------------------------------------
+	void								addChannel( Channel * channel );
+	void								removeChannel( Channel * channel );
+	std::set< int > 					getAllClientsInAllChannels( void ) const;
+
 	bool			isRegistered( void ) const;
 
 	void			cleanClient( void );
@@ -61,6 +68,9 @@ public:
 	void 			printInfo( void );
 
 	bool			operator==( const Client & rhs ) const;
+	bool			operator!=( const Client & rhs ) const;
+	int				operator[](int) const;
+	bool			operator>=(int) const;
 
 };
 

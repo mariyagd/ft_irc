@@ -15,7 +15,7 @@ int Client::_serverSocket = -1;
 std::string Client::_serverName = "localhost";
 
 // Coplien's form -------------------------------------------------------------------------------------------------------
-Client::Client( void ) {
+Client::Client( void ) : _channels()  {
 
 	_is_registered = false;
 	_gave_password = false;
@@ -36,7 +36,7 @@ Client::~Client( void ) {
 
 // Parameterized constructor --------------------------------------------------------------------------------------------
 
-Client::Client( int socket ) : _socket(socket) {
+Client::Client( int socket ) : _socket(socket), _channels()  {
 
 	_is_registered = false;
 	_gave_password = false;
@@ -191,6 +191,44 @@ std::string	Client::getRealname( void ) const {
 	return _realname;
 }
 
+// Add and remove channels ----------------------------------------------------------------------------------------------
+
+void	Client::addChannel( Channel * channel ) {
+
+	if ( channel )
+		_channels.push_back( channel );
+	return;
+}
+
+void	Client::removeChannel( Channel * channel ) {
+
+	if ( !channel )
+		return;
+	std::vector< Channel * >::iterator it = _channels.begin();
+	for ( ; it != _channels.end(); it++ )
+	{
+		if ( *it == channel )
+		{
+			_channels.erase( it );
+			break;
+		}
+	}
+	return;
+}
+
+std::set< int > 	Client::getAllClientsInAllChannels( void ) const {
+
+	std::set< int > users;
+	users.insert( _socket );
+	for ( size_t i = 0; i < _channels.size(); i++ )
+	{
+		std::set< int > temp = _channels[i]->getAllClientsSockets();
+		for ( std::set< int >::iterator it = temp.begin(); it != temp.end(); it++ )
+			users.insert( *it );
+	}
+	return users;
+}
+
 // Bool------------------------------------------------------------------------------------------------------------------
 
 bool	Client::isRegistered( void ) const {
@@ -260,6 +298,25 @@ void	Client::printInfo( void ) {
 bool	Client::operator==(const Client & rhs) const {
 
 	if ( this->_socket == rhs._socket )
+		return true;
+	return false;
+}
+
+bool Client::operator!=(const Client & rhs) const {
+
+	if ( this->_socket != rhs._socket )
+		return true;
+	return false;
+}
+
+int	Client::operator[](int) const {
+
+	return _socket;
+}
+
+bool	Client::operator>=(int i) const {
+
+	if ( _socket >= i )
 		return true;
 	return false;
 }

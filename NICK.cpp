@@ -8,6 +8,7 @@ NICK::~NICK( void ) {
 	return ;
 }
 
+// NICK <nickname>
 void NICK::execute( std::vector< std::string > & command, Client & client, Server &server ) {
 
 	std::cout << Get::Time() << GREEN << " --- Processing NICK command" << END << std::endl;
@@ -16,44 +17,41 @@ void NICK::execute( std::vector< std::string > & command, Client & client, Serve
 
 	if ( client.getSocket() < 0 )
 		return;
-
-	if ( command.size() == 1 )
+	else if ( command.size() == 1 )
 	{
-		std::cout << Get::Time() << BOLD << " --- socket " << client.getSocket() << " Nick: " << nickname <<  " no nickname given" << END << std::endl;
+		std::cout << Get::Time() << RED_BOLD << " --- socket " << client.getSocket() << " Nick: " << nickname <<  " no nickname given" << END << std::endl;
 
 		RPL::ERR_NONICKNAMEGIVEN( client );
+	}
+	else if ( nickname.find_first_of(" :+-&?!@#$%*;,./<>=\"\\~") != std::string::npos )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- socket " << client.getSocket() << " Nick: " << nickname << " erroneous nickname" << END << std::endl;
+
+		RPL::ERR_ERRONEUSNICKNAME( client );
+	}
+	else if ( client.getNickname() == nickname )
+	{
+		std::cout << Get::Time() << " --- socket " << client.getSocket() << " Nick: " << nickname << " nickname is the same. Ignore request" << std::endl;
 		return;
 	}
-
-	for ( size_t i = 0; i < nickname.length(); i++ )
+	else if ( !is_unique_nickname( nickname, client.getSocket(), server.getConnections() ) )
 	{
-		if ( nickname.find_first_of(" :+-&?!@#$%*;,./<>=\"\\~") != std::string::npos )
-		{
-			std::cout << Get::Time() << BOLD << " --- socket " << client.getSocket() << " Nick: " << nickname << " erroneous nickname" << END << std::endl;
-
-			RPL::ERR_ERRONEUSNICKNAME( client );
-			return ;
-		}
-	}
-
-	if ( !is_unique_nickname( nickname, client.getSocket(), server.getConnections() ) )
-	{
-		std::cout << Get::Time() << BOLD << " --- socket " << client.getSocket() << " Nick: " << nickname << " nickname is use" << END << std::endl;
+		std::cout << Get::Time() << RED_BOLD << " --- socket " << client.getSocket() << " Nick: " << nickname << " nickname is use" << END << std::endl;
 		RPL::ERR_NICKNAMEINUSE( client, nickname );
 	}
 	else if ( !client.isRegistered() )
 	{
 		std::cout << Get::Time() << " --- User [socket " << client.getSocket() << "] can register with name [" << nickname << "]" << END << std::endl;
 		client.setNickname( nickname );
-		RPL::RPL_NICK( client, nickname );
+		RPL::RPL_NICK( client, client.getAllClientsInAllChannels(), nickname );
 	}
 	else
 	{
-		std::cout << Get::Time() << " --- Nickname " << client.getNickname() << " changed to " << nickname << END << std::endl;
-		RPL::RPL_NICK( client, nickname );
+		std::cout << Get::Time() << GREEN_BOLD << " --- Nickname " << client.getNickname() << " changed to " << nickname << END << std::endl;
+		RPL::RPL_NICK( client, client.getAllClientsInAllChannels(), nickname );
 		client.setNickname( nickname );
+		client.printInfo();
 	}
-	client.printInfo();
 	return ;
 }
 

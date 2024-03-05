@@ -29,10 +29,10 @@ void RPL::send_message( const int & socket, const char * message, const size_t m
 	return;
 }
 
-void RPL::RPL_NORMAL( const Client & client, const std::vector< Client * > & allClients, const std::string & channelName, const std::string & command, std::string & topic ) {
+void RPL::RPL_NORMAL( const Client & client, const std::vector< Client * > & allClients, const std::string & channelName, const std::string & command, std::string & comment ) {
 
 	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
-	std::string message = "@time=" + Get::Time() + ":" + msgto + " " + command + " " + channelName + " " + topic + "\r\n";
+	std::string message = "@time=" + Get::Time() + ":" + msgto + " " + command + " " + channelName + " " + comment + "\r\n";
 	for ( size_t i = 0; i < allClients.size(); ++i )
 	{
 		send_message( allClients[i]->getSocket(), message.c_str(), message.size() );
@@ -71,6 +71,18 @@ void	RPL::RPL_MYINFO( Client const & client ) {
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
+void RPL::ERR_ALREADYREGISTERED( Client const & client ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 462 " + client.getNickname() + " :You may not reregister\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+void RPL::ERR_PASSWDMISMATCH( Client const & client ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 464 " + client.getNickname() + " :Password incorrect\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
 // For NICK -------------------------------------------------------------------------------------------------------------
 
 //:tungsten.libera.chat 433 * mariyadancheva :Nickname is already in use.
@@ -93,10 +105,22 @@ void RPL::ERR_ERRONEUSNICKNAME( Client const & client ) {
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
-void RPL::RPL_NICK( Client const & client, std::string & newNickname ) {
+void RPL::RPL_NICK( Client const & client, const std::set< int > & allClientsInAllChannels, std::string & newNickname ) {
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname() + " NICK " + newNickname + "\r\n";
-	send_message( client.getSocket(), message.c_str(), message.size() );
+	for ( std::set< int >::const_iterator it = allClientsInAllChannels.begin(); it != allClientsInAllChannels.end(); it++ )
+	{
+		send_message( *it, message.c_str(), message.size() );
+	}
+}
+
+void RPL::REPLY( Client const & client, const std::set< int > & allClientsInAllChannels, const std::string & command, std::string & newNickname ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname() + " " + command + " " + newNickname + "\r\n";
+	for ( std::set< int >::const_iterator it = allClientsInAllChannels.begin(); it != allClientsInAllChannels.end(); it++ )
+	{
+		send_message( *it, message.c_str(), message.size() );
+	}
 }
 
 // For WHOIS ------------------------------------------------------------------------------------------------------------
@@ -200,13 +224,13 @@ void RPL::RPL_BADCHANNELKEY( const Client &client, std::string &channelName ) {
 
 //NORMAL
 
-void  RPL::RPL_JOIN(const Client &client, const std::vector< Client * > allClients, std::string &channelName) {
+void	RPL::RPL_JOIN( Client const & client, const std::set< int > & allClientsInChannel, std::string & channelName ) {
 
 	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
 	std::string message = "@time=" + Get::Time() + ":" + msgto + " " + "JOIN " + channelName + " * " + client.getRealname() + "\r\n";
-	for ( size_t i = 0; i < allClients.size(); ++i )
+	for ( std::set< int >::const_iterator it = allClientsInChannel.begin(); it != allClientsInChannel.end(); it++ )
 	{
-		send_message( allClients[i]->getSocket(), message.c_str(), message.size() );
+		send_message( *it, message.c_str(), message.size() );
 	}
 }
 

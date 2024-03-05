@@ -439,7 +439,6 @@ void	Server::process_command( const std::string & msg, Client & client )
 		std::map< std::string, ACommand * >::iterator it = _command_executor.find( tokens[0] );
 		if ( it != _command_executor.end() )
 		{
-			std::cout << CYAN_BG << "found command " << tokens[0] << END << std::endl;
 			it->second->execute( tokens, client, *this );
 
 		}

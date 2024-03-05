@@ -18,22 +18,29 @@ public:
 
 	static void send_message( const int & socket, const char * message, const size_t msg_size );
 
+	static void REPLY( Client const & client, const std::set< int > & allClientsInAllChannels, const std::string & command, std::string & comment );
+
+	// COMMON ERRORS
+	static void ERR_NEEDMOREPARAMS( Client const & client, std::string const & command );
+
 	// Registration
 	static void RPL_WELCOME( Client const & client );
 	static void RPL_YOURHOST( Client const & client );
 	static void RPL_CREATED( Client const & client );
 	static void RPL_MYINFO( Client const & client );
 
+	static void ERR_ALREADYREGISTERED( Client const & client );
+	static void ERR_PASSWDMISMATCH( Client const & client );
+
 	// NICK
 	static void ERR_NICKNAMEINUSE( Client const & client, std::string & wantedNickname );
 	static void ERR_NONICKNAMEGIVEN( Client const & client );
 	static void ERR_ERRONEUSNICKNAME( Client const & client );
-	static void RPL_NICK( Client const & client, std::string & newNickname );
+	static void RPL_NICK( Client const & client, const std::set< int > & allClientsInAllChannels, std::string & newNickname );
 
 	// WHOIS
 	static void RPL_WHOISUSER( Client const & client );
 	static void RPL_ENDOFWHOIS( Client const & client );
-	static void ERR_NEEDMOREPARAMS( Client const & client, std::string const & command );
 	static void RPL_ENDOFWHO( Client const & client, const std::string & channelName );
 
 	// PING
@@ -54,8 +61,8 @@ public:
 	static void RPL_NOTOPIC( Client const & client, std::string & channelName );
 
 
-	//NORMAL
-	static void RPL_JOIN( Client const & client, const std::vector< Client *> allClients, std::string & channelName );
+	//JOIN
+	static void RPL_JOIN( Client const & client, const std::set< int > & allClientsInChannel, std::string & channelName );
 
 	//CHANNEL MODE
 	static void RPL_CHANNELMODEIS( Client const & client, const std::string & channelName, const std::string & allChannelModes );

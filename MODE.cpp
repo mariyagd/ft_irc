@@ -121,11 +121,13 @@ bool MODE::errorsInModeCommand( std::vector< std::string > & _command, Client & 
 
 	if ( channel->isClientIsOperator(client.getNicknameId()) == -1 )
 	{
+		std::cout << Get::Time() << RED_BOLD << " --- Client " << client.getNickname() << " is not an operator of channel " <<channel->getChannelName() << ". Can not change modes"  << END << std::endl;
 		RPL::ERR_CHANOPRIVSNEEDED( client, channel->getChannelName() );
 		return true;
 	}
 	if ( command[0].find_first_not_of("ltiko+-" ) != std::string::npos )
 	{
+		std::cout << Get::Time() << RED_BOLD << " --- Unknown mode " << END << std::endl;
 		RPL::ERR_UNKNOWNMODE(client, command[0][command[0].find_first_not_of("ltiko")]);
 		return true;
 	}
@@ -141,6 +143,7 @@ bool MODE::errorsInModeCommand( std::vector< std::string > & _command, Client & 
 			{
 				if (command.size() <= 1 )
 				{
+					std::cout << Get::Time() << RED_BOLD << " --- Not enough params " << END << std::endl;
 					RPL::ERR_NEEDMOREPARAMS( client, "MODE" );
 					return true;
 				}
@@ -152,6 +155,9 @@ bool MODE::errorsInModeCommand( std::vector< std::string > & _command, Client & 
 	return false;
 }
 
+/*
+ * MODE <target> [<modestring> [<mode arguments>...]]
+ */
 void	MODE::execute( std::vector< std::string > & command, Client & client, Server & server ) {
 
 	( void ) command;
@@ -170,17 +176,20 @@ void	MODE::execute( std::vector< std::string > & command, Client & client, Serve
 
 		Channel * channel = server.getChannelByName( command[1] );
 		if ( !channel )
+		{
+			std::cout << Get::Time() << RED_BOLD << " --- Channel " << command[1] << " doesn't exist in this server"  << END << std::endl;
 			RPL::ERR_NOSUCHCHANNEL( client, command[1] );
+		}
 		else if ( command.size( ) == 2 )
 		{
+			std::cout << Get::Time( ) << GREEN_BOLD << " --- Sending channel modes for channel " << command[1] << END << std::endl;
 			RPL::RPL_CHANNELMODEIS( client, command[1], channel->getCurrentChannelModes( ) );
 			RPL::RPL_CREATIONTIME( client, command[1], server.getChannelByName( command[1] )->getCreationTime( ) );
-//			std::cout << Get::Time( ) << BOLD << " --- Send channel mode " << END << std::endl;
 			return;
 		}
 		else
 		{
-			command.erase( command.begin( ), command.begin( ) + 2 );
+			command.erase( command.begin( ), command.begin( ) + 2 ); // delete MODE and <target>
 			if ( errorsInModeCommand( command, client, channel ) )
 				return ;
 			else

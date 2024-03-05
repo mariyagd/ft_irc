@@ -2,7 +2,7 @@
 
 // Coplien's form------------------------------------------------------------------------------------------------------
 
-Channel::Channel(void) : _name(""), _clients(), _operators(), _invited_list(), _creation_time(0), limitMode(false), inviteMode(false), topicMode(true), keyMode(false), _topicSetter(0), _topicTime(0) {
+Channel::Channel(void) : _name(""), _clients(), _operators(), _invited_list(), _creation_time(0), limitMode(false), inviteMode(false), topicMode(true), keyMode(false), _topicSetter(0), _topicTime(0){
 
 	return;
 }
@@ -55,6 +55,17 @@ const std::string &Channel::getChannelName( void ) {
 std::vector<Client *> &Channel::getAllClients(void) {
 
 	return this->_clients;
+}
+
+std::set<int> Channel::getAllClientsSockets(void) {
+
+	std::set<int> sockets;
+
+	for (size_t i = 0; i < _clients.size(); ++i)
+	{
+		sockets.insert(_clients[i]->getSocket());
+	}
+	return sockets;
 }
 
 const long &Channel::getCreationTime( void ) const {
@@ -128,9 +139,10 @@ Client * Channel::getClientByNickname( const std::string & nickname ) const {
 void Channel::addClient(Client &client) {
 
 	_clients.push_back( &client );
+	client.addChannel( this );
 }
 
-void Channel::removeClient(const std::string &nickname) {
+void Channel::removeClient( const std::string &nickname ) {
 
 	std::cout << Get::Time() << MAGNETA_BOLD << " --- Removing client " << BOLD << nickname << END << MAGNETA_BOLD << " from channel " << BOLD << this->getChannelName() << END << std::endl;
 
@@ -138,10 +150,12 @@ void Channel::removeClient(const std::string &nickname) {
 	{
 		if ((*it)->getNickname() == nickname)
 		{
+			(*it)->removeChannel(this);
 			_clients.erase(it); // erase returns the next valid iterator
-			break;
+			return;
 		}
 	}
+	return;
 }
 
 int Channel::getOperatorSocket( int operator_id ) const {
@@ -306,6 +320,13 @@ bool Channel::isClientInvited( int id ) const {
 
 	std::vector< int >::const_iterator it = std::find( _invited_list.begin(), _invited_list.end(), id );
 	if ( it != _invited_list.end() )
+		return true;
+	return false;
+}
+
+bool Channel::operator==( const Channel & rhs ) const {
+
+	if ( this->_name == rhs._name )
 		return true;
 	return false;
 }

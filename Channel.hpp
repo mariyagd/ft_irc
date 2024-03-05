@@ -7,6 +7,7 @@
 # include "Client.hpp"
 # include "Get.hpp"
 # include <sys/time.h>
+# include <set>
 
 class Client;
 
@@ -42,6 +43,7 @@ public:
 
 	const std::string &					getChannelName( void );
 	std::vector< Client * > &			getAllClients( void );
+	std::set< int > 					getAllClientsSockets( void );
 	const long &						getCreationTime( void ) const;
 	const std::vector< std::string >	getOperatorsName( void ) const;
 	const std::vector< int > &			getOperatorsID( void ) const;
@@ -79,6 +81,8 @@ public:
 	int 								isClientIsOperator( int clientId )const;
 	void								addClient( Client & client );
 	void								removeClient( const std::string & nickname );
+
+	bool								operator==( const Channel & rhs ) const;
 
 };
 

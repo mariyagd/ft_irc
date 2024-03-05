@@ -161,6 +161,11 @@ const int &		Client::getSocket( void ) const {
 	return _socket;
 }
 
+const int &		Client::getServerSocket( void ) const {
+
+	return _serverSocket;
+}
+
 int	Client::getNicknameId( void ) const {
 
 	return _id;
@@ -287,8 +292,27 @@ void	Client::printInfo( void ) {
 	std::cout << std::setw(15) << std::left << BLUE_BOLD << "Username:   " << END << _username << std::endl;
 	std::cout << std::setw(15) << std::left << BLUE_BOLD << "Hostname:   " << END << _hostname << std::endl;
 	std::cout << std::setw(15) << std::left << BLUE_BOLD << "Realname:   " << END << _realname << std::endl;
+	std::cout << std::setw(15) << std::left << BLUE_BOLD << "Channels:   " << END ;
+	printChannels();
 
 //	std::cout << BLUE_BOLD  << "------------------------------------------------------" << END << std::endl;
+	return;
+}
+
+void Client::printChannels( void ) {
+
+	if ( _channels.empty() )
+	{
+		std::cout << "None" << std::endl;
+		return;
+	}
+	for (size_t i = 0; i < _channels.size(); ++i )
+	{
+		std::cout << _channels[i]->getChannelName();
+		if ( i != _channels.size() - 1 )
+			std::cout << ", ";
+	}
+	std::cout << std::endl;
 	return;
 }
 

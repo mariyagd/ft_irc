@@ -20,7 +20,7 @@ public:
 
 	std::vector< Channel * > &	getAllChannels( void );
 	Channel *					createChannel( std::string name );
-//	void						deleteChannel( Channel * );
+	void						deleteChannel( Channel * );
 	void						deleteAllChannels( void );
 //	Channel	*					getChannel( const std::string& channelName) ;
 	Channel	*					getChannelByName( const std::string& channelName) ;

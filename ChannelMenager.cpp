@@ -32,23 +32,30 @@ Channel * ChannelMenager::createChannel( std::string name )
 	return new_channel;
 }
 
-//void	ChannelMenager::deleteChannel( Channel * rhs ) {
-//
-//	for (std::vector< Channel * >::iterator it = _channels.begin(); it != _channels.end(); ++it )
-//	{
-//		if (*it == rhs )
-//		{
-//			std::cout << Get::Time() << MAGNETA_BOLD << " --- Channel " << rhs->getChannelName() << " is empty. Delete Channel" << END << std::endl;
-//			for ( std::vector< Client * >::iterator it2 = rhs->getAllClients().begin(); it2 != rhs->getAllClients().end(); ++it )
-//			{
-//				(*it2)->removeChannel( rhs );
-//			}
-////			delete rhs;
-//			rhs = nullptr;
-//			_channels.erase(it);
-//		}
-//	}
-//}
+void	ChannelMenager::deleteChannel( Channel * rhs ) {
+
+	if (!rhs)
+		return;
+
+	std::vector<Channel *>::iterator it = std::find(_channels.begin(), _channels.end(), rhs);
+	if ( it != _channels.end() )
+	{
+		std::cout << MAGNETA_BOLD << "Channel " << rhs->getChannelName() << " is empty. Deleting channel from server" << END << std::endl;
+
+		std::vector< Client * > & allClients = (*it)->getAllClients();
+		for (size_t i = 0; i < allClients.size(); ++i)
+		{
+			(*it)->removeClient( allClients[i]->getNickname() );
+		}
+
+		_channels.erase(it);
+		delete rhs;
+	}
+	else
+	{
+		std::cout << MAGNETA_BOLD << " --- Could not find Channel " << rhs->getChannelName() << " in the server" << END << std::endl;
+	}
+}
 
 void ChannelMenager::deleteAllChannels( ) {
 
@@ -56,7 +63,7 @@ void ChannelMenager::deleteAllChannels( ) {
 	{
 		if ( *it != nullptr )
 		{
-			std::cout << GREEN_BOLD << "Deleting channel " << (*it)->getChannelName() << END << std::endl;
+			std::cout << Get::Time << GREEN_BOLD << " --- Deleting channel " << (*it)->getChannelName() << END << std::endl;
 			delete *it;
 			*it = nullptr;
 		}

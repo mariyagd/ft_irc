@@ -50,6 +50,13 @@ void PART::execute( std::vector< std::string > & command, Client & client, Serve
 			std::cout << Get::Time() << GREEN_BOLD << " --- Client " << client.getNickname() << " left channel " << channelsName[i] << END << std::endl;
 			RPL::RPL_PART( client, channel->getAllClientsSockets(), channelsName[i], comment );
 			channel->removeClient( client.getNickname() );
+			if (channel->getAllClients().size() == 0 )
+			{
+				server.deleteChannel(channel);
+				server.print_all_info();
+			}
+			else
+				channel->print_channels_info();
 		}
 	}
 }

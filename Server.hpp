@@ -58,6 +58,7 @@ public:
 	void										splitMsgOnSpace( std::string & line, std::vector< std::string > & tokens  );
 	void										process_command( const std::string & msg, Client & client );
 
+	void 										print_all_info( void );
 
 	class ServerException : public std::exception {
 

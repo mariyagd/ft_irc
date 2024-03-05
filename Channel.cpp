@@ -83,7 +83,6 @@ const std::vector< std::string >	Channel::getOperatorsName( void ) const {
 		{
 			if ( _operators[i] == _clients[j]->getNicknameId( ) )
 			{
-				std::cout << " id [" << _clients[j]->getNicknameId()  << "] nick [" << _clients[j]->getNickname() << "]" << std::endl;
 				operatorNames.push_back( _clients[j]->getNickname() );
 				break;
 			}
@@ -330,16 +329,28 @@ bool Channel::operator==( const Channel & rhs ) const {
 void	Channel::print_channels_info() const {
 
 
+		std::cout << std::setfill(' ');
 //		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << "" << END << std::endl;
-		std::cout << BLUE_BOLD << " Channel : " << END << "[" << _name << "]" << std::endl;
-		std::cout << BLUE_BOLD << " Modes : "  << END << "[" << this->getCurrentChannelModes() << "]" << std::endl;
-		std::cout << BLUE_BOLD << " Clients: " << END << std::endl;
+		std::cout << std::setw(15) << std::left << BLUE_BOLD << " Channel : " << END << "[" << _name << "]" << std::endl;
+		std::cout << std::setw(15) << std::left << BLUE_BOLD << " Modes :   "  << END << "[" << this->getCurrentChannelModes() << "]" << std::endl;
+		std::cout << std::setw(15) << std::left << BLUE_BOLD << "" << " Clients:  " << END << std::endl;
 		for ( size_t j = 0; j < _clients.size(); ++j )
 		{
-			std::cout << " id [" << _clients[j]->getNicknameId() << "] nick [" << _clients[j]->getNickname() << "]" << std::endl;
+			std::cout << std::setw(17) << std::left << "" << _clients[j]->getNickname() << std::endl;
 		}
-		std::cout << BLUE_BOLD << " Operators: " << END << std::endl;
-		this->getOperatorsName();
+		std::cout << std::setw(15) << std::left << BLUE_BOLD << "" << " Operators: " << END << std::endl;
+
+		for ( size_t i = 0; i < _operators.size(); ++i )
+		{
+			for ( size_t j = 0; j < _clients.size(); ++j )
+			{
+				if ( _operators[i] == _clients[j]->getNicknameId( ) )
+				{
+					std::cout << std::setw(17) << std::left << "" << _clients[j]->getNickname() << std::endl;
+					break;
+				}
+			}
+		}
 //		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << ""  << END << std::endl;
 }
 

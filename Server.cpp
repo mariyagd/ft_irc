@@ -450,3 +450,31 @@ void	Server::process_command( const std::string & msg, Client & client )
 	}
 	return ;
 }
+
+
+void Server::print_all_info( void ) {
+
+
+	std::cout << std::endl << BLUE_BG << " --- Clients: " << END << std::endl;
+	for (size_t i = 0; i < _connections.size(); ++i)
+	{
+		if ( _connections[i].getSocket() == _connections[i].getServerSocket() )
+			continue;
+		if (_connections[i].getSocket() >= 0)
+		{
+			std::cout << " --- " << i << std::endl;
+			_connections[i].printInfo( );
+		}
+	}
+	std::cout << std::endl << BLUE_BG << " --- Channels: " << END << std::endl;
+	for (size_t i = 0; i < _channels.size(); ++i)
+	{
+		if (_channels[i] != nullptr)
+		{
+			std::cout << " --- " << i << std::endl;
+			_channels[i]->print_channels_info();
+		}
+	}
+	std::cout << std::endl;
+
+} // print_all_info

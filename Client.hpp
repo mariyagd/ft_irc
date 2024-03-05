@@ -47,6 +47,7 @@ public:
 
 	bool			getGavePassword( void ) const;
 	const int &		getSocket( void ) const;
+	const int &		getServerSocket( void ) const;
 	int				getNicknameId( void ) const;
 	std::string		getNickname( void ) const;
 	std::string		getUsername( void ) const;
@@ -66,6 +67,7 @@ public:
 	void			closeSocket( void );
 
 	void 			printInfo( void );
+	void			printChannels( void );
 
 	bool			operator==( const Client & rhs ) const;
 	bool			operator!=( const Client & rhs ) const;

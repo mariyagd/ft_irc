@@ -53,7 +53,9 @@ void	MODE::execute( std::vector< std::string > & command, Client & client, Serve
 				setChannelMode( client, command, channel );
 				if ( !command.empty() && !command[0].empty())
 				{
-					std::cout << Get::Time( ) << GREEN_BOLD << " --- Set new channel modes " << command[0] << END << std::endl;
+					std::string new_modes;
+					concatenate( command, 0, new_modes );
+					std::cout << Get::Time( ) << GREEN_BOLD << " --- Set new channel modes " << new_modes << END << std::endl;
 					channel->print_channel_modes();
 					RPL::INFORM_CHANNELMODE( client, channel->getChannelName(), command, channel->getAllClients() );
 					channel->print_channels_info();
@@ -189,7 +191,7 @@ void MODE::setChannelMode( Client & client, std::vector< std::string > & command
 			{
 				case 't':
 				{
-					std::cout << GREEN_BOLD << "set new mode:" << ( status == true ? "+" : "-") << "t" << END << std::endl;
+					std::cout << GREEN_BOLD << "set new mode: " << ( status == true ? "+" : "-") << "t" << END << std::endl;
 					channel->setTopicMode( status );
 					break;
 				}
@@ -197,19 +199,19 @@ void MODE::setChannelMode( Client & client, std::vector< std::string > & command
 				{
 					if ( status )
 					{
-						std::cout << GREEN_BOLD << "set new mode:" << ( status == true ? "+" : "-") << "l " << std::atoi( command[j].c_str() ) << END << std::endl;
+						std::cout << GREEN_BOLD << "set new mode: " << ( status == true ? "+" : "-") << "l " << std::atoi( command[j].c_str() ) << END << std::endl;
 						channel->setLimitMode( status, std::atoi( command[j++].c_str() ) );
 					}
 					else if ( !status )
 					{
-						std::cout << GREEN_BOLD << "set new mode:" << ( status == true ? "+" : "-") << "l" << END << std::endl;
+						std::cout << GREEN_BOLD << "set new mode: " << ( status == true ? "+" : "-") << "l" << END << std::endl;
 						channel->setLimitMode( status, 0 );
 					}
 					break;
 				}
 				case 'i':
 				{
-					std::cout << GREEN_BOLD << "set new mode:" << ( status == true ? "+" : "-") << "i" << END << std::endl;
+					std::cout << GREEN_BOLD << "set new mode: " << ( status == true ? "+" : "-") << "i" << END << std::endl;
 					channel->setInviteMode( status );
 					break;
 				}
@@ -217,16 +219,14 @@ void MODE::setChannelMode( Client & client, std::vector< std::string > & command
 				{
 					if ( status )
 					{
-						std::cout << GREEN_BOLD << "set new mode:" << ( status == true ? "+" : "-") << "k " << command[j] << END << std::endl;
+						std::cout << GREEN_BOLD << "set new mode: " << ( status == true ? "+" : "-") << "k " << command[j] << END << std::endl;
 						channel->setKeyMode( status, command[j++] );
 					}
 					else
 					{
 						channel->setKeyMode( status, "" );
-						std::cout << GREEN_BOLD << "set new mode:" << ( status == true ? "+" : "-") << "k " << command[j] << END << std::endl;
-						std::cout << GREEN_BOLD << "set new mode:" << ( status == true ? "+" : "-") << "k " << command[j+1] << END << std::endl;
 						command[j++] = "*";
-						std::cout << GREEN_BOLD << "set new mode:" << ( status == true ? "+" : "-") << "k " << command[j - 1] << END << std::endl;
+						std::cout << GREEN_BOLD << "set new mode: " << ( status == true ? "+" : "-") << "k " << command[j - 1] << END << std::endl;
 					}
 					break;
 				}
@@ -237,12 +237,12 @@ void MODE::setChannelMode( Client & client, std::vector< std::string > & command
 					{
 						if ( status && channel->isClientIsOperator( other->getNicknameId( ) ) == -1 )
 						{
-							std::cout << GREEN_BOLD << "set new mode:" << ( status == true ? "+" : "-") << "o " << command[j] << END << std::endl;
+							std::cout << GREEN_BOLD << "set new mode: " << ( status == true ? "+" : "-") << "o " << command[j] << END << std::endl;
 							channel->addOperator( other->getNicknameId( ) );
 						}
 						else if ( !status )
 						{
-							std::cout << GREEN_BOLD << "set new mode:" << ( status == true ? "+" : "-") << "o " << command[j] << END << std::endl;
+							std::cout << GREEN_BOLD << "set new mode: " << ( status == true ? "+" : "-") << "o " << command[j] << END << std::endl;
 							channel->removeOperator( other->getNicknameId( ) );
 						}
 						++j;
@@ -282,11 +282,11 @@ void	MODE::remove_signs( std::vector< std::string > & command )
 
 	// remove extra signs from the end
 	std::string::reverse_iterator rit = command[0].rbegin();
-	while (rit != command[0].rend() && (*rit == '-' || *rit == '+')) {
-		command[0].erase((rit + 1).base());
+	while ( rit != command[0].rend() && ( *rit == '-' || *rit == '+' ) )
+	{
+		command[0].erase(( rit + 1 ).base());
 		++rit;
 	}
-	std::cout << "[" << command[0] << "]" << std::endl;
 }
 
 bool MODE::errorsInModeCommand( std::vector< std::string > & command, Client & client, Channel * channel )

@@ -345,5 +345,5 @@ void	Channel::print_channels_info() const {
 
 void Channel::print_channel_modes( ) const {
 
-	std::cout << BLUE_BOLD << "Modes : "  << END << "[" << this->getCurrentChannelModes() << "]" << std::endl;
+	std::cout << BLUE_BOLD << "Current Modes : "  << END << "[" << this->getCurrentChannelModes() << "]" << std::endl;
 }

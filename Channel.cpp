@@ -331,8 +331,8 @@ void	Channel::print_channels_info() const {
 
 
 //		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << "" << END << std::endl;
-		std::cout << BLUE_BOLD << " Channel : [" << END << _name << "]" << std::endl;
-		std::cout << BLUE_BOLD << " Modes : ["  << END << this->getCurrentChannelModes() << "]" << std::endl;
+		std::cout << BLUE_BOLD << " Channel : " << END << "[" << _name << "]" << std::endl;
+		std::cout << BLUE_BOLD << " Modes : "  << END << "[" << this->getCurrentChannelModes() << "]" << std::endl;
 		std::cout << BLUE_BOLD << " Clients: " << END << std::endl;
 		for ( size_t j = 0; j < _clients.size(); ++j )
 		{
@@ -341,4 +341,9 @@ void	Channel::print_channels_info() const {
 		std::cout << BLUE_BOLD << " Operators: " << END << std::endl;
 		this->getOperatorsName();
 //		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << ""  << END << std::endl;
+}
+
+void Channel::print_channel_modes( ) const {
+
+	std::cout << BLUE_BOLD << "Modes : "  << END << "[" << this->getCurrentChannelModes() << "]" << std::endl;
 }

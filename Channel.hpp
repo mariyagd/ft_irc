@@ -85,6 +85,7 @@ public:
 	bool								operator==( const Channel & rhs ) const;
 
 	void								print_channels_info( void ) const;
+	void								print_channel_modes( void ) const;
 
 
 	};

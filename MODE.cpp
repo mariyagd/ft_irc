@@ -15,19 +15,15 @@ MODE::~MODE( void ) {
  */
 void	MODE::execute( std::vector< std::string > & command, Client & client, Server & server ) {
 
-	( void ) command;
-	( void ) client;
-	( void ) server;
-
 //	std::cout << Get::Time( ) << GREEN << " --- Processing MODE command" << END << std::endl;
 
 	if ( command.size( ) == 1 )
 	{
+		std::cout << Get::Time() << RED_BOLD << " --- Need more params: MODE <target> [<modestring> [<mode arguments>...]]" << END << std::endl;
 		RPL::ERR_NEEDMOREPARAMS( client, "MODE" );
 	}
 	else if ( command[1].find_first_of( "&#+!" ) == 0 )  // if channel mode is requested
 	{
-//		std::cout << Get::Time( ) << GREEN << " --- Processing MODE command for channels" << END << std::endl;
 
 		Channel * channel = server.getChannelByName( command[1] );
 		if ( !channel )
@@ -37,7 +33,7 @@ void	MODE::execute( std::vector< std::string > & command, Client & client, Serve
 		}
 		else if ( command.size( ) == 2 )
 		{
-			std::cout << Get::Time( ) << GREEN_BOLD << " --- Sending channel modes for channel " << command[1] << END << std::endl;
+			std::cout << Get::Time( ) << GREEN_BOLD << " --- Send channel modes" << END << std::endl;
 			RPL::RPL_CHANNELMODEIS( client, command[1], channel->getCurrentChannelModes( ) );
 			RPL::RPL_CREATIONTIME( client, command[1], server.getChannelByName( command[1] )->getCreationTime( ) );
 			return;
@@ -65,7 +61,7 @@ void	MODE::execute( std::vector< std::string > & command, Client & client, Serve
 	}
 	else if ( command[1] == client.getNickname() && command.size() == 3)
 	{
-//		std::cout << Get::Time() << BOLD << " --- Send User MODE " << END << std::endl;
+		std::cout << Get::Time() << BOLD << " --- Server doesn't support user modes " << END << std::endl;
 		RPL::ERR_UMODEUNKNOWNFLAG( client );
 	}
 	return ;

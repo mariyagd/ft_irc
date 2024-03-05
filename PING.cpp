@@ -6,7 +6,9 @@ PING::PING() {
 PING::~PING( void ) {
 }
 
-
+/*
+ * PING <token>
+ */
 void PING::execute( std::vector< std::string > & command, Client & client, Server &server ) {
 
 	(void)server;

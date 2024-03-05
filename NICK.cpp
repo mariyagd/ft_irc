@@ -11,7 +11,7 @@ NICK::~NICK( void ) {
 // NICK <nickname>
 void NICK::execute( std::vector< std::string > & command, Client & client, Server &server ) {
 
-	std::cout << Get::Time() << GREEN << " --- Processing NICK command" << END << std::endl;
+//	std::cout << Get::Time() << GREEN << " --- Processing NICK command" << END << std::endl;
 
 	std::string nickname = command[1];
 
@@ -19,14 +19,12 @@ void NICK::execute( std::vector< std::string > & command, Client & client, Serve
 		return;
 	else if ( command.size() == 1 )
 	{
-		std::cout << Get::Time() << RED_BOLD << " --- socket " << client.getSocket() << " Nick: " << nickname <<  " no nickname given" << END << std::endl;
-
+		std::cout << Get::Time() << RED_BOLD << " --- Need more params: NICK <nickname>" << END << std::endl;
 		RPL::ERR_NONICKNAMEGIVEN( client );
 	}
 	else if ( nickname.find_first_of(" :+-&?!@#$%*;,./<>=\"\\~") != std::string::npos )
 	{
-		std::cout << Get::Time() << RED_BOLD << " --- socket " << client.getSocket() << " Nick: " << nickname << " erroneous nickname" << END << std::endl;
-
+		std::cout << Get::Time() << RED_BOLD << " --- Erroneous nickname" << END << std::endl;
 		RPL::ERR_ERRONEUSNICKNAME( client );
 	}
 	else if ( client.getNickname() == nickname )
@@ -36,12 +34,12 @@ void NICK::execute( std::vector< std::string > & command, Client & client, Serve
 	}
 	else if ( !is_unique_nickname( nickname, client.getSocket(), server.getConnections() ) )
 	{
-		std::cout << Get::Time() << RED_BOLD << " --- socket " << client.getSocket() << " Nick: " << nickname << " nickname is use" << END << std::endl;
+		std::cout << Get::Time() << RED_BOLD << " --- Nickname is use" << END << std::endl;
 		RPL::ERR_NICKNAMEINUSE( client, nickname );
 	}
 	else if ( !client.isRegistered() )
 	{
-		std::cout << Get::Time() << " --- User [socket " << client.getSocket() << "] can register with name [" << nickname << "]" << END << std::endl;
+		std::cout << Get::Time() << " --- User can register with name [" << nickname << "]" << END << std::endl;
 		client.setNickname( nickname );
 		RPL::RPL_NICK( client, client.getAllClientsInAllChannels(), nickname );
 	}

@@ -23,18 +23,18 @@ USER::~USER( void ) {
  */
 void USER::execute( std::vector< std::string > & command, Client & client, Server &server ) {
 
-	std::cout << Get::Time() << GREEN << " --- Processing USER command" << END << std::endl;
+//	std::cout << Get::Time() << GREEN << " --- Processing USER command" << END << std::endl;
 
 	(void )server;
 
 	if ( command.size() < 5 )
 	{
-		std::cout << Get::Time() << RED_BOLD << " --- socket " << client.getSocket() << " USER: " << command[1] << " not enough parameters" << END << std::endl;
+		std::cout << Get::Time() << RED_BOLD << " --- Need more params: USER <username> 0 * <realname>" << END << std::endl;
 		RPL::ERR_NEEDMOREPARAMS( client, "USER" );
 	}
 	else if ( client.isRegistered() )
 	{
-		std::cout << Get::Time() << RED_BOLD << " --- socket " << client.getSocket() << " USER: " << command[1] << " already registered" << END << std::endl;
+		std::cout << Get::Time() << RED_BOLD << command[1] << " already registered" << END << std::endl;
 		RPL::ERR_ALREADYREGISTERED( client );
 	}
 	else

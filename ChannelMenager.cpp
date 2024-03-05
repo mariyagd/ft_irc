@@ -80,7 +80,7 @@ void	ChannelMenager::print_channels_info() {
 
 	for (size_t i = 0; i < _channels.size(); ++i )
 	{
-		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << "" << END << std::endl;
+//		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << "" << END << std::endl;
 		std::cout << BLUE_BOLD << " Channel : [" << END << _channels[i]->getChannelName() << "]" << std::endl;
 		std::cout << BLUE_BOLD << " Modes : ["  << END << _channels[i]->getCurrentChannelModes() << "]" << std::endl;
 		std::cout << BLUE_BOLD << " Clients: " << END << std::endl;
@@ -91,6 +91,6 @@ void	ChannelMenager::print_channels_info() {
 		}
 		std::cout << BLUE_BOLD << " Operators: " << END << std::endl;
 		_channels[i]->getOperatorsName();
-		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << ""  << END << std::endl;
+//		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << ""  << END << std::endl;
 	}
 }

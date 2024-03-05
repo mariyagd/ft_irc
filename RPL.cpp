@@ -25,7 +25,7 @@ void RPL::send_message( const int & socket, const char * message, const size_t m
 		std::cerr << Get::Time() << RED << " --- send() failed" << strerror( errno ) << END << std::endl;
 		return;
 	}
-	std::cout << YELLOW_BOLD << " --- Send msg to [socket " << socket << "] " << message << END;
+	std::cout << Get::Time() << " --- Send msg to [socket " << socket << "] " << std::endl  << YELLOW_BOLD << message << END;
 	return;
 }
 
@@ -165,7 +165,7 @@ void RPL::ERR_NOORIGIN( Client const & client ) {
 
 
 //JOIN
-void  RPL::RPL_NAMREPLY(const Client &client, std::string &channelName, const std::vector< std::string > & operatorNames ) {
+void  RPL::RPL_NAMREPLY(const Client &client, const std::string & channelName, const std::vector< std::string > & operatorNames ) {
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 353 " + client.getNickname() + " = " + channelName + " :" + client.getNickname();
 	for ( size_t i = 0; i < operatorNames.size(); ++i )
@@ -178,20 +178,20 @@ void  RPL::RPL_NAMREPLY(const Client &client, std::string &channelName, const st
 }
 
 
-void  RPL::RPL_ENDOFNAMES(const Client &client, std::string &channelName) {
+void  RPL::RPL_ENDOFNAMES(const Client &client, const std::string & channelName) {
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 366 " + client.getNickname() + " " + channelName + " :End of /NAMES list.\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
-void RPL::ERR_INVITEONLYCHAN(const Client &client, std::string &channelName) {
+void RPL::ERR_INVITEONLYCHAN(const Client &client, const std::string & channelName ) {
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 473 " + client.getNickname() + " " + channelName + " :Cannot join channel (+i)\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
 
-void RPL::ERR_CHANNELISFULL( const Client &client, std::string &channelName ) {
+void RPL::ERR_CHANNELISFULL( const Client &client, const std::string & channelName ) {
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 471 " + client.getNickname() + " " + channelName + " :Cannot join channel (+l)\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
@@ -216,7 +216,7 @@ void RPL::RPL_TOPICWHOTIME( const Client &client, const Client & setter, const s
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
-void RPL::RPL_BADCHANNELKEY( const Client &client, std::string &channelName ) {
+void RPL::RPL_BADCHANNELKEY( const Client &client, const std::string & channelName ) {
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 475 " + client.getNickname() + " " + channelName + " :Cannot join channel (+k)\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
@@ -224,7 +224,7 @@ void RPL::RPL_BADCHANNELKEY( const Client &client, std::string &channelName ) {
 
 //NORMAL
 
-void	RPL::RPL_JOIN( Client const & client, const std::set< int > & allClientsInChannel, std::string & channelName ) {
+void	RPL::RPL_JOIN( Client const & client, const std::set< int > & allClientsInChannel, const std::string & channelName ) {
 
 	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
 	std::string message = "@time=" + Get::Time() + ":" + msgto + " " + "JOIN " + channelName + " * " + client.getRealname() + "\r\n";
@@ -324,19 +324,17 @@ void RPL::ERR_NOSUCHNICK( Client const & client, std::string & nickname ) {
 }
 
 //kick<channel> <user>
-void RPL::RPL_KICK( const Client & client, std::string & channelName, std::string & nickname, std::string & comment, std::vector< Client * > allClients ) {
+void RPL::RPL_KICK( const Client & client, std::string & channelName, std::string & nickname, std::string & comment, const std::set< int > & allClientsInChannel ) {
 
 	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
-	std::string msg = "@time=" + Get::Time() + ":" + msgto + " KICK " + channelName + " " + nickname + " :";
+	std::string message = "@time=" + Get::Time() + ":" + msgto + " KICK " + channelName + " " + nickname + " ";
 	if (comment.empty())
-		msg += nickname + "\r\n";
+		message += ":" + nickname + "\r\n";
 	else
-		msg += comment + "\r\n";
-//	send_message( client.getSocket(), msg.c_str(), msg.size() );
-	for ( size_t i = 0; i < allClients.size(); ++i )
+		message += comment + "\r\n";
+	for ( std::set< int >::const_iterator it = allClientsInChannel.begin(); it != allClientsInChannel.end(); it++ )
 	{
-//		if ( allClients[i]->getNicknameId() != client.getNicknameId()
-		send_message( allClients[i]->getSocket(), msg.c_str(), msg.size() );
+		send_message( *it, message.c_str(), message.size() );
 	}
 }
 

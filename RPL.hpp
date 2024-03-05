@@ -48,13 +48,13 @@ public:
 	static void ERR_NOORIGIN( Client const & client );
 
 	//JOIN
-	static void RPL_NAMREPLY( Client const & client, std::string & channelName, const std::vector< std::string > & operatorsNames );
-	static void RPL_ENDOFNAMES( Client const & client, std::string & channelName );
-	static void ERR_INVITEONLYCHAN( Client const & client, std::string & channelName );
-	static void ERR_CHANNELISFULL( Client const & client, std::string & channelName );
+	static void RPL_NAMREPLY( Client const & client, const std::string & channelName, const std::vector< std::string > & operatorsNames );
+	static void RPL_ENDOFNAMES( Client const & client, const std::string & channelName );
+	static void ERR_INVITEONLYCHAN( Client const & client, const std::string & channelName );
+	static void ERR_CHANNELISFULL( Client const & client, const std::string & channelName );
 	static void RPL_TOPIC( Client const & client, const std::string & channelName, const std::string & topic );
 	static void RPL_TOPICWHOTIME( Client const & client, const Client & setter, const std::string & channelName, const long & creationTime );
-	static void RPL_BADCHANNELKEY( Client const & client, std::string & channelName );
+	static void RPL_BADCHANNELKEY( Client const & client, const std::string & channelName );
 
 	// TOPIC
 	static void RPL_NORMAL( Client const & client, const std::vector< Client * > & allClients, const std::string & channelName, const std::string & command, std::string & topic );
@@ -62,7 +62,7 @@ public:
 
 
 	//JOIN
-	static void RPL_JOIN( Client const & client, const std::set< int > & allClientsInChannel, std::string & channelName );
+	static void RPL_JOIN( Client const & client, const std::set< int > & allClientsInChannel, const std::string & channelName );
 
 	//CHANNEL MODE
 	static void RPL_CHANNELMODEIS( Client const & client, const std::string & channelName, const std::string & allChannelModes );
@@ -87,7 +87,7 @@ public:
 
 	// KICK
 	static void ERR_CHANOPRIVSNEEDED( Client const & client, const std::string & channelName );
-	static void RPL_KICK( Client const & client, std::string & channelName, std::string & nickname, std::string & comment, std::vector< Client * > allClients);
+	static void RPL_KICK( Client const & client, std::string & channelName, std::string & nickname, std::string & comment, const std::set< int > & allClientsInChannel );
 	static void ERR_NOTONCHANNEL( Client const & client, std::string & channelName );
 	static void ERR_USERNOTINCHANNEL( Client const & client, std::string & nickname, std::string & channelName );
 

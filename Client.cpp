@@ -276,20 +276,19 @@ void	Client::closeSocket( void ) {
 
 void	Client::printInfo( void ) {
 
-	std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << "" << std::endl;
-	std::cout << std::left << "Client info:"  << std::endl;
-	std::cout << std::setw(50) << std::setfill('-') << "" << END << std::endl;
+//	std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << "" << std::endl;
+	std::cout << std::setfill(' ');
+	std::cout << std::left << std::setw(15) << BLUE_BOLD << "Client info:"  << END << std::endl;
+//	std::cout << std::setw(50) << std::setfill('-') << "" << END << std::endl;
 
-	std::cout << std::left << std::setw(15) << std::setfill(' ') << "Socket: " << _socket << std::endl;
-	std::cout << std::left << std::setw(15) << "Registered: " << ( _is_registered == true ? "Yes" : "No" ) << std::endl;
-	std::cout << std::left << std::setw(15) << "Nickname: " << _nickname << std::endl;
-	std::cout << std::left << std::setw(15) << "Username: " << _username << std::endl;
-	std::cout << std::left << std::setw(15) << "Hostname: " << _hostname << std::endl;
-//	std::cout << std::left << std::setw(15) << "Servname: " << _servname << std::endl;
-	std::cout << std::left << std::setw(15) << "Realname: " << _realname << std::endl;
-//	std::cout << std::left << std::setw(15) << "Address: " << inet_ntoa(((struct sockaddr_in *)&_addr)->sin_addr) << std::endl;
+	std::cout << std::left << std::setw(15) << BLUE_BOLD << "Socket:     " << END << _socket << std::endl;
+	std::cout << std::left << std::setw(15) << BLUE_BOLD << "Registered: " << END << ( _is_registered == true ? "Yes" : "No" ) << std::endl;
+	std::cout << std::left << std::setw(15) << BLUE_BOLD << "Nickname:   " << END << _nickname << std::endl;
+	std::cout << std::left << std::setw(15) << BLUE_BOLD << "Username:   " << END << _username << std::endl;
+	std::cout << std::left << std::setw(15) << BLUE_BOLD << "Hostname:   " << END << _hostname << std::endl;
+	std::cout << std::left << std::setw(15) << BLUE_BOLD << "Realname:   " << END << _realname << std::endl;
 
-	std::cout << BLUE_BOLD  << "------------------------------------------------------" << END << std::endl;
+//	std::cout << BLUE_BOLD  << "------------------------------------------------------" << END << std::endl;
 	return;
 }
 

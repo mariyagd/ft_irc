@@ -119,6 +119,8 @@ bool MODE::errorsInModeCommand( std::vector< std::string > & _command, Client & 
 	bool status;
 	std::vector< std::string > command = _command;
 
+	if (command[0] == "b")
+		return true;
 	if ( channel->isClientIsOperator(client.getNicknameId()) == -1 )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Client " << client.getNickname() << " is not an operator of channel " <<channel->getChannelName() << ". Can not change modes"  << END << std::endl;

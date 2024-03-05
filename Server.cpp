@@ -316,7 +316,8 @@ void	Server::receive( int i )
 	{
 		buf[bytesRead] = '\0';
 		msg = buf;
-		std::cout << Get::Time() << CYAN_BOLD << " --- Received msg from [socket " << _connections[i].getSocket() << "] " << msg << END;
+		std::cout << BLUE_BOLD << std::setw(100) << std::setfill('-') << "" << END << std::endl;
+		std::cout << Get::Time() << " --- Received msg from [socket " << _connections[i].getSocket() << "] " << std::endl << CYAN_BOLD  << msg << END;
 
 		process_command(msg, _connections[i] );
 
@@ -440,7 +441,6 @@ void	Server::process_command( const std::string & msg, Client & client )
 		if ( it != _command_executor.end() )
 		{
 			it->second->execute( tokens, client, *this );
-
 		}
 	}
 	return ;

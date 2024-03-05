@@ -32,6 +32,36 @@ Channel * ChannelMenager::createChannel( std::string name )
 	return new_channel;
 }
 
+//void	ChannelMenager::deleteChannel( Channel * rhs ) {
+//
+//	for (std::vector< Channel * >::iterator it = _channels.begin(); it != _channels.end(); ++it )
+//	{
+//		if (*it == rhs )
+//		{
+//			std::cout << Get::Time() << MAGNETA_BOLD << " --- Channel " << rhs->getChannelName() << " is empty. Delete Channel" << END << std::endl;
+//			for ( std::vector< Client * >::iterator it2 = rhs->getAllClients().begin(); it2 != rhs->getAllClients().end(); ++it )
+//			{
+//				(*it2)->removeChannel( rhs );
+//			}
+////			delete rhs;
+//			rhs = nullptr;
+//			_channels.erase(it);
+//		}
+//	}
+//}
+
+void ChannelMenager::deleteAllChannels( ) {
+
+	for (std::vector< Channel * >::iterator  it = _channels.begin(); it != _channels.end(); ++it )
+	{
+		if ( *it != nullptr )
+		{
+			std::cout << GREEN_BOLD << "Deleting channel " << (*it)->getChannelName() << END << std::endl;
+			delete *it;
+			*it = nullptr;
+		}
+	}
+}
 
 Channel * ChannelMenager::getChannelByName(const std::string & channelName)
 {
@@ -63,7 +93,7 @@ bool	ChannelMenager::channelExists(const std::string & channelName)
 
 void	ChannelMenager::removeClientFromAllChannels( Client * client )
 {
-	std::cout << Get::Time() << MAGNETA_BG << BOLD << " --- Removing client " << MAGNETA_BG << MAGNETA2 << client->getNickname() << END << MAGNETA_BG  << BOLD << " from all channels on disconnection " << END << std::endl;
+	std::cout << Get::Time() << MAGNETA_BG << BOLD << " --- Removing client " << client->getNickname() << " from all channels on disconnection " << END << std::endl;
 
 	for (size_t i = 0; i < _channels.size(); ++i)
 	{

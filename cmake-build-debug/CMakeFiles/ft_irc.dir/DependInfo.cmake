@@ -24,6 +24,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/mariyadancheva/Documents/GitHub/ft_irc/PING.cpp" "CMakeFiles/ft_irc.dir/PING.cpp.o" "gcc" "CMakeFiles/ft_irc.dir/PING.cpp.o.d"
   "/Users/mariyadancheva/Documents/GitHub/ft_irc/PRIVMSG.cpp" "CMakeFiles/ft_irc.dir/PRIVMSG.cpp.o" "gcc" "CMakeFiles/ft_irc.dir/PRIVMSG.cpp.o.d"
   "/Users/mariyadancheva/Documents/GitHub/ft_irc/RPL.cpp" "CMakeFiles/ft_irc.dir/RPL.cpp.o" "gcc" "CMakeFiles/ft_irc.dir/RPL.cpp.o.d"
+  "/Users/mariyadancheva/Documents/GitHub/ft_irc/SQUIT.cpp" "CMakeFiles/ft_irc.dir/SQUIT.cpp.o" "gcc" "CMakeFiles/ft_irc.dir/SQUIT.cpp.o.d"
   "/Users/mariyadancheva/Documents/GitHub/ft_irc/Server.cpp" "CMakeFiles/ft_irc.dir/Server.cpp.o" "gcc" "CMakeFiles/ft_irc.dir/Server.cpp.o.d"
   "/Users/mariyadancheva/Documents/GitHub/ft_irc/TOPIC.cpp" "CMakeFiles/ft_irc.dir/TOPIC.cpp.o" "gcc" "CMakeFiles/ft_irc.dir/TOPIC.cpp.o.d"
   "/Users/mariyadancheva/Documents/GitHub/ft_irc/USER.cpp" "CMakeFiles/ft_irc.dir/USER.cpp.o" "gcc" "CMakeFiles/ft_irc.dir/USER.cpp.o.d"

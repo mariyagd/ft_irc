@@ -41,4 +41,6 @@ add_executable(
         WHO.cpp
         WHOIS.cpp
         TOPIC.cpp
+        SQUIT.hpp
+        SQUIT.cpp
 )

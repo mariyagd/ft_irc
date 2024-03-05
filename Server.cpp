@@ -13,6 +13,7 @@
 # include "TOPIC.hpp"
 # include "PART.hpp"
 # include "WHO.hpp"
+# include "SQUIT.hpp"
 
 // Coplien's form --------------------------------------------------------------------------------------------------------
 
@@ -44,6 +45,7 @@ Server::Server(int port, char *password) : _port(port), _password(password) {
 	_command_executor.insert(std::make_pair("TOPIC", new TOPIC()));
 	_command_executor.insert(std::make_pair("PART", new PART()));
 	_command_executor.insert(std::make_pair("WHO", new WHO()));
+	_command_executor.insert(std::make_pair("squit", new SQUIT()));
 }
 
 Server::~Server()
@@ -53,7 +55,7 @@ Server::~Server()
 		if ( _connections[i].getSocket() > 0 )
 			_connections[i].closeSocket();
 	}
-
+	deleteAllChannels();
 	for ( std::map< std::string, ACommand * >::iterator it = _command_executor.begin(); it != _command_executor.end(); it++ )
 		delete it->second;
 	
@@ -67,6 +69,10 @@ void Server::shutdown()
 		if (_connections[i].getSocket() > 0)
 			_connections[i].closeSocket();
 	}
+	deleteAllChannels();
+	for ( std::map< std::string, ACommand * >::iterator it = _command_executor.begin(); it != _command_executor.end(); it++ )
+		delete it->second;
+
 	std::cout << Get::Time() << BOLD << " --- Exit Server" << END << std::endl;
 }
 

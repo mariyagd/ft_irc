@@ -513,6 +513,30 @@ RPL.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/RPL.cpp.s
 .PHONY : RPL.cpp.s
 
+SQUIT.o: SQUIT.cpp.o
+.PHONY : SQUIT.o
+
+# target to build an object file
+SQUIT.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/SQUIT.cpp.o
+.PHONY : SQUIT.cpp.o
+
+SQUIT.i: SQUIT.cpp.i
+.PHONY : SQUIT.i
+
+# target to preprocess a source file
+SQUIT.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/SQUIT.cpp.i
+.PHONY : SQUIT.cpp.i
+
+SQUIT.s: SQUIT.cpp.s
+.PHONY : SQUIT.s
+
+# target to generate assembly for a file
+SQUIT.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/SQUIT.cpp.s
+.PHONY : SQUIT.cpp.s
+
 Server.o: Server.cpp.o
 .PHONY : Server.o
 
@@ -714,6 +738,9 @@ help:
 	@echo "... RPL.o"
 	@echo "... RPL.i"
 	@echo "... RPL.s"
+	@echo "... SQUIT.o"
+	@echo "... SQUIT.i"
+	@echo "... SQUIT.s"
 	@echo "... Server.o"
 	@echo "... Server.i"
 	@echo "... Server.s"

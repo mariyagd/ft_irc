@@ -84,7 +84,8 @@
 				26,
 				27,
 				28,
-				29
+				29,
+				31
 			]
 		}
 	],
@@ -124,7 +125,8 @@
 				8,
 				13,
 				15,
-				18
+				18,
+				30
 			]
 		},
 		{
@@ -152,7 +154,8 @@
 				26,
 				27,
 				28,
-				29
+				29,
+				31
 			]
 		}
 	],
@@ -328,6 +331,17 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "TOPIC.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "SQUIT.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "SQUIT.cpp",
 			"sourceGroupIndex" : 1
 		}
 	],

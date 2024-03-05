@@ -180,6 +180,12 @@
 		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/RPL.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/SQUIT.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/SQUIT.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
 		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Server.cpp">
 			<Option target="ft_irc"/>
 		</Unit>

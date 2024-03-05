@@ -22,24 +22,30 @@ void PRIVMSG::execute( std::vector< std::string > & command, Client & client, Se
 	
 	std::vector< std::string > target;
 	std::string message;
+	std::cout << "target = " << command[1] << std::endl;
 
 	splitMsgOnComma( command[1], target );
 	concatenate(command, 2, message );
-
+	std::cout << "message = " << message << std::endl;
+	for (size_t i = 0; i < target.size(); ++i )
+	{
+		std::cout << "target[" << i << "] = " << target[i] << std::endl;
+	}
 	for (size_t i = 0; i < target.size(); ++i )
 	{
 		if (target[i].find_first_of("&#+!") == 0) // if the destination is a channel
-			send_in_channel( server, client, target[i], message );
+			send_in_channel( server, client,  message, target[i] );
 		else
-			send_to_client(server, client, target[i], message );
+			send_to_client(server, client, message, target[i] );
 
 	}
 }
 
 void PRIVMSG::send_in_channel( Server &server, Client & client, const std::string & message, const std::string & target ) {
 
+	std::cout << target << std::endl;
 	Channel * channel = server.getChannelByName( target);
-	if (!channel )
+	if ( !channel )
 	{
 		std::cerr << Get::Time() << RED_BOLD << " --- Channel doesn't exist " << END << std::endl;
 		RPL::ERR_NOSUCHNICK( client, target);

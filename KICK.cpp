@@ -75,6 +75,8 @@ void KICK::execute( std::vector< std::string > & command, Client & client, Serve
 				std::cout << Get::Time( ) << GREEN_BOLD << " --- Client " << nickname << " is kicked from the channel" << END << std::endl;
 				RPL::RPL_KICK( client, channelName, nickname, comment, channel->getAllClientsSockets() );
 				channel->removeClient( nickname );
+//				if (channel->getAllClients().size() == 0 )
+//					server.deleteChannel(channel);
 				channel->print_channels_info();
 			}
 		}

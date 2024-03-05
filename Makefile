@@ -15,6 +15,7 @@ SRCS = 	main.cpp  Server.cpp Client.cpp \
 		TOPIC.cpp \
 		WHOIS.cpp \
 		INVITE.cpp \
+		SQUIT.cpp
 
 CPPF = c++ -Wall -Werror -Wextra -std=c++98 -g
 

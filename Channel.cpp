@@ -104,11 +104,7 @@ const std::vector< int > &Channel::getOperatorsID( void ) const {
 int Channel::isClientIsOperator(int clientId) const {
 
 	if (std::find(_operators.begin(), _operators.end(), clientId) != _operators.end())
-	{
-		std::cout << Get::Time() << BLUE_BG << " --- Client ID: " << clientId << " is an operator" << END << std::endl;
 		return clientId;
-	}
-	std::cout << Get::Time() << BLUE_BG << "Client ID" << clientId << " is NOT an operator" << END << std::endl;
 	return -1;
 }
 
@@ -144,7 +140,7 @@ void Channel::addClient(Client &client) {
 
 void Channel::removeClient( const std::string &nickname ) {
 
-	std::cout << Get::Time() << MAGNETA_BOLD << " --- Removing client " << BOLD << nickname << END << MAGNETA_BOLD << " from channel " << BOLD << this->getChannelName() << END << std::endl;
+	std::cout << Get::Time() << GREEN_BOLD << " --- " << nickname << " removed from channel " << this->getChannelName() << END << std::endl;
 
 	for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it)
 	{
@@ -329,4 +325,20 @@ bool Channel::operator==( const Channel & rhs ) const {
 	if ( this->_name == rhs._name )
 		return true;
 	return false;
+}
+
+void	Channel::print_channels_info() const {
+
+
+//		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << "" << END << std::endl;
+		std::cout << BLUE_BOLD << " Channel : [" << END << _name << "]" << std::endl;
+		std::cout << BLUE_BOLD << " Modes : ["  << END << this->getCurrentChannelModes() << "]" << std::endl;
+		std::cout << BLUE_BOLD << " Clients: " << END << std::endl;
+		for ( size_t j = 0; j < _clients.size(); ++j )
+		{
+			std::cout << " id [" << _clients[j]->getNicknameId() << "] nick [" << _clients[j]->getNickname() << "]" << std::endl;
+		}
+		std::cout << BLUE_BOLD << " Operators: " << END << std::endl;
+		this->getOperatorsName();
+//		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << ""  << END << std::endl;
 }

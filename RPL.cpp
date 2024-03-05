@@ -169,10 +169,8 @@ void  RPL::RPL_NAMREPLY(const Client &client, const std::string & channelName, c
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 353 " + client.getNickname() + " = " + channelName + " :" + client.getNickname();
 	for ( size_t i = 0; i < operatorNames.size(); ++i )
-	{
 		message += " @" + operatorNames[i];
-		std::cout << CYAN_BG << operatorNames[i] << END << std::endl;
-	}
+
 	message += "\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
@@ -293,7 +291,7 @@ void RPL::ERR_UMODEUNKNOWNFLAG( Client const & client ) {
 }
 
 // PRIVMSG
-void RPL::ERR_CANNOTSENDTOCHAN( Client const & client, std::string & channelName ) {
+void RPL::ERR_CANNOTSENDTOCHAN( Client const & client, const std::string & channelName ) {
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 404 " + client.getNickname() + " " + channelName + " :Cannot send to channel\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
@@ -308,7 +306,7 @@ void RPL::ERR_CANNOTSENDTOCHAN( Client const & client, std::string & channelName
                                   ; Message from dan to the channel
                                   #coolpeople
 */
-void RPL::RPL_PRIVMSG( const Client & client, std::string receiver, std::string & message, const int & socket ) 
+void RPL::RPL_PRIVMSG( const Client & client, const std::string receiver, const std::string & message, const int & socket )
 {
 
 	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
@@ -317,7 +315,7 @@ void RPL::RPL_PRIVMSG( const Client & client, std::string receiver, std::string 
 }
 
 //  "<client> <nickname> :No such nick/channel"
-void RPL::ERR_NOSUCHNICK( Client const & client, std::string & nickname ) {
+void RPL::ERR_NOSUCHNICK( Client const & client, const std::string & nickname ) {
 
 	std::string msg = "@time=" + Get::Time() + ":" + client.getNickname() + " " + nickname + " :No such nick/channel" + "\r\n";
 	send_message( client.getSocket(), msg.c_str(), msg.size() );
@@ -327,9 +325,9 @@ void RPL::ERR_NOSUCHNICK( Client const & client, std::string & nickname ) {
 void RPL::RPL_KICK( const Client & client, std::string & channelName, std::string & nickname, std::string & comment, const std::set< int > & allClientsInChannel ) {
 
 	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
-	std::string message = "@time=" + Get::Time() + ":" + msgto + " KICK " + channelName + " " + nickname + " ";
+	std::string message = "@time=" + Get::Time() + ":" + msgto + " KICK " + channelName + " " + nickname + " :";
 	if (comment.empty())
-		message += ":" + nickname + "\r\n";
+		message += nickname + "\r\n";
 	else
 		message += comment + "\r\n";
 	for ( std::set< int >::const_iterator it = allClientsInChannel.begin(); it != allClientsInChannel.end(); it++ )
@@ -340,7 +338,7 @@ void RPL::RPL_KICK( const Client & client, std::string & channelName, std::strin
 
 void RPL::ERR_CHANOPRIVSNEEDED( Client const & client, const std::string & channelName ) {
 
-	std::string msg = "@time=" + Get::Time() + ":" + client.getServname() + " 482 " + client.getNickname() + " " + channelName + " :You're not channel operator\r\n";
+	std::string msg = "@time=" + Get::Time() + ":" + client.getServname() + " 482 " + channelName + " :You're not channel operator\r\n";
 	send_message( client.getSocket(), msg.c_str(), msg.size() );
 }
 
@@ -384,10 +382,13 @@ void RPL::RPL_INVITING( const Client & client, Client const & invited, std::stri
 
 // PART
 
-void RPL::RPL_PART( const Client & client, const std::vector< Client *> allClients, const std::string & channelName, const std::string & comment ) {
+void RPL::RPL_PART( const Client & client, const std::set< int > & allClientsInChannel, const std::string & channelName, const std::string & comment ) {
 
 	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
 	std::string message = "@time=" + Get::Time() + ":" + msgto + " PART " + channelName + " " + comment + "\r\n";
-	for ( size_t i = 0; i < allClients.size(); ++i )
-		send_message( allClients[i]->getSocket(), message.c_str(), message.size() );
+	for ( std::set< int >::const_iterator it = allClientsInChannel.begin(); it != allClientsInChannel.end(); it++ )
+	{
+		send_message( *it, message.c_str(), message.size() );
+	}
+
 }

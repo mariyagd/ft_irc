@@ -278,15 +278,15 @@ void	Client::printInfo( void ) {
 
 //	std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << "" << std::endl;
 	std::cout << std::setfill(' ');
-	std::cout << std::left << std::setw(15) << BLUE_BOLD << "Client info:"  << END << std::endl;
+	std::cout << std::setw(15) << std::left  << BLUE_BOLD << "Client info:"  << END << std::endl;
 //	std::cout << std::setw(50) << std::setfill('-') << "" << END << std::endl;
 
-	std::cout << std::left << std::setw(15) << BLUE_BOLD << "Socket:     " << END << _socket << std::endl;
-	std::cout << std::left << std::setw(15) << BLUE_BOLD << "Registered: " << END << ( _is_registered == true ? "Yes" : "No" ) << std::endl;
-	std::cout << std::left << std::setw(15) << BLUE_BOLD << "Nickname:   " << END << _nickname << std::endl;
-	std::cout << std::left << std::setw(15) << BLUE_BOLD << "Username:   " << END << _username << std::endl;
-	std::cout << std::left << std::setw(15) << BLUE_BOLD << "Hostname:   " << END << _hostname << std::endl;
-	std::cout << std::left << std::setw(15) << BLUE_BOLD << "Realname:   " << END << _realname << std::endl;
+	std::cout << std::setw(15) << std::left << BLUE_BOLD << "Socket:     " << END << _socket << std::endl;
+	std::cout << std::setw(15) << std::left << BLUE_BOLD << "Registered: " << END << ( _is_registered == true ? "Yes" : "No" ) << std::endl;
+	std::cout << std::setw(15) << std::left << BLUE_BOLD << "Nickname:   " << END << _nickname << std::endl;
+	std::cout << std::setw(15) << std::left << BLUE_BOLD << "Username:   " << END << _username << std::endl;
+	std::cout << std::setw(15) << std::left << BLUE_BOLD << "Hostname:   " << END << _hostname << std::endl;
+	std::cout << std::setw(15) << std::left << BLUE_BOLD << "Realname:   " << END << _realname << std::endl;
 
 //	std::cout << BLUE_BOLD  << "------------------------------------------------------" << END << std::endl;
 	return;

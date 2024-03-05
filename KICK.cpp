@@ -16,7 +16,7 @@ KICK::~KICK( void ) {
 
 void KICK::execute( std::vector< std::string > & command, Client & client, Server & server ) {
 
-	std::cout << Get::Time() << GREEN << " --- Processing KICK command" << END << std::endl;
+//	std::cout << Get::Time() << GREEN << " --- Processing KICK command" << END << std::endl;
 
 	if ( command.size() < 3 )
 	{
@@ -25,12 +25,11 @@ void KICK::execute( std::vector< std::string > & command, Client & client, Serve
 		return;
 	}
 
-	printVector(command);
 	Channel *channel = nullptr;
 	Client *kicked = nullptr;
 	std::string & channelName = command[1];
 	std::string & nickname = command[2];
-	std::string comment = "";
+	std::string comment;
 
 
 	kicked = server.getClientByNickname( nickname );
@@ -66,14 +65,17 @@ void KICK::execute( std::vector< std::string > & command, Client & client, Serve
 		std::cout << Get::Time( ) << BOLD << " --- Kicker is operator" << END << std::endl;
 
 		concatenate( command, 3, comment );
+		if ( comment[0] == ':')
+			comment.erase(0,1);
 
 		for ( size_t i = 0; i < channel->getAllClients( ).size( ); i++ )
 		{
 			if ( channel->getAllClients( )[i]->getNickname( ) == nickname )
 			{
-				std::cout << Get::Time( ) << BOLD << " --- Client " << nickname << " is kicked from the channel" << END << std::endl;
+				std::cout << Get::Time( ) << GREEN_BOLD << " --- Client " << nickname << " is kicked from the channel" << END << std::endl;
 				RPL::RPL_KICK( client, channelName, nickname, comment, channel->getAllClientsSockets() );
 				channel->removeClient( nickname );
+				channel->print_channels_info();
 			}
 		}
 	}

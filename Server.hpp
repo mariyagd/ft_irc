@@ -52,8 +52,8 @@ public:
 	std::string									getProtocolFamilyName(int family);
 
 	//maybe put in a class Channel
-	int 										getSocketByNickname( std::string &nickname );
-	Client * 									getClientByNickname( std::string &nickname );
+	int 										getSocketByNickname( const std::string &nickname ) const;
+	Client * 									getClientByNickname( const std::string &nickname );
 
 	void										splitMsgOnSpace( std::string & line, std::vector< std::string > & tokens  );
 	void										process_command( const std::string & msg, Client & client );

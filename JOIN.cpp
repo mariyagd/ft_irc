@@ -74,6 +74,7 @@ void JOIN::join_and_send( Channel * channel, Client & client, const std::string 
 	}
 	RPL::RPL_NAMREPLY( client, channelName, channel->getOperatorsName( ) );
 	RPL::RPL_ENDOFNAMES( client, channelName );
+	channel->print_channels_info();
 }
 
 

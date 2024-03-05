@@ -6,7 +6,16 @@ INVITE::INVITE( void ) : ACommand() {
 INVITE::~INVITE( void ) {
 }
 
+/*
+ * INVITE <nickname> <channel>
+ */
 void INVITE::execute( std::vector< std::string > & command, Client & client, Server & server ) {
+
+	if ( command.size() < 3 )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Need more params: INVITE <nickname> <channel>" << END << std::endl;
+		RPL::ERR_NEEDMOREPARAMS( client, "INVITE");
+	}
 
 	std::string & nickname = command[1];
 	std::string & channelName = command[2];
@@ -15,26 +24,21 @@ void INVITE::execute( std::vector< std::string > & command, Client & client, Ser
 
 //	std::cout << Get::Time() << GREEN << " --- Processing INVITE command" << END << std::endl;
 
-	for ( size_t i = 0; i < command.size(); i++ )
-	{
-		std::cout << Get::Time() << CYAN_BG << " --- Command: [" << command[i] << "]" << END << std::endl;
-	}
-
 	invited = server.getClientByNickname( nickname );
 	channel = server.getChannelByName( channelName );
 	if ( !invited )
 	{
-		std::cout << Get::Time() << RED_BOLD << " --- No such nick " << nickname << " in the network" << END << std::endl;
+		std::cout << Get::Time() << RED_BOLD << " --- No such nick" << END << std::endl;
 		RPL::ERR_NOSUCHNICK( client, nickname );
 	}
 	else if ( !channel )
 	{
-		std::cout << Get::Time() << RED_BOLD << " --- No such channel " << channelName << " in the network" << END << std::endl;
+		std::cout << Get::Time() << RED_BOLD << " --- No such channel" << END << std::endl;
 		RPL::ERR_NOSUCHCHANNEL( client, channelName );
 	}
 	else if ( channel->clientIsInChannel( invited ) )
 	{
-		std::cout << Get::Time() << RED_BOLD << " --- User " << nickname << " is already in channel " << channelName << END << std::endl;
+		std::cout << Get::Time() << RED_BOLD << " --- Invited user is already in channel " << channelName << END << std::endl;
 		RPL::ERR_USERONCHANNEL( client, nickname, channelName );
 	}
 	else if ( channel->isClientIsOperator( client.getNicknameId() ) == -1 )
@@ -44,7 +48,7 @@ void INVITE::execute( std::vector< std::string > & command, Client & client, Ser
 	}
 	else
 	{
-		std::cout << Get::Time() << GREEN_BOLD << " --- Inviting user " << nickname << " in channel " << channelName << END << std::endl;
+		std::cout << Get::Time() << GREEN_BOLD << " --- Send invitation to " << nickname << END << std::endl;
 		RPL::RPL_INVITING( client, *invited, channelName );
 		channel->addInvited( invited->getNicknameId() );
 	}

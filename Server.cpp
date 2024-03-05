@@ -323,7 +323,6 @@ void	Server::receive( int i )
 
 		if ( !_connections[i].isRegistered() )
 			register_client(i);
-		ChannelMenager::print_channels_info();
 	}
 	FD_CLR(_connections[i].getSocket(), &_read_fd_set);
 	return;
@@ -379,7 +378,7 @@ std::vector< Client > &	Server::getConnections( void ) {
 }
 
 //maybe put in a class Channel
-int	Server::getSocketByNickname( std::string &nickname ) {
+int	Server::getSocketByNickname( const std::string &nickname ) const {
 
 	for ( size_t i = 0; i < _connections.size(); ++i )
 	{
@@ -390,7 +389,7 @@ int	Server::getSocketByNickname( std::string &nickname ) {
 }
 
 //maybe put in a class Channel
-Client *	Server::getClientByNickname( std::string &nickname ) {
+Client *	Server::getClientByNickname( const std::string &nickname ) {
 
 	size_t i = 0;
 	for ( ; i < _connections.size(); ++i )

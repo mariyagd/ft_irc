@@ -56,15 +56,23 @@ void MODE::setChannelMode( Client & client, std::vector< std::string > & command
 						channel->setLimitMode( status, 0 );
 					else
 					{
+						std::cout << CYAN_BG << mode << END << std::endl;
+						std::cout << CYAN_BG << mode[i] << END << std::endl;
 						command.erase( command.begin() + j );
 						command[0].erase( i, 1 );
+						std::cout << CYAN_BG << mode << END << std::endl;
 					}
 					break;
 				}
 				case 'i':
 				{
 					if ( mode_already_set(channel, 'i', status) )
+					{
+						std::cout << CYAN_BG << mode << END << std::endl;
+						std::cout << CYAN_BG << mode[i] << END << std::endl;
 						command[0].erase( i, 1 );
+						std::cout << CYAN_BG << mode << END << std::endl;
+					}
 					else
 						channel->setInviteMode( status );
 					break;
@@ -111,13 +119,18 @@ void MODE::setChannelMode( Client & client, std::vector< std::string > & command
 	}
 	if (command[0].find_first_not_of("+-") == std::string::npos )
 		command[0].clear();
+	for ( size_t i = 1; i < command[0].size(); ++i )
+	{
+		if ( ( command[0][i - 1] == '-' || command[0][i - 1] == '+') && ( command[0][i] == '-' || command[0][i] == '+') )
+			command[0].erase(i - 1, 1);
+	}
 }
 
-bool MODE::errorsInModeCommand( std::vector< std::string > & _command, Client & client, Channel * channel )
+bool MODE::errorsInModeCommand( std::vector< std::string > & command, Client & client, Channel * channel )
 {
 	(void)channel;
 	bool status;
-	std::vector< std::string > command = _command;
+	size_t j = 1;
 
 	if (command[0] == "b")
 		return true;
@@ -143,14 +156,12 @@ bool MODE::errorsInModeCommand( std::vector< std::string > & _command, Client & 
 		{
 			if ( ( command[0][i] == 'l' || command[0][i] == 'o' || command[0][i] == 'k') && status )
 			{
-				if (command.size() <= 1 )
+				if ( j++ >= command.size() )
 				{
 					std::cout << Get::Time() << RED_BOLD << " --- Not enough params " << END << std::endl;
 					RPL::ERR_NEEDMOREPARAMS( client, "MODE" );
 					return true;
 				}
-				else
-					command.erase( command.begin() + 1 );
 			}
 		}
 	}
@@ -198,7 +209,11 @@ void	MODE::execute( std::vector< std::string > & command, Client & client, Serve
 			{
 				setChannelMode( client, command, channel );
 				if (!command[0].empty())
+				{
+					std::cout << Get::Time( ) << GREEN_BOLD << " --- Set new channel modes " << command[1] << END << std::endl;
 					RPL::INFORM_CHANNELMODE( client, channel->getChannelName(), command, channel->getAllClients() );
+					channel->print_channels_info();
+				}
 			}
 		}
 	}

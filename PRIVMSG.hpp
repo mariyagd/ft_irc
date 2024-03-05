@@ -10,6 +10,10 @@ public:
 	~PRIVMSG( void );
 
 	void execute( std::vector< std::string > & command, Client & client, Server &server );
-};
+	void send_in_channel( Server &server, Client & client, const std::string & message, const std::string & target );
+	void send_to_client( Server & server, Client & client, const std::string & message, const std::string & target );
+
+
+	};
 
 #endif

@@ -42,6 +42,7 @@ public:
 	static void RPL_WHOISUSER( Client const & client, Client const & other );
 	static void RPL_ENDOFWHOIS( Client const & client, const std::string & nick );
 	static void RPL_ENDOFWHO( Client const & client, const std::string & channelName );
+	static void RPL_WHOREPLY( Client const & client, const std::string & channelName );
 
 	// PING
 	static void RPL_PING( Client const & client );
@@ -77,6 +78,7 @@ public:
 
 	// NICK MODE
 	static void ERR_UMODEUNKNOWNFLAG( Client const & client );
+	static void RPL_ENDOFBANLIST ( Client const & client, const std::string & channelName) ;
 
 	// PRIVMSG
 	static void ERR_NORECIPIENT( Client const & client );

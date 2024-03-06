@@ -43,6 +43,11 @@ void	MODE::execute( std::vector< std::string > & command, Client & client, Serve
 		}
 		else
 		{
+			if ( command[2] == "b")
+			{
+				RPL::RPL_ENDOFBANLIST(client, command[1]);
+				return;
+			}
 			command.erase( command.begin( ), command.begin( ) + 2 ); // delete MODE and <target>
 			if ( errorsInModeCommand( command, client, channel ) )
 				return ;
@@ -322,8 +327,6 @@ bool MODE::errorsInModeCommand( std::vector< std::string > & command, Client & c
 	bool status;
 	size_t j = 1;
 
-	if (command[0] == "b")
-		return true;
 	if ( channel->isClientIsOperator(client.getNicknameId()) == -1 )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- " << client.getNickname() << " is not an operator. Can not change modes"  << END << std::endl;

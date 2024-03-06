@@ -25,6 +25,7 @@ void WHO::execute( std::vector< std::string > & command, Client & client, Server
 		RPL::ERR_NOSUCHCHANNEL( client, command[1] );
 		return;
 	}
+	RPL::RPL_WHOREPLY( client, command[1] );
 	RPL::RPL_ENDOFWHO( client, command[1] );
 	return ;
 }

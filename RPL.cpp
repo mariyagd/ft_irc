@@ -162,6 +162,16 @@ void RPL::RPL_ENDOFWHO(const Client &client, const std::string & channelName ) {
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
+//RPL_WHOREPLY (352)
+//  "<client> <channel> <username> <host> <server> <nick> <flags> :<hopcount> <realname>"
+void RPL::RPL_WHOREPLY( const Client & client, const std::string & channelName ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 352 " + client.getNickname() + " " + channelName ;
+	message += " " + client.getUsername() + " " + client.getHostname() + " " + client.getNickname() + " H: 0 " + client.getRealname() + "\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+
+}
+
 // PING PONG
 
 void	RPL::RPL_PING( Client const & client ) {
@@ -336,7 +346,14 @@ void RPL::ERR_UMODEUNKNOWNFLAG( Client const & client ) {
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 501 " + client.getNickname() + " :Server doesn't support user modes\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
+}
 
+// "<client> <channel> :End of channel ban list"
+
+void RPL::RPL_ENDOFBANLIST ( Client const & client, const std::string & channelName) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 368 " + client.getNickname() + " " + channelName + " :End of channel ban list\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
 // PRIVMSG

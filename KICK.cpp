@@ -91,7 +91,7 @@ void KICK::execute( std::vector< std::string > & command, Client & client, Serve
 				else
 					channel->print_channels_info();
 				// Exit the loop after kicking the client
-        		break;
+//        		break;
 			}
 		}
 	}

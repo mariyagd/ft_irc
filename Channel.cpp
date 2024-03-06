@@ -379,9 +379,9 @@ void	Channel::print_channels_info() const {
 
 		std::cout << std::setfill(' ');
 //		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << "" << END << std::endl;
-		std::cout << std::endl << BLUE_BG << " --- Channel : " << "[" << _name << "] " << END << std::endl << std::endl;
-		std::cout << std::setw(15) << std::left << BLUE_BOLD << " Modes :   "  << END << "[" << this->getCurrentChannelModes() << "]" << std::endl;
-		std::cout << std::setw(15) << std::left << BLUE_BOLD << "" << " Clients:  " << END;
+		std::cout << std::endl << BLUE_BG << " --- Channel " << _name  << " " << END << std::endl << std::endl;
+		std::cout << std::setw(15) << std::left << BLUE_BOLD << " Modes :    "  << END << this->getCurrentChannelModes() << std::endl;
+		std::cout << std::setw(15) << std::left << BLUE_BOLD << "" << " Clients:   " << END;
 		for ( size_t j = 0; j < _clients.size(); ++j )
 		{
 			std::cout << _clients[j]->getNickname();

@@ -57,10 +57,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/mariyadancheva/Documents/GitHub/ft_irc
+CMAKE_SOURCE_DIR = /Users/mdanchev/Desktop/ft_irc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/mdanchev/Desktop/ft_irc/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/CMakeFiles /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mdanchev/Desktop/ft_irc/cmake-build-debug/CMakeFiles /Users/mdanchev/Desktop/ft_irc/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mdanchev/Desktop/ft_irc/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -152,6 +152,30 @@ ACommand.s: ACommand.cpp.s
 ACommand.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/ACommand.cpp.s
 .PHONY : ACommand.cpp.s
+
+CAP.o: CAP.cpp.o
+.PHONY : CAP.o
+
+# target to build an object file
+CAP.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/CAP.cpp.o
+.PHONY : CAP.cpp.o
+
+CAP.i: CAP.cpp.i
+.PHONY : CAP.i
+
+# target to preprocess a source file
+CAP.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/CAP.cpp.i
+.PHONY : CAP.cpp.i
+
+CAP.s: CAP.cpp.s
+.PHONY : CAP.s
+
+# target to generate assembly for a file
+CAP.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/CAP.cpp.s
+.PHONY : CAP.cpp.s
 
 Channel.o: Channel.cpp.o
 .PHONY : Channel.o
@@ -693,6 +717,9 @@ help:
 	@echo "... ACommand.o"
 	@echo "... ACommand.i"
 	@echo "... ACommand.s"
+	@echo "... CAP.o"
+	@echo "... CAP.i"
+	@echo "... CAP.s"
 	@echo "... Channel.o"
 	@echo "... Channel.i"
 	@echo "... Channel.s"

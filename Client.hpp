@@ -20,10 +20,13 @@ private:
 	std::string			_hostname;
 //	std::string			_servname;
 	std::string			_realname;
+	std::string			_message;
+
 
 	static int  		_id_num;
 	static int 			_serverSocket;
 	static std::string	_serverName;
+
 
 	std::vector< Channel * > _channels;
 
@@ -44,6 +47,7 @@ public:
 //	void			setServname( std::string servname );
 	void			setRealname( std::string realname );
 	void			setGavePassword( bool status );
+	void			setMessage( const char * buf );
 
 	bool			getGavePassword( void ) const;
 	const int &		getSocket( void ) const;
@@ -54,6 +58,8 @@ public:
 	std::string		getHostname( void ) const;
 	std::string		getServname( void ) const;
 	std::string		getRealname( void ) const;
+	std::string		getMessage( void ); 		// if the message doesn't have a '\n', return a empty string
+	const std::string &	getCurrentMessage( void ) const; 	// used only for printing
 
 	// CHANNELS-------------------------------------------------------------------------------------------------------------
 	void								addChannel( Channel * channel );

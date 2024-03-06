@@ -40,7 +40,7 @@ void	ChannelMenager::deleteChannel( Channel * rhs ) {
 	std::vector<Channel *>::iterator it = std::find(_channels.begin(), _channels.end(), rhs);
 	if ( it != _channels.end() )
 	{
-		std::cout << MAGNETA_BOLD << "Channel " << rhs->getChannelName() << " is empty. Deleting channel from server" << END << std::endl;
+		std::cout << Get::Time() << MAGNETA_BOLD << " --- Channel " << rhs->getChannelName() << " is empty. Deleting channel from server" << END << std::endl;
 
 		std::vector< Client * > & allClients = (*it)->getAllClients();
 		for (size_t i = 0; i < allClients.size(); ++i)

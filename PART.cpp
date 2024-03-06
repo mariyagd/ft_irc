@@ -15,8 +15,12 @@ PART::~PART( void ) {
  */
 void PART::execute( std::vector< std::string > & command, Client & client, Server & server ) {
 
-	std::cout << Get::Time() << GREEN << " --- Processing PART command" << END << std::endl;
-
+//	std::cout << Get::Time() << GREEN << " --- Processing PART command" << END << std::endl;
+	if ( !client.isRegistered() )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Client not registered" << END << std::endl;
+		return;
+	}
 	if ( command.size() < 2 )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Need more params: PART <channel>{,<channel>} [<reason>]" << END << std::endl;
@@ -31,9 +35,14 @@ void PART::execute( std::vector< std::string > & command, Client & client, Serve
 	splitMsgOnComma( command[1], channelsName );
 	if ( command.size() > 2 )
 		concatenate(command, 2, comment);
-
 	for ( size_t i = 0; i < channelsName.size(); i++ )
 	{
+		if ( channelsName[i].find_first_of("&#+!") != 0 )
+		{
+			std::cout << Get::Time() << RED_BOLD << " --- Bad channel prefix" << END << std::endl;
+			RPL::ERR_BADCHANMASK( client, channelsName[i] );
+			continue;
+		}
 		channel = server.getChannelByName( channelsName[i] );
 		if ( !channel )
 		{

@@ -2,12 +2,39 @@
 
 // Coplien's form------------------------------------------------------------------------------------------------------
 
-Channel::Channel(void) : _name(""), _clients(), _operators(), _invited_list(), _creation_time(0), limitMode(false), inviteMode(false), topicMode(true), keyMode(false), _topicSetter(0), _topicTime(0){
+Channel::Channel(void) :	_name(""),
+							_clients(),
+							_operators(),
+							_invited_list(),
+							_creation_time(0),
+							_limit(0),
+							_key(""),
+							_topic(""),
+							limitMode(false),
+							inviteMode(false),
+							topicMode(true),
+							keyMode(false),
+							_topicSetter(0),
+							_topicTime(0) {
 
 	return;
 }
 
-Channel::Channel(const std::string &channelName) : _name(channelName), _clients(), _operators(), _invited_list(), _creation_time(0), limitMode(false), inviteMode(false), topicMode(true), keyMode(false),  _topicSetter(0), _topicTime(0) {
+Channel::Channel(const std::string &channelName) :	_name(channelName),
+													  _clients(),
+													  _operators(),
+													  _invited_list(),
+													  _creation_time(0),
+													  _limit(0),
+													  _key(""),
+													  _topic(""),
+													  limitMode(false),
+													  inviteMode(false),
+													  topicMode(true),
+													  keyMode(false),
+													  _topicSetter(0),
+													  _topicTime(0) {
+
 
 	struct timeval tp;
 	if (gettimeofday(&tp, NULL) < 0)
@@ -59,7 +86,7 @@ std::vector<Client *> &Channel::getAllClients(void) {
 
 std::set<int> Channel::getAllClientsSockets(void) {
 
-	std::set<int> sockets;
+	std::set< int > sockets;
 
 	for (size_t i = 0; i < _clients.size(); ++i)
 	{
@@ -309,9 +336,17 @@ long Channel::getTopicCreationTime( void ) const {
 	return _topicTime;
 }
 
+
 void Channel::setTopic( const std::string & topic, int setter_id ) {
 
-	_topic = topic;
+	_topic.clear();
+	if ( topic.size() > 390 )
+	{
+		std::cout << Get::Time() << BOLD << " --- Topic too long. Truncated to 390 characters"<< END << std::endl;
+		_topic = topic.substr(0, 390);
+	}
+	else
+		_topic = topic;
 	_topicSetter = setter_id;
 
 	struct timeval tp;
@@ -344,14 +379,16 @@ void	Channel::print_channels_info() const {
 
 		std::cout << std::setfill(' ');
 //		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << "" << END << std::endl;
-		std::cout << std::setw(15) << std::left << BLUE_BOLD << " Channel : " << END << "[" << _name << "]" << std::endl;
+		std::cout << std::endl << BLUE_BG << " --- Channel : " << "[" << _name << "] " << END << std::endl << std::endl;
 		std::cout << std::setw(15) << std::left << BLUE_BOLD << " Modes :   "  << END << "[" << this->getCurrentChannelModes() << "]" << std::endl;
-		std::cout << std::setw(15) << std::left << BLUE_BOLD << "" << " Clients:  " << END << std::endl;
+		std::cout << std::setw(15) << std::left << BLUE_BOLD << "" << " Clients:  " << END;
 		for ( size_t j = 0; j < _clients.size(); ++j )
 		{
-			std::cout << std::setw(17) << std::left << "" << _clients[j]->getNickname() << std::endl;
+			std::cout << _clients[j]->getNickname();
+			if ( j + 1 < _clients.size() )
+				std::cout << " ,";
 		}
-		std::cout << std::setw(15) << std::left << BLUE_BOLD << "" << " Operators: " << END << std::endl;
+		std::cout << std::endl << std::setw(15) << std::left << BLUE_BOLD << "" << " Operators: " << END;
 
 		for ( size_t i = 0; i < _operators.size(); ++i )
 		{
@@ -359,11 +396,14 @@ void	Channel::print_channels_info() const {
 			{
 				if ( _operators[i] == _clients[j]->getNicknameId( ) )
 				{
-					std::cout << std::setw(17) << std::left << "" << _clients[j]->getNickname() << std::endl;
+					std::cout << _clients[j]->getNickname() << std::endl;
+					if ( i + 1 < _operators.size() )
+						std::cout << " ,";
 					break;
 				}
 			}
 		}
+		std::cout << std::endl;
 //		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << ""  << END << std::endl;
 }
 

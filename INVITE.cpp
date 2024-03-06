@@ -31,6 +31,11 @@ void INVITE::execute( std::vector< std::string > & command, Client & client, Ser
 		std::cout << Get::Time() << RED_BOLD << " --- No such nick" << END << std::endl;
 		RPL::ERR_NOSUCHNICK( client, nickname );
 	}
+	else if ( channelName.find_first_of("&#+!") != 0 )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Bad channel prefix" << END << std::endl;
+		RPL::ERR_BADCHANMASK( client, channelName );
+	}
 	else if ( !channel )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- No such channel" << END << std::endl;

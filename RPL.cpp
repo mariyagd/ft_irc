@@ -29,7 +29,7 @@ void RPL::send_message( const int & socket, const char * message, const size_t m
 	return;
 }
 
-void RPL::RPL_NORMAL( const Client & client, const std::vector< Client * > & allClients, const std::string & channelName, const std::string & command, std::string & comment ) {
+void RPL::RPL_NORMAL( const Client & client, const std::vector< Client * > & allClients, const std::string & channelName, const std::string & command, const std::string & comment ) {
 
 	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
 	std::string message = "@time=" + Get::Time() + ":" + msgto + " " + command + " " + channelName + " " + comment + "\r\n";
@@ -64,10 +64,16 @@ void	RPL::RPL_CREATED( Client const & client ) {
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
-
 void	RPL::RPL_MYINFO( Client const & client ) {
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 004 " + client.getNickname() + " " + client.getServname() + " v1.0 [user modes: none] [channel modes: itklo]\r\n";
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 004 " + client.getNickname() + " " + client.getServname() + " v1.0 user modes: [none] channel modes: [itklo]\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+void RPL::RPL_ISUPPORT( Client const & client ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 005 " + client.getNickname();
+	message +=  " CHANMODES=itlko PREFIX=@ MAXNICKLEN=16 CHANNELLEN=50 TOPICLEN=390:are supported by this server\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
@@ -82,6 +88,7 @@ void RPL::ERR_PASSWDMISMATCH( Client const & client ) {
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 464 " + client.getNickname() + " :Password incorrect\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
+
 
 // For NICK -------------------------------------------------------------------------------------------------------------
 
@@ -99,9 +106,15 @@ void RPL::ERR_NONICKNAMEGIVEN( Client const & client ) {
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
-void RPL::ERR_ERRONEUSNICKNAME( Client const & client ) {
+void RPL::ERR_ERRONEUSNICKNAME( Client const & client, const std::string & errorNickname ) {
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 432 " + client.getNickname() + "\r\n";
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 432 ";
+
+	if ( client.getNickname().empty() )
+		message += errorNickname + " " + errorNickname;
+	else
+		message += client.getNickname() + " " + errorNickname;
+	message += " :Erroneous Nickname\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
@@ -125,21 +138,21 @@ void RPL::REPLY( Client const & client, const std::set< int > & allClientsInAllC
 
 // For WHOIS ------------------------------------------------------------------------------------------------------------
 
-void RPL::RPL_WHOISUSER( Client const & client ) {
+void RPL::RPL_WHOISUSER( Client const & client, Client const & other ) {
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 311 " + client.getNickname() + " " + client.getNickname() + " " + client.getUsername() + " " + client.getHostname() + " * " + client.getRealname() + "\r\n";
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 311 " + client.getNickname() + " " + other.getNickname() + " " + other.getUsername() + " " + other.getHostname() + " * " + client.getRealname() + "\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
-void RPL::RPL_ENDOFWHOIS( Client const & client ) {
+void RPL::RPL_ENDOFWHOIS( Client const & client, const std::string & nick ) {
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 318 " + client.getNickname() + " :End of /WHOIS list\r\n";
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 318 " + client.getNickname() + " " + nick + " :End of /WHOIS list\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
 void RPL::ERR_NEEDMOREPARAMS( Client const & client, std::string const & command ) {
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 461 " + client.getNickname() + " " + command + ":Not enough parameters. Disconnecting\r\n";
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 461 " + client.getNickname() + " " + command + " :Not enough parameters\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
@@ -200,7 +213,6 @@ void RPL::RPL_NAMREPLY(const Client &client, const std::string &channelName, con
 // 	send_message( client.getSocket(), message.c_str(), message.size() );
 // }
 
-
 void  RPL::RPL_ENDOFNAMES(const Client &client, const std::string & channelName) {
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 366 " + client.getNickname() + " " + channelName + " :End of /NAMES list.\r\n";
@@ -245,7 +257,7 @@ void RPL::RPL_BADCHANNELKEY( const Client &client, const std::string & channelNa
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
-//NORMAL
+//JOIN
 
 void	RPL::RPL_JOIN( Client const & client, const std::set< int > & allClientsInChannel, const std::string & channelName ) {
 
@@ -255,6 +267,18 @@ void	RPL::RPL_JOIN( Client const & client, const std::set< int > & allClientsInC
 	{
 		send_message( *it, message.c_str(), message.size() );
 	}
+}
+
+void RPL::ERR_BADCHANMASK( Client const & client, const std::string & channelName ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 476 " + client.getNickname() + " " + channelName + " :Bad Channel Prefix\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+void RPL::ERR_BADCHANNAME( Client const & client, const std::string & channelName ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 479 " + client.getNickname() + " " + channelName + " :Illegal channel name\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
 // CHANNEL MODE
@@ -347,7 +371,19 @@ void RPL::ERR_NOSUCHNICK( Client const & client, const std::string & nickname ) 
 }
 
 //kick<channel> <user>
+
+/*
+  	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
+	std::string message = "@time=" + Get::Time() + ":" + msgto + " PART " + channelName + " " + comment + "\r\n";
+	for ( std::set< int >::const_iterator it = allClientsInChannel.begin(); it != allClientsInChannel.end(); it++ )
+	{
+		send_message( *it, message.c_str(), message.size() );
+	}
+
+ */
+
 void RPL::RPL_KICK( const Client & client, std::string & channelName, std::string & nickname, std::string & comment, const std::set< int > & allClientsInChannel ) {
+
 
 	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
 	std::string message = "@time=" + Get::Time() + ":" + msgto + " KICK " + channelName + " " + nickname + " :";
@@ -415,5 +451,10 @@ void RPL::RPL_PART( const Client & client, const std::set< int > & allClientsInC
 	{
 		send_message( *it, message.c_str(), message.size() );
 	}
+}
 
+void RPL::RPL_CAP( Client const &client ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " CAP * LS :none\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
 }

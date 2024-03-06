@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/ft_irc.dir/ACommand.cpp.o"
   "CMakeFiles/ft_irc.dir/ACommand.cpp.o.d"
+  "CMakeFiles/ft_irc.dir/CAP.cpp.o"
+  "CMakeFiles/ft_irc.dir/CAP.cpp.o.d"
   "CMakeFiles/ft_irc.dir/Channel.cpp.o"
   "CMakeFiles/ft_irc.dir/Channel.cpp.o.d"
   "CMakeFiles/ft_irc.dir/ChannelMenager.cpp.o"

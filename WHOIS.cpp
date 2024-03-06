@@ -13,6 +13,11 @@ WHOIS::~WHOIS( void ) {
  */
 void WHOIS::execute( std::vector< std::string > & command, Client & client, Server &server ) {
 
+	if ( !client.isRegistered() )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Client not registered" << END << std::endl;
+		return;
+	}
 	if ( command.size() < 2 )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Need more params: WHOIS <nick>" << END << std::endl;
@@ -23,15 +28,16 @@ void WHOIS::execute( std::vector< std::string > & command, Client & client, Serv
 		std::cout << Get::Time() << RED_BOLD << " --- This server handles only: WHOIS <nick>" << END << std::endl;
 		return;
 	}
-	std::vector< Client > & connections = server.getConnections();
 
+	std::vector< Client > & connections = server.getConnections();
 	std::string nickname = command[1];
+
 	for ( int i = 0; i < MAX_CONNECTIONS; i++ )
 	{
 		if ( connections[i].getSocket() >= 0 && connections[i].isRegistered() && connections[i].getNickname() == nickname )
 		{
-			RPL::RPL_WHOISUSER( client );
-			RPL::RPL_ENDOFWHOIS( client );
+			RPL::RPL_WHOISUSER( client, connections[i] );
+			RPL::RPL_ENDOFWHOIS( client, nickname );
 			return ;
 		}
 	}

@@ -4,7 +4,6 @@
 # include "Server.hpp"
 # include <sys/time.h>
 
-
 class Server;
 class Client;
 
@@ -28,6 +27,7 @@ public:
 	static void RPL_YOURHOST( Client const & client );
 	static void RPL_CREATED( Client const & client );
 	static void RPL_MYINFO( Client const & client );
+	static void RPL_ISUPPORT( Client const & client );
 
 	static void ERR_ALREADYREGISTERED( Client const & client );
 	static void ERR_PASSWDMISMATCH( Client const & client );
@@ -35,12 +35,12 @@ public:
 	// NICK
 	static void ERR_NICKNAMEINUSE( Client const & client, std::string & wantedNickname );
 	static void ERR_NONICKNAMEGIVEN( Client const & client );
-	static void ERR_ERRONEUSNICKNAME( Client const & client );
+	static void ERR_ERRONEUSNICKNAME( Client const & client, const std::string & errorNickname );
 	static void RPL_NICK( Client const & client, const std::set< int > & allClientsInAllChannels, std::string & newNickname );
 
 	// WHOIS
-	static void RPL_WHOISUSER( Client const & client );
-	static void RPL_ENDOFWHOIS( Client const & client );
+	static void RPL_WHOISUSER( Client const & client, Client const & other );
+	static void RPL_ENDOFWHOIS( Client const & client, const std::string & nick );
 	static void RPL_ENDOFWHO( Client const & client, const std::string & channelName );
 
 	// PING
@@ -58,12 +58,14 @@ public:
 	static void RPL_BADCHANNELKEY( Client const & client, const std::string & channelName );
 
 	// TOPIC
-	static void RPL_NORMAL( Client const & client, const std::vector< Client * > & allClients, const std::string & channelName, const std::string & command, std::string & topic );
+	static void RPL_NORMAL( Client const & client, const std::vector< Client * > & allClients, const std::string & channelName, const std::string & command, const std::string & topic );
 	static void RPL_NOTOPIC( Client const & client, std::string & channelName );
 
 
 	//JOIN
 	static void RPL_JOIN( Client const & client, const std::set< int > & allClientsInChannel, const std::string & channelName );
+	static void ERR_BADCHANMASK( Client const & client, const std::string & channelName );
+	static void ERR_BADCHANNAME( Client const & client, const std::string & channelName );
 
 	//CHANNEL MODE
 	static void RPL_CHANNELMODEIS( Client const & client, const std::string & channelName, const std::string & allChannelModes );
@@ -97,6 +99,8 @@ public:
 
 	static void RPL_PART( Client const & client, const std::set< int > & allClientsInChannel, const std::string & channelName, const std::string & comment );
 
-};
+	// CAP
+	static void RPL_CAP( Client const &client );
+	};
 
 #endif

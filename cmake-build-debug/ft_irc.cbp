@@ -8,218 +8,228 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug"/>
+				<Option working_dir="/Users/mdanchev/Desktop/ft_irc/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="ft_irc">
-				<Option output="/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/ft_irc" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug"/>
+				<Option output="/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/ft_irc" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/mdanchev/Desktop/ft_irc/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/mariyadancheva/Documents/GitHub/ft_irc/."/>
-					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include"/>
-					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/Users/mdanchev/Desktop/ft_irc/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
 					<Add directory="/System/Library/Frameworks"/>
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 ft_irc"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 ft_irc"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="ft_irc/fast">
-				<Option output="/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/ft_irc" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug"/>
+				<Option output="/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/ft_irc" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/mdanchev/Desktop/ft_irc/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/mariyadancheva/Documents/GitHub/ft_irc/."/>
-					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include"/>
-					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/Users/mdanchev/Desktop/ft_irc/."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
 					<Add directory="/System/Library/Frameworks"/>
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 ft_irc/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 ft_irc/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug"/>
+				<Option working_dir="/Users/mdanchev/Desktop/ft_irc/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug"/>
+				<Option working_dir="/Users/mdanchev/Desktop/ft_irc/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/ACommand.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/ACommand.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/ACommand.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/ACommand.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Channel.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/CAP.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Channel.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/CAP.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/ChannelMenager.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Channel.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/ChannelMenager.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Channel.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Client.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/ChannelMenager.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Client.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/ChannelMenager.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Colors.h">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Client.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Commands.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Client.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Commands.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Colors.h">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Get.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Commands.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Get.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Commands.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/INVITE.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Get.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/INVITE.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Get.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Irc.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/INVITE.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/JOIN.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/INVITE.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/JOIN.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Irc.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/KICK.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/JOIN.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/KICK.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/JOIN.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/MODE.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/KICK.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/MODE.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/KICK.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/NICK.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/MODE.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/NICK.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/MODE.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PART.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/NICK.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PART.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/NICK.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PASS.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/PART.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PASS.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/PART.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PING.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/PASS.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PING.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/PASS.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PRIVMSG.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/PING.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/PRIVMSG.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/PING.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/RPL.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/PRIVMSG.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/RPL.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/PRIVMSG.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/SQUIT.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/RPL.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/SQUIT.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/RPL.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Server.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/SQUIT.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/Server.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/SQUIT.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/TOPIC.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Server.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/TOPIC.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/Server.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/USER.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/TOPIC.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/USER.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/TOPIC.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/WHO.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/USER.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/WHO.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/USER.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/WHOIS.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/WHO.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/WHOIS.hpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/WHO.hpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/main.cpp">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/WHOIS.cpp">
 			<Option target="ft_irc"/>
 		</Unit>
-		<Unit filename="/Users/mariyadancheva/Documents/GitHub/ft_irc/CMakeLists.txt">
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/WHOIS.hpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/main.cpp">
+			<Option target="ft_irc"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

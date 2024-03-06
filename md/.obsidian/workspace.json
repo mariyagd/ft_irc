@@ -13,13 +13,26 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Channels.md",
+                "file": "Commands.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "f205796b4b3c2247",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "For evaluation.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -56,14 +69,6 @@
                 "sortOrder": "alphabetical"
               }
             }
-          },
-          {
-            "id": "a6a16a50a0c7131c",
-            "type": "leaf",
-            "state": {
-              "type": "bookmarks",
-              "state": {}
-            }
           }
         ]
       }
@@ -85,7 +90,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Channels.md",
+                "file": "For evaluation.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +107,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Channels.md",
+                "file": "For evaluation.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +130,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Channels.md"
+                "file": "For evaluation.md"
               }
             }
           }
@@ -147,13 +152,15 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "aefacc0894817186",
+  "active": "f205796b4b3c2247",
   "lastOpenFiles": [
-    "Commands.md",
-    "Channels.md",
-    "getaddrinfo & gethostname.md",
     "Irssi and Libera chat.md",
+    "Channels.md",
+    "Commands.md",
+    "For evaluation.md",
+    "The Socket API.md",
+    "select().md",
     "Messages.md",
-    "select().md"
+    "getaddrinfo & gethostname.md"
   ]
 }

@@ -10,6 +10,12 @@ WHO::~WHO( void ) {
 
 void WHO::execute( std::vector< std::string > & command, Client & client, Server &server ) {
 
+	if ( !client.isRegistered() )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Client not registered" << END << std::endl;
+		return;
+	}
+
 	if (command.size() != 2 )
 		return;
 

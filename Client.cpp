@@ -24,8 +24,7 @@ Client::Client( void ) : _channels()  {
 	_nickname = "";
 	_username = "";
 	_realname = "";
-//	memset(&_addr, 0, sizeof( struct sockaddr ) );
-//	_addrlen = sizeof(_addr);
+	_message = "";
 	return;
 }
 
@@ -45,8 +44,7 @@ Client::Client( int socket ) : _socket(socket), _channels()  {
 	_id = -1;
 	_username = "";
 	_realname = "";
-//	memset(&_addr, 0, sizeof( struct sockaddr ) );
-//	_addrlen = sizeof(_addr);
+	_message = "";
 	return;
 }
 
@@ -58,7 +56,6 @@ void	Client::setServer( const int & socket,  const std::string & serverName ) {
 	_serverSocket = socket;
 	if ( !_serverName.empty() )
 		_serverName = serverName;
-	std::cout << CYAN_BG << serverName  << END << std::endl;
 	return;
 }
 
@@ -94,6 +91,7 @@ void	Client::setRegistered( bool status ) {
 	return;
 }
 
+
 void	Client::setNickname( std::string nick ) {
 
 	if ( !_nickname.empty() )
@@ -103,16 +101,18 @@ void	Client::setNickname( std::string nick ) {
 	_id = ++_id_num;
 	return;
 }
-
 void	Client::setUsername( const std::string & username ) {
 
 	if ( !_username.empty() )
 		_username.clear();
 
-	if ( username[0] == '~')
-		_username = username.substr(0, 10);
+	if ( username.size() > 9 )
+	{
+		std::cout << Get::Time() << BOLD << " --- Username too long. Truncated to 9 characters" << END << std::endl;
+		_username = "~" + username.substr(0, 9);
+	}
 	else
-		_username = username.substr(0, 9);
+	_username = "~" + username;
 
 	return;
 }
@@ -145,6 +145,12 @@ void	Client::setRealname( std::string realname ) {
 void	Client::setGavePassword( bool status ) {
 
 	_gave_password = status;
+	return;
+}
+
+void	Client::setMessage( const char * message ) {
+
+	_message += std::string ( message );
 	return;
 }
 
@@ -194,6 +200,27 @@ std::string	Client::getServname( void ) const {
 std::string	Client::getRealname( void ) const {
 
 	return _realname;
+}
+
+// If the message is not ready to be processed e.g. doesn't have a '\n', return a empty string
+// else return the message and clear the message to prepare for the next one
+
+std::string	Client::getMessage( void ) {
+
+	if ( _message.empty() || _message.find_first_of("\n") == std::string::npos )
+		return "";
+	else
+	{
+		std::string tmp = _message;
+		_message.clear();
+		return tmp;
+	}
+}
+
+// used only for printing the current message
+const std::string & Client::getCurrentMessage( void ) const {
+
+	return _message;
 }
 
 // Add and remove channels ----------------------------------------------------------------------------------------------

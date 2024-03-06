@@ -17,7 +17,11 @@ KICK::~KICK( void ) {
 void KICK::execute( std::vector< std::string > & command, Client & client, Server & server ) {
 
 //	std::cout << Get::Time() << GREEN << " --- Processing KICK command" << END << std::endl;
-
+	if ( !client.isRegistered() )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Client not registered" << END << std::endl;
+		return;
+	}
 	if ( command.size() < 3 )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Need more params: KICK <channel> <user>" << END << std::endl;
@@ -34,8 +38,12 @@ void KICK::execute( std::vector< std::string > & command, Client & client, Serve
 
 	kicked = server.getClientByNickname( nickname );
 	channel = server.getChannelByName( channelName );
-
-	if ( !channel )
+	if ( channelName.find_first_of("&#+!") != 0 )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Bad channel prefix" << END << std::endl;
+		RPL::ERR_BADCHANMASK( client, channelName );
+	}
+	else if ( !channel )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- No such channel: " << command[1] << END << std::endl;
 		RPL::ERR_NOSUCHCHANNEL( client, channelName );

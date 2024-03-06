@@ -16,7 +16,11 @@ MODE::~MODE( void ) {
 void	MODE::execute( std::vector< std::string > & command, Client & client, Server & server ) {
 
 //	std::cout << Get::Time( ) << GREEN << " --- Processing MODE command" << END << std::endl;
-
+	if ( !client.isRegistered() )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Client not registered" << END << std::endl;
+		return;
+	}
 	if ( command.size( ) == 1 )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Need more params: MODE <target> [<modestring> [<mode arguments>...]]" << END << std::endl;
@@ -24,7 +28,6 @@ void	MODE::execute( std::vector< std::string > & command, Client & client, Serve
 	}
 	else if ( command[1].find_first_of( "&#+!" ) == 0 )  // if channel mode is requested
 	{
-
 		Channel * channel = server.getChannelByName( command[1] );
 		if ( !channel )
 		{
@@ -88,7 +91,7 @@ bool MODE::mode_already_set( Channel * channel, std::vector< std::string > & com
 		{
 			if ( channel->getTopicMode() == status )
 			{
-				std::cout << BOLD << "mode " << ( status == true ? "+" : "-") << "t already set" << END << std::endl;
+				std::cout << BOLD << "mode " << ( status == true ? "+" : "-") << "t: already set" << END << std::endl;
 				command[0].erase( command[0].begin() + i);
 				--i;
 				return true;
@@ -99,14 +102,14 @@ bool MODE::mode_already_set( Channel * channel, std::vector< std::string > & com
 		{
 			if ( !status && channel->getLimitMode() == status )
 			{
-				std::cout << BOLD << "mode " << ( status == true ? "+" : "-") << "l already set " << i << " size " << command[0].size() << END << std::endl;
+				std::cout << BOLD << "mode " << ( status == true ? "+" : "-") << "l: already set " << i << " size " << command[0].size() << END << std::endl;
 				command[0].erase( command[0].begin() + i  );
 				--i;
 				return true;
 			}
 			if ( status && channel->getLimitMode() == status && isValidNumber(command[j]) && channel->getLimit() == std::atoi( command[j].c_str() ) && std::stoi( command[j] ) > 0)
 			{
-				std::cout << BOLD << "mode " << ( status == true ? "+" : "-") << "l already set" << END << std::endl;
+				std::cout << BOLD << "mode " << ( status == true ? "+" : "-") << "l: already set" << END << std::endl;
 				j++;
 				return true;
 			}
@@ -133,17 +136,16 @@ bool MODE::mode_already_set( Channel * channel, std::vector< std::string > & com
 		{
 			if ( status && channel->getKeyMode() == status )
 			{
-				std::cout << BOLD << "mode " << ( status == true ? "+" : "-") << "k already set" << END << std::endl;
-				++j;
+				std::cout << BOLD << "mode " << ( status == true ? "+" : "-") << "k: already set" << END << std::endl;
+					++j;
 				return true;
 			}
 			else if ( !status && channel->getKeyMode() == status )
 			{
-				std::cout << BOLD << "mode " << ( status == true ? "+" : "-") << "k already set" << END << std::endl;
+				std::cout << BOLD << "mode " << ( status == true ? "+" : "-") << "k: already set" << END << std::endl;
 				command[0].erase( command[0].begin() + i-- );
-				std::cout << "[" << command[j] << "]" << std::endl;
-				std::cout << "[" << command[j - 1] << "]" << std::endl;
-				command.erase( command.begin() + j );
+				if ( j < command.size() )
+					command.erase( command.begin() + j );
 				return true;
 			}
 			return false;
@@ -221,7 +223,10 @@ void MODE::setChannelMode( Client & client, std::vector< std::string > & command
 					else
 					{
 						channel->setKeyMode( status, "" );
-						command[j++] = "*";
+						if ( j < command.size() )
+							command[j++] = "*";
+						else
+							command.insert( command.begin() + j++, "*" );
 						std::cout << GREEN_BOLD << "set new mode: " << ( status == true ? "+" : "-") << "k " << command[j - 1] << END << std::endl;
 					}
 					break;
@@ -254,7 +259,7 @@ void MODE::setChannelMode( Client & client, std::vector< std::string > & command
 		}
 	}
 	remove_signs( command );
-
+	remove_extras( command );
 }
 
 void	MODE::remove_signs( std::vector< std::string > & command )
@@ -285,6 +290,32 @@ void	MODE::remove_signs( std::vector< std::string > & command )
 	}
 }
 
+void MODE::remove_extras( std::vector< std::string > & command )
+{
+	// remove extra params
+	bool status;
+	size_t j = 1;
+
+	if (command.empty() )
+		return;
+	for ( size_t i = 0; i < command[0].size(); ++i )
+	{
+		if (command[0][i] == '+')
+			status = true;
+		else if (command[0][i] == '-')
+			status = false;
+		else
+		{
+			if ( ( command[0][i] == 'l' || command[0][i] == 'o' || command[0][i] == 'k') && status )
+				++j;
+			if ( !status && command[0][i] == 'k' )
+				++j;
+		}
+	}
+	if ( j < command.size() )
+		command.erase( command.begin() + j, command.end() );
+}
+
 bool MODE::errorsInModeCommand( std::vector< std::string > & command, Client & client, Channel * channel )
 {
 	(void)channel;
@@ -295,7 +326,7 @@ bool MODE::errorsInModeCommand( std::vector< std::string > & command, Client & c
 		return true;
 	if ( channel->isClientIsOperator(client.getNicknameId()) == -1 )
 	{
-		std::cout << Get::Time() << RED_BOLD << " --- Client " << client.getNickname() << " is not an operator of channel " <<channel->getChannelName() << ". Can not change modes"  << END << std::endl;
+		std::cout << Get::Time() << RED_BOLD << " --- " << client.getNickname() << " is not an operator. Can not change modes"  << END << std::endl;
 		RPL::ERR_CHANOPRIVSNEEDED( client, channel->getChannelName() );
 		return true;
 	}

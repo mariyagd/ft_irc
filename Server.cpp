@@ -14,6 +14,7 @@
 # include "PART.hpp"
 # include "WHO.hpp"
 # include "SQUIT.hpp"
+# include "CAP.hpp"
 
 // Coplien's form --------------------------------------------------------------------------------------------------------
 
@@ -45,7 +46,8 @@ Server::Server(int port, char *password) : _port(port), _password(password) {
 	_command_executor.insert(std::make_pair("TOPIC", new TOPIC()));
 	_command_executor.insert(std::make_pair("PART", new PART()));
 	_command_executor.insert(std::make_pair("WHO", new WHO()));
-	_command_executor.insert(std::make_pair("squit", new SQUIT()));
+	_command_executor.insert(std::make_pair("SQUIT", new SQUIT()));
+	_command_executor.insert(std::make_pair("CAP", new CAP()));
 }
 
 Server::~Server()
@@ -298,6 +300,7 @@ void Server::register_client( int i )
 		RPL::RPL_YOURHOST( client );
 		RPL::RPL_CREATED( client );
 		RPL::RPL_MYINFO( client );
+		RPL::RPL_ISUPPORT( client );
 	}
 }
 
@@ -305,7 +308,6 @@ void	Server::receive( int i )
 {
 	int				bytesRead = 0;
 	char			buf[MSG_MAX_SIZE];
-	std::string 	msg = "";
 
 	bytesRead = recv( _connections[i].getSocket(), buf, MSG_MAX_SIZE, 0 );
 	if ( bytesRead < 0 )
@@ -321,11 +323,18 @@ void	Server::receive( int i )
 	else
 	{
 		buf[bytesRead] = '\0';
-		msg = buf;
-		std::cout << BLUE_BOLD << std::setw(100) << std::setfill('-') << "" << END << std::endl;
-		std::cout << Get::Time() << " --- Received msg from [socket " << _connections[i].getSocket() << "] " << std::endl << CYAN_BOLD  << msg << END;
+		_connections[i].setMessage( buf );
 
-		process_command(msg, _connections[i] );
+		std::cout << BLUE_BOLD << std::setw(100) << std::setfill('-') << "" << END << std::endl;
+		if ( strchr (buf, '\n') == NULL )
+		{
+			std::cout << Get::Time() << ITALIC << " --- Received INCOMPLETE msg from [socket " << _connections[i].getSocket() << "] " << std::endl << CYAN_BOLD  << buf << END;
+			std::cout << ITALIC << " --- Current state of the message: " << END << CYAN_BOLD << _connections[i].getCurrentMessage() << END << std::endl;
+		}
+		else
+			std::cout << Get::Time() << " --- Received msg from [socket " << _connections[i].getSocket() << "] " << std::endl << CYAN_BOLD  << _connections[i].getCurrentMessage() << END;
+
+		process_command(_connections[i].getMessage(), _connections[i] );
 
 		if ( !_connections[i].isRegistered() )
 			register_client(i);
@@ -425,10 +434,21 @@ void	Server::splitMsgOnSpace( std::string & line, std::vector< std::string > & t
 	return ;
 }
 
+void Server::toUpper( std::string & command ) {
+
+	if ( command.empty() )
+		return ;
+	if ( command[0] == '/' )
+		command.erase(0, 1);
+	std::transform(command.begin(), command.end(), command.begin(), ::toupper);
+}
+
 void	Server::process_command( const std::string & msg, Client & client )
 {
 //	std::cout << Get::Time() << " --- Processing message" << std::endl;
 
+	if (msg.empty() || msg.find_first_of("\n") == std::string::npos )
+		return;
 	std::istringstream iss(msg);
 
 	while ( !iss.eof() )
@@ -441,6 +461,7 @@ void	Server::process_command( const std::string & msg, Client & client )
 		if ( line.empty() )
 			break;
 		splitMsgOnSpace( line, tokens );
+		toUpper( tokens[0] );
 
 		std::map< std::string, ACommand * >::iterator it = _command_executor.find( tokens[0] );
 		if ( it != _command_executor.end() )

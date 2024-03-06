@@ -39,7 +39,7 @@ void USER::execute( std::vector< std::string > & command, Client & client, Serve
 	}
 	else
 	{
-		client.setUsername( "~" + command[1] );
+		client.setUsername( command[1] );
 
 		std::string realname;
 		for ( size_t i = 4; i < command.size(); i++ )

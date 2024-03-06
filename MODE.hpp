@@ -15,6 +15,8 @@ class MODE : public ACommand {
 	bool 		mode_already_set( Channel * channel, std::vector< std::string > & command, size_t & i, size_t &j, bool status );
 	bool		isValidNumber( const std::string & number) const;
 	void		remove_signs( std::vector< std::string > & command );
+	void		remove_extras( std::vector< std::string > & command );
+
 };
 
 #endif

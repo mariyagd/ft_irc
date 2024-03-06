@@ -43,4 +43,6 @@ add_executable(
         TOPIC.cpp
         SQUIT.hpp
         SQUIT.cpp
+        CAP.hpp
+        CAP.cpp
 )

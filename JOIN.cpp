@@ -17,6 +17,8 @@ JOIN::~JOIN( void ) {
 
 void JOIN::execute( std::vector< std::string > & command, Client & client, Server &server ) {
 
+//	std::cout << Get::Time() << GREEN << " --- Processing JOIN command" << END << std::endl;
+
 	size_t i = 0;
 	size_t j = 0;
 	Channel * channel = NULL;
@@ -24,7 +26,11 @@ void JOIN::execute( std::vector< std::string > & command, Client & client, Serve
 	std::vector< std::string > channelsNames;
 	std::vector< std::string > keys;
 
-
+	if ( !client.isRegistered() )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Client not registered" << END << std::endl;
+		return;
+	}
 	if ( command.size() < 2 )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Need more params: JOIN  <channel>{,<channel>} [<key>{,<key>}]" << END << std::endl;
@@ -36,6 +42,18 @@ void JOIN::execute( std::vector< std::string > & command, Client & client, Serve
 		splitMsgOnComma( command[2], keys );
 	for ( ; i < channelsNames.size(); i++ )
 	{
+		if ( channelsNames[i].find_first_of("&#+!") != 0 )
+		{
+			std::cout << Get::Time() << RED_BOLD << " --- Bad channel prefix" << END << std::endl;
+			RPL::ERR_BADCHANMASK( client, channelsNames[i] );
+			continue;
+		}
+		if ( channelsNames[i].size() > 50 )
+		{
+			std::cout << Get::Time() << RED_BOLD << " --- Channel name too long" << END << std::endl;
+			RPL::ERR_BADCHANNAME( client, channelsNames[i] );
+			continue;
+		}
 		channel = server.getChannelByName(channelsNames[i]);
 		if ( !channel )
 		{
@@ -57,7 +75,7 @@ void JOIN::execute( std::vector< std::string > & command, Client & client, Serve
 
 void JOIN::join_and_send( Channel * channel, Client & client, const std::string & channelName ) {
 
-	std::cout << Get::Time() << GREEN_BOLD << " --- Add client [" << client.getNickname() << "] ID [" << client.getNicknameId() << "]" << " socket [" << client.getSocket() << "]" << " in channel [" << channelName << "]" << END << std::endl;
+	std::cout << Get::Time() << GREEN_BOLD << " --- " << client.getNickname() << " joined in channel [" << channelName << "]" << END << std::endl;
 	RPL::RPL_JOIN( client, channel->getAllClientsSockets(), channelName );
 	channel->addClient( client );
 
@@ -80,22 +98,13 @@ void JOIN::join_and_send( Channel * channel, Client & client, const std::string 
 
 bool JOIN::modeRequirementsOK( const std::string & channelName, const std::vector< std::string > & keys, size_t & j, Channel * channel, Client & client ) {
 
+//	std::cout << CYAN_BG << "mode = " << ( channel->getLimitMode() == true ? "true" : "false" ) << END << std::endl;
+//	std::cout << CYAN_BG << "limit = " << channel->getLimit() << END << std::endl;
+//	std::cout << CYAN_BG << "current = " << channel->getAllClients().size() << END << std::endl;
 	if ( channel->getKeyMode() && ( keys.empty() ||  ( keys.size() > j && keys[j++] != channel->getKey() ) ) )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Key mode: wrong password" << END << std::endl;
 		RPL::RPL_BADCHANNELKEY( client, channelName );
-		return false;
-	}
-	else if ( channel->getLimitMode() && !channel->isClientInvited( client.getNicknameId() ) )
-	{
-		std::cout << Get::Time() << RED_BOLD << " --- Limit mode: channel is full" << END << std::endl;
-		RPL::ERR_CHANNELISFULL( client, channelName );
-		return false;
-	}
-	else if ( channel->getLimitMode() && channel->getAllClients().size() >= static_cast< size_t >( channel->getLimit() ) )
-	{
-		std::cout << Get::Time() << RED_BOLD << " --- Limit mode: channel is full" << END << std::endl;
-		RPL::ERR_CHANNELISFULL( client, channelName );
 		return false;
 	}
 	else if ( channel->getInviteMode() && !channel->isClientInvited( client.getNicknameId() ) )
@@ -104,5 +113,18 @@ bool JOIN::modeRequirementsOK( const std::string & channelName, const std::vecto
 		RPL::ERR_INVITEONLYCHAN( client, channelName );
 		return false;
 	}
+	else if ( channel->getLimitMode() && !channel->isClientInvited( client.getNicknameId() ) )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Limit mode: channel is full1" << END << std::endl;
+		RPL::ERR_CHANNELISFULL( client, channelName );
+		return false;
+	}
+	else if ( channel->getLimitMode() && channel->getAllClients().size() >= static_cast< size_t >( channel->getLimit() ) )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Limit mode: channel is full2" << END << std::endl;
+		RPL::ERR_CHANNELISFULL( client, channelName );
+		return false;
+	}
+
 	return true;
 }

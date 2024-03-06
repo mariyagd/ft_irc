@@ -14,8 +14,13 @@ TOPIC::~TOPIC( void ) {
 
 void TOPIC::execute( std::vector< std::string > & command, Client & client, Server & server ) {
 
-	std::cout << Get::Time() << GREEN << " --- Processing TOPIC command" << END << std::endl;
+//	std::cout << Get::Time() << GREEN << " --- Processing TOPIC command" << END << std::endl;
 
+	if ( !client.isRegistered() )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Client not registered" << END << std::endl;
+		return;
+	}
 	if ( command.size() < 2 )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Need more params: TOPIC <channel> [<topic>]" << END << std::endl;
@@ -29,7 +34,12 @@ void TOPIC::execute( std::vector< std::string > & command, Client & client, Serv
 
 	if ( command.size() > 2 )
 		concatenate(command, 2, topic );
-
+	if ( channelName.find_first_of("&#+!") != 0 )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Bad channel prefix" << END << std::endl;
+		RPL::ERR_BADCHANMASK( client, channelName );
+		return;
+	}
 	channel = server.getChannelByName( channelName );
 	if ( !channel )
 	{
@@ -59,8 +69,8 @@ void TOPIC::execute( std::vector< std::string > & command, Client & client, Serv
 	{
 		std::cout << Get::Time() << GREEN_BOLD << " --- Set new channel topic" << END << std::endl;
 		channel->setTopic( topic, client.getNicknameId() );
-		RPL::RPL_NORMAL( client, channel->getAllClients(), channelName, "TOPIC", topic );
-		RPL::RPL_TOPIC( client, channelName, topic );
+		RPL::RPL_NORMAL( client, channel->getAllClients(), channelName, "TOPIC", channel->getTopic() );
+		RPL::RPL_TOPIC( client, channelName, channel->getTopic() );
 	}
 	else
 	{

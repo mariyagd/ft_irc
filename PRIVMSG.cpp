@@ -11,8 +11,13 @@ PRIVMSG::~PRIVMSG( void ) {
  */
 void PRIVMSG::execute( std::vector< std::string > & command, Client & client, Server &server ) {
 
-	std::cout << Get::Time() << GREEN << " --- Processing PRIVMSG command" << END << std::endl;
+//	std::cout << Get::Time() << GREEN << " --- Processing PRIVMSG command" << END << std::endl;
 
+	if ( !client.isRegistered() )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Client not registered" << END << std::endl;
+		return;
+	}
 	if ( command.size() < 3 )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Need more params: PRIVMSG <target>{,<target>} <text to be sent>" << END << std::endl;
@@ -26,11 +31,6 @@ void PRIVMSG::execute( std::vector< std::string > & command, Client & client, Se
 
 	splitMsgOnComma( command[1], target );
 	concatenate(command, 2, message );
-	std::cout << "message = " << message << std::endl;
-	for (size_t i = 0; i < target.size(); ++i )
-	{
-		std::cout << "target[" << i << "] = " << target[i] << std::endl;
-	}
 	for (size_t i = 0; i < target.size(); ++i )
 	{
 		if (target[i].find_first_of("&#+!") == 0) // if the destination is a channel

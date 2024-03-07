@@ -1,4 +1,6 @@
 #include "Get.hpp"
+#include "Server.hpp"
+
 
 // Private Constructor ----------------------------------------------------------------------------------------------------
 Get::Get( void ) {
@@ -67,7 +69,7 @@ void	Get::get_hostname( std::string & _hostname  ) {
    -> this is why we don't use AI_PASSIVE
  */
 
-std::string	Get::HostMachineAddrInfo()
+std::string	Get::HostMachineAddrInfo( Server & server )
 {
 	int	ret;
 	struct addrinfo 	_hints;
@@ -86,7 +88,13 @@ std::string	Get::HostMachineAddrInfo()
 
 	ret = getaddrinfo( hostname.c_str(), NULL, &_hints, &_servinfo );
 	if (ret != 0)
-		std::string error_msg = Get::Time() + " Getaddrinfo error: " + std::string( gai_strerror(ret) );
+	{
+		std::string error_msg = "Getaddrinfo error: " + std::string( gai_strerror(ret) );
+		if (_servinfo != NULL)
+			freeaddrinfo( _servinfo );
+		server.shutdown();
+		throw std::runtime_error( error_msg );
+	}
 	else
 		printConnectionInfo( _servinfo );
 

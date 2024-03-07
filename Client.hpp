@@ -27,7 +27,6 @@ private:
 	static int 			_serverSocket;
 	static std::string	_serverName;
 
-
 	std::vector< Channel * > _channels;
 
 public:
@@ -60,11 +59,14 @@ public:
 	std::string		getRealname( void ) const;
 	std::string		getMessage( void ); 		// if the message doesn't have a '\n', return a empty string
 	const std::string &	getCurrentMessage( void ) const; 	// used only for printing
+	int 			getNbChannels( void ) const;
 
 	// CHANNELS-------------------------------------------------------------------------------------------------------------
 	void								addChannel( Channel * channel );
 	void								removeChannel( Channel * channel );
 	std::set< int > 					getAllClientsInAllChannels( void ) const;
+	std::vector< Channel * > &			getAllChannels( void );
+//	void								removeAllChannelsOnQuit( void );
 
 	bool			isRegistered( void ) const;
 

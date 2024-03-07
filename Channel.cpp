@@ -35,15 +35,7 @@ Channel::Channel(const std::string &channelName) :	_name(channelName),
 													  _topicSetter(0),
 													  _topicTime(0) {
 
-
-	struct timeval tp;
-	if (gettimeofday(&tp, NULL) < 0)
-	{
-		std::cerr << Get::Time() << RED << " --- gettimeofday() failed" << strerror(errno) << END << std::endl;
-		return;
-	}
-
-	_creation_time = (tp.tv_sec) + (tp.tv_usec / 1000);
+	_creation_time = time(nullptr);
 }
 Channel::Channel(Channel const &src) {
 	(void)src;
@@ -192,7 +184,6 @@ int Channel::getOperatorSocket( int operator_id ) const {
 
 void Channel::addOperator( int id ) {
 	
-	std::cout << Get::Time() << " --- Client ID" << id << " is now an operator" << std::endl;
 	int i = id;
 	_operators.push_back( i );
 
@@ -340,10 +331,10 @@ long Channel::getTopicCreationTime( void ) const {
 void Channel::setTopic( const std::string & topic, int setter_id ) {
 
 	_topic.clear();
-	if ( topic.size() > 390 )
+	if ( topic.size() > MAXTOPICLEN )
 	{
-		std::cout << Get::Time() << BOLD << " --- Topic too long. Truncated to 390 characters"<< END << std::endl;
-		_topic = topic.substr(0, 390);
+		std::cout << Get::Time() << BOLD << " --- Topic too long. Truncated to " << MAXTOPICLEN << " characters"<< END << std::endl;
+		_topic = topic.substr(0, MAXTOPICLEN );
 	}
 	else
 		_topic = topic;
@@ -381,12 +372,16 @@ void	Channel::print_channels_info() const {
 //		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << "" << END << std::endl;
 		std::cout << std::endl << BLUE_BG << " --- Channel " << _name  << " " << END << std::endl << std::endl;
 		std::cout << std::setw(15) << std::left << BLUE_BOLD << " Modes :    "  << END << this->getCurrentChannelModes() << std::endl;
+		if ( this->getTopic( ).size() > 15 )
+			std::cout << std::setw(15) << std::left << BLUE_BOLD << " Topic :    "  << END << this->getTopic().substr(0, 15) << "..." << std::endl;
+		else
+			std::cout << std::setw(15) << std::left << BLUE_BOLD << " Topic :    "  << END << this->getTopic() << std::endl;
 		std::cout << std::setw(15) << std::left << BLUE_BOLD << "" << " Clients:   " << END;
 		for ( size_t j = 0; j < _clients.size(); ++j )
 		{
 			std::cout << _clients[j]->getNickname();
 			if ( j + 1 < _clients.size() )
-				std::cout << " ,";
+				std::cout << ", ";
 		}
 		std::cout << std::endl << std::setw(15) << std::left << BLUE_BOLD << "" << " Operators: " << END;
 
@@ -396,14 +391,14 @@ void	Channel::print_channels_info() const {
 			{
 				if ( _operators[i] == _clients[j]->getNicknameId( ) )
 				{
-					std::cout << _clients[j]->getNickname() << std::endl;
+					std::cout << _clients[j]->getNickname();
 					if ( i + 1 < _operators.size() )
-						std::cout << " ,";
+						std::cout << ", ";
 					break;
 				}
 			}
 		}
-		std::cout << std::endl;
+		std::cout << std::endl << std::endl;
 //		std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << ""  << END << std::endl;
 }
 

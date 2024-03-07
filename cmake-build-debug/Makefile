@@ -57,10 +57,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/mariyadancheva/Documents/GitHub/ft_irc
+CMAKE_SOURCE_DIR = /Users/mdanchev/Desktop/ft_irc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/mdanchev/Desktop/ft_irc/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/CMakeFiles /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mdanchev/Desktop/ft_irc/cmake-build-debug/CMakeFiles /Users/mdanchev/Desktop/ft_irc/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mariyadancheva/Documents/GitHub/ft_irc/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mdanchev/Desktop/ft_irc/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -513,6 +513,30 @@ PRIVMSG.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/PRIVMSG.cpp.s
 .PHONY : PRIVMSG.cpp.s
 
+QUIT.o: QUIT.cpp.o
+.PHONY : QUIT.o
+
+# target to build an object file
+QUIT.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/QUIT.cpp.o
+.PHONY : QUIT.cpp.o
+
+QUIT.i: QUIT.cpp.i
+.PHONY : QUIT.i
+
+# target to preprocess a source file
+QUIT.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/QUIT.cpp.i
+.PHONY : QUIT.cpp.i
+
+QUIT.s: QUIT.cpp.s
+.PHONY : QUIT.s
+
+# target to generate assembly for a file
+QUIT.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ft_irc.dir/build.make CMakeFiles/ft_irc.dir/QUIT.cpp.s
+.PHONY : QUIT.cpp.s
+
 RPL.o: RPL.cpp.o
 .PHONY : RPL.o
 
@@ -762,6 +786,9 @@ help:
 	@echo "... PRIVMSG.o"
 	@echo "... PRIVMSG.i"
 	@echo "... PRIVMSG.s"
+	@echo "... QUIT.o"
+	@echo "... QUIT.i"
+	@echo "... QUIT.s"
 	@echo "... RPL.o"
 	@echo "... RPL.i"
 	@echo "... RPL.s"

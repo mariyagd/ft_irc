@@ -1,8 +1,13 @@
 #ifndef IRC_HPP
 # define IRC_HPP
 
-# define MAX_CONNECTIONS 100
+# define MAX_CONNECTIONS 10
 # define MSG_MAX_SIZE 512
+# define CHANLIMIT 5
+# define MAXNICKLEN 16
+# define MAXCHANNELLEN 50
+# define MAXTOPICLEN 390
+# define MAXUSERLEN 9
 
 # include "Colors.h"
 # include "Get.hpp"

@@ -16,6 +16,8 @@ class MODE : public ACommand {
 	bool		isValidNumber( const std::string & number) const;
 	void		remove_signs( std::vector< std::string > & command );
 	void		remove_extras( std::vector< std::string > & command );
+	void names_exist( std::vector< std::string > & command, Client & client, Channel * channel, Server & server );
+
 
 };
 

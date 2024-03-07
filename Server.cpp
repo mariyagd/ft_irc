@@ -15,6 +15,7 @@
 # include "WHO.hpp"
 # include "SQUIT.hpp"
 # include "CAP.hpp"
+# include "QUIT.hpp"
 
 // Coplien's form --------------------------------------------------------------------------------------------------------
 
@@ -48,6 +49,7 @@ Server::Server(int port, char *password) : _port(port), _password(password) {
 	_command_executor.insert(std::make_pair("WHO", new WHO()));
 	_command_executor.insert(std::make_pair("SQUIT", new SQUIT()));
 	_command_executor.insert(std::make_pair("CAP", new CAP()));
+	_command_executor.insert(std::make_pair("QUIT", new QUIT()));
 }
 
 Server::~Server()
@@ -134,7 +136,7 @@ void	Server::socket()
 		throw ServerException( error_msg.c_str() );
 	}
 
-	_connections[0].setServer( _servSock, Get::HostMachineAddrInfo() );	// set the first element of the table to the server socket
+	_connections[0].setServer( _servSock, Get::HostMachineAddrInfo( *this ) );	// set the first element of the table to the server socket
 	std::cout << Get::Time() << GREEN_BOLD << " --- Server's socket created successfully [socket " << _servSock << "]" END << std::endl;
 
 }
@@ -449,6 +451,10 @@ void	Server::process_command( const std::string & msg, Client & client )
 
 	if (msg.empty() || msg.find_first_of("\n") == std::string::npos )
 		return;
+	if (msg.find("CAP LS") == 0 )
+	{
+		const_cast< std::string & >( msg ) = msg.substr(0, 6);
+	}
 	std::istringstream iss(msg);
 
 	while ( !iss.eof() )
@@ -465,9 +471,11 @@ void	Server::process_command( const std::string & msg, Client & client )
 
 		std::map< std::string, ACommand * >::iterator it = _command_executor.find( tokens[0] );
 		if ( it != _command_executor.end() )
-		{
 			it->second->execute( tokens, client, *this );
-		}
+		else if ( !client.isRegistered() )
+			RPL::ERR_NOTREGISTERED( client );
+		else
+			RPL::ERR_UNKNOWNCOMMAND( client, tokens[0] );
 	}
 	return ;
 }
@@ -476,23 +484,23 @@ void	Server::process_command( const std::string & msg, Client & client )
 void Server::print_all_info( void ) {
 
 
-	std::cout << std::endl << BLUE_BG << " --- Clients: " << END << std::endl;
+//	std::cout << std::endl << BLUE_BG << " --- Clients: " << END << std::endl;
 	for (size_t i = 0; i < _connections.size(); ++i)
 	{
 		if ( _connections[i].getSocket() == _connections[i].getServerSocket() )
 			continue;
 		if (_connections[i].getSocket() >= 0)
 		{
-			std::cout << " --- " << i << std::endl;
+//			std::cout << " --- " << i << std::endl;
 			_connections[i].printInfo( );
 		}
 	}
-	std::cout << std::endl << BLUE_BG << " --- Channels: " << END << std::endl;
+//	std::cout << std::endl << BLUE_BG << " --- Channels: " << END << std::endl;
 	for (size_t i = 0; i < _channels.size(); ++i)
 	{
 		if (_channels[i] != nullptr)
 		{
-			std::cout << " --- " << i << std::endl;
+//			std::cout << " --- " << i << std::endl;
 			_channels[i]->print_channels_info();
 		}
 	}

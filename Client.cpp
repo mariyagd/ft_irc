@@ -106,10 +106,10 @@ void	Client::setUsername( const std::string & username ) {
 	if ( !_username.empty() )
 		_username.clear();
 
-	if ( username.size() > 9 )
+	if ( username.size() > MAXUSERLEN )
 	{
-		std::cout << Get::Time() << BOLD << " --- Username too long. Truncated to 9 characters" << END << std::endl;
-		_username = "~" + username.substr(0, 9);
+		std::cout << Get::Time() << BOLD << " --- Username too long. Truncated to " << MAXUSERLEN << " characters" << END << std::endl;
+		_username = "~" + username.substr(0, MAXUSERLEN );
 	}
 	else
 	_username = "~" + username;
@@ -223,6 +223,11 @@ const std::string & Client::getCurrentMessage( void ) const {
 	return _message;
 }
 
+int Client::getNbChannels( void ) const {
+
+	return _channels.size();
+}
+
 // Add and remove channels ----------------------------------------------------------------------------------------------
 
 void	Client::addChannel( Channel * channel ) {
@@ -248,6 +253,17 @@ void	Client::removeChannel( Channel * channel ) {
 	return;
 }
 
+//void	Client::removeAllChannelsOnQuit( void ) {
+//
+//	for ( size_t i = 0; i < _channels.size(); i++ )
+//	{
+//		_channels[i]->removeClient( _nickname );
+//	}
+//	_channels.clear();
+//	return;
+//}
+
+
 std::set< int > 	Client::getAllClientsInAllChannels( void ) const {
 
 	std::set< int > users;
@@ -260,6 +276,12 @@ std::set< int > 	Client::getAllClientsInAllChannels( void ) const {
 	}
 	return users;
 }
+
+std::vector< Channel * > & Client::getAllChannels( void )  {
+
+	return _channels;
+}
+
 
 // Bool------------------------------------------------------------------------------------------------------------------
 
@@ -310,7 +332,7 @@ void	Client::printInfo( void ) {
 
 //	std::cout << BLUE_BOLD << std::setw(50) << std::setfill('-') << "" << std::endl;
 	std::cout << std::setfill(' ');
-	std::cout << std::setw(15) << std::left  << BLUE_BOLD << "Client info:"  << END << std::endl;
+	std::cout << std::endl << BLUE_BG << " --- Client "  << _nickname << " " << END << std::endl << std::endl;
 //	std::cout << std::setw(50) << std::setfill('-') << "" << END << std::endl;
 
 	std::cout << std::setw(15) << std::left << BLUE_BOLD << "Socket:     " << END << _socket << std::endl;
@@ -321,7 +343,7 @@ void	Client::printInfo( void ) {
 	std::cout << std::setw(15) << std::left << BLUE_BOLD << "Realname:   " << END << _realname << std::endl;
 	std::cout << std::setw(15) << std::left << BLUE_BOLD << "Channels:   " << END ;
 	printChannels();
-
+	std::cout << std::endl;
 //	std::cout << BLUE_BOLD  << "------------------------------------------------------" << END << std::endl;
 	return;
 }

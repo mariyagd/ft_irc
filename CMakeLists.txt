@@ -45,4 +45,6 @@ add_executable(
         SQUIT.cpp
         CAP.hpp
         CAP.cpp
+        QUIT.hpp
+        QUIT.cpp
 )

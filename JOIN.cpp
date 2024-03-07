@@ -29,6 +29,7 @@ void JOIN::execute( std::vector< std::string > & command, Client & client, Serve
 	if ( !client.isRegistered() )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Client not registered" << END << std::endl;
+		RPL::ERR_NOTREGISTERED( client );
 		return;
 	}
 	if ( command.size() < 2 )
@@ -44,23 +45,28 @@ void JOIN::execute( std::vector< std::string > & command, Client & client, Serve
 	{
 		if ( channelsNames[i].find_first_of("&#+!") != 0 )
 		{
-			std::cout << Get::Time() << RED_BOLD << " --- Bad channel prefix" << END << std::endl;
-			RPL::ERR_BADCHANMASK( client, channelsNames[i] );
-			continue;
+			channelsNames[i] = "#" + channelsNames[i];
 		}
-		if ( channelsNames[i].size() > 50 )
+		if ( channelsNames[i].size() > MAXCHANNELLEN )
 		{
 			std::cout << Get::Time() << RED_BOLD << " --- Channel name too long" << END << std::endl;
 			RPL::ERR_BADCHANNAME( client, channelsNames[i] );
 			continue;
 		}
+		if ( client.getNbChannels() >= CHANLIMIT )
+		{
+			std::cout << Get::Time() << RED_BOLD << " --- Client is in too many channels. Channel is not created" << END << std::endl;
+			RPL::ERR_TOOMANYCHANNELS( client, channelsNames[i] );
+			return;
+		}
 		channel = server.getChannelByName(channelsNames[i]);
 		if ( !channel )
 		{
-			std::cout << Get::Time() << MAGNETA_BOLD << " --- Channel doesn't exists. Creating a new channel" << END << std::endl;
-			channel = server.createChannel(channelsNames[i] );
-			channel->addOperator( client.getNicknameId() );
+			std::cout << Get::Time() << MAGNETA_BOLD << " --- Channel doesn't exists" << END << std::endl;
+			channel = server.createChannel(channelsNames[i]);
 			std::cout << Get::Time() << GREEN_BOLD << " --- " << client.getNickname() << " created channel [" << channelsNames[i] << "]" << END << std::endl;
+			channel->addOperator(client.getNicknameId());
+			std::cout << Get::Time() << GREEN_BOLD << " --- " << client.getNickname() << " is now an operator" << std::endl;
 		}
 		if ( !channel->clientIsInChannel( &client ) ) // if client is not in the channel
 		{
@@ -113,13 +119,13 @@ bool JOIN::modeRequirementsOK( const std::string & channelName, const std::vecto
 		RPL::ERR_INVITEONLYCHAN( client, channelName );
 		return false;
 	}
-	else if ( channel->getLimitMode() && !channel->isClientInvited( client.getNicknameId() ) )
-	{
-		std::cout << Get::Time() << RED_BOLD << " --- Limit mode: channel is full1" << END << std::endl;
-		RPL::ERR_CHANNELISFULL( client, channelName );
-		return false;
-	}
-	else if ( channel->getLimitMode() && channel->getAllClients().size() >= static_cast< size_t >( channel->getLimit() ) )
+//	else if ( channel->getLimitMode() && !channel->isClientInvited( client.getNicknameId() ) )
+//	{
+//		std::cout << Get::Time() << RED_BOLD << " --- Limit mode: channel is full1" << END << std::endl;
+//		RPL::ERR_CHANNELISFULL( client, channelName );
+//		return false;
+//	}
+	else if ( channel->getLimitMode() && channel->getAllClients().size() >= static_cast< size_t >( channel->getLimit() ) && !channel->isClientInvited( client.getNicknameId() ))
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Limit mode: channel is full2" << END << std::endl;
 		RPL::ERR_CHANNELISFULL( client, channelName );

@@ -11,6 +11,7 @@
 # include <arpa/inet.h>			// for inet_ntop
 # include <unistd.h>				//for gehostname
 
+class  Server;
 
 class Get {
 
@@ -20,7 +21,7 @@ private:
 public:
 	~Get( void );
 	static std::string		Time( void );
-	static std::string		HostMachineAddrInfo( void );
+	static std::string		HostMachineAddrInfo( Server & server );
 	static void				printConnectionInfo( struct addrinfo *& _servinfo );
 	static void				get_hostname( std::string & hostname );
 

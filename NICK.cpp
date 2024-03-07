@@ -14,10 +14,10 @@ void NICK::execute( std::vector< std::string > & command, Client & client, Serve
 //	std::cout << Get::Time() << GREEN << " --- Processing NICK command" << END << std::endl;
 
 	std::string nickname;
-	if ( command[1].size() > 16)
+	if ( command[1].size() > MAXNICKLEN )
 	{
-		std::cout << Get::Time() << BOLD << " --- Nickname too long. Truncated to 16 characters" << END << std::endl;
-		nickname = command[1].substr(0, 16);
+		std::cout << Get::Time() << BOLD << " --- Nickname too long. Truncated to " << MAXNICKLEN << " characters" << END << std::endl;
+		nickname = command[1].substr(0, MAXNICKLEN );
 	}
 	else
 		nickname = command[1];
@@ -29,7 +29,6 @@ void NICK::execute( std::vector< std::string > & command, Client & client, Serve
 		std::cout << Get::Time() << RED_BOLD << " --- Need more params: NICK <nickname>" << END << std::endl;
 		RPL::ERR_NONICKNAMEGIVEN( client );
 	}
-
 	else if ( nickname.find_first_of(" :+-&?!@#$%*;,./<>=\"\\~") != std::string::npos )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Erroneous nickname" << END << std::endl;
@@ -47,7 +46,7 @@ void NICK::execute( std::vector< std::string > & command, Client & client, Serve
 	}
 	else if ( !client.isRegistered() )
 	{
-		std::cout << Get::Time() << " --- User can register with name [" << nickname << "]" << END << std::endl;
+		std::cout << Get::Time() << " --- User can register with nick [" << nickname << "]" << END << std::endl;
 		client.setNickname( nickname );
 		RPL::RPL_NICK( client, client.getAllClientsInAllChannels(), nickname );
 	}

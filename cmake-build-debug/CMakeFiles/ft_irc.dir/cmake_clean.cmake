@@ -31,6 +31,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ft_irc.dir/PING.cpp.o.d"
   "CMakeFiles/ft_irc.dir/PRIVMSG.cpp.o"
   "CMakeFiles/ft_irc.dir/PRIVMSG.cpp.o.d"
+  "CMakeFiles/ft_irc.dir/QUIT.cpp.o"
+  "CMakeFiles/ft_irc.dir/QUIT.cpp.o.d"
   "CMakeFiles/ft_irc.dir/RPL.cpp.o"
   "CMakeFiles/ft_irc.dir/RPL.cpp.o.d"
   "CMakeFiles/ft_irc.dir/SQUIT.cpp.o"

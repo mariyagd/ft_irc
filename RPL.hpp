@@ -21,6 +21,7 @@ public:
 
 	// COMMON ERRORS
 	static void ERR_NEEDMOREPARAMS( Client const & client, std::string const & command );
+	static void ERR_UNKNOWNCOMMAND( Client const & client, std::string const & command );
 
 	// Registration
 	static void RPL_WELCOME( Client const & client );
@@ -30,6 +31,7 @@ public:
 	static void RPL_ISUPPORT( Client const & client );
 
 	static void ERR_ALREADYREGISTERED( Client const & client );
+	static void ERR_NOTREGISTERED( Client const & client );
 	static void ERR_PASSWDMISMATCH( Client const & client );
 
 	// NICK
@@ -67,6 +69,7 @@ public:
 	static void RPL_JOIN( Client const & client, const std::set< int > & allClientsInChannel, const std::string & channelName );
 	static void ERR_BADCHANMASK( Client const & client, const std::string & channelName );
 	static void ERR_BADCHANNAME( Client const & client, const std::string & channelName );
+	static void ERR_TOOMANYCHANNELS( Client const & client, const std::string & channelName );
 
 	//CHANNEL MODE
 	static void RPL_CHANNELMODEIS( Client const & client, const std::string & channelName, const std::string & allChannelModes );
@@ -91,7 +94,7 @@ public:
 	static void ERR_CHANOPRIVSNEEDED( Client const & client, const std::string & channelName );
 	static void RPL_KICK( Client const & client, std::string & channelName, std::string & nickname, std::string & comment, const std::set< int > & allClientsInChannel );
 	static void ERR_NOTONCHANNEL( Client const & client, std::string & channelName );
-	static void ERR_USERNOTINCHANNEL( Client const & client, std::string & nickname, std::string & channelName );
+	static void ERR_USERNOTINCHANNEL( Client const & client, const std::string & nickname, const std::string & channelName );
 
 	static void RPL_MODE_OP(Client const & client, const std::string channelName, const std::string & currentChannelModes );
 
@@ -103,6 +106,11 @@ public:
 
 	// CAP
 	static void RPL_CAP( Client const &client );
-	};
+	static void ERR_INVALIDCAPCMD( Client const &client, const std::string &command );
+
+	//QUIT
+	static void QUIT( Client const & client, const std::set< int > & allClientsInAllChannels, const std::string & reason );
+
+};
 
 #endif

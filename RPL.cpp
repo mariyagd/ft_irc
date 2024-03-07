@@ -39,6 +39,14 @@ void RPL::RPL_NORMAL( const Client & client, const std::vector< Client * > & all
 	}
 }
 
+// Common errors
+
+void RPL::ERR_UNKNOWNCOMMAND(const Client &client, const std::string &command) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 421 " + client.getNickname() + " " + command + " :Unknown command\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
 // Upon registration------------------------------------------------------------------------------------------------------
 
 
@@ -70,16 +78,24 @@ void	RPL::RPL_MYINFO( Client const & client ) {
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
+
 void RPL::RPL_ISUPPORT( Client const & client ) {
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 005 " + client.getNickname();
-	message +=  " CHANMODES=itlko PREFIX=@ MAXNICKLEN=16 CHANNELLEN=50 TOPICLEN=390:are supported by this server\r\n";
+	message +=  " CHANMODES=itlko PREFIX=@ MAXNICKLEN=" + std::to_string(MAXNICKLEN) + " MAXUSERNAMELEN=" + std::to_string(MAXUSERLEN);
+	message += " CHANNELLEN=" + std::to_string(MAXCHANNELLEN) + " TOPICLEN=" + std::to_string(MAXTOPICLEN) + " CHANLIMIT=#:" + std::to_string(CHANLIMIT) + " :are supported by this server\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
 void RPL::ERR_ALREADYREGISTERED( Client const & client ) {
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 462 " + client.getNickname() + " :You may not reregister\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+void RPL::ERR_NOTREGISTERED(const Client &client) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 451 " + client.getNickname() + " :You have not registered\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
@@ -291,6 +307,14 @@ void RPL::ERR_BADCHANNAME( Client const & client, const std::string & channelNam
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
+void RPL::ERR_TOOMANYCHANNELS( Client const & client, const std::string & channelName ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 405 " + client.getNickname() + " " + channelName + " :You have joined too many channels. ";
+	message += "CHANLIMIT = " + std::to_string(CHANLIMIT) + "\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+
 // CHANNEL MODE
 
 void RPL::ERR_NOSUCHCHANNEL( Client const & client, std::string & channelName ) {
@@ -426,7 +450,7 @@ void RPL::ERR_NOTONCHANNEL( Client const & client, std::string & channelName ) {
 	send_message( client.getSocket(), msg.c_str(), msg.size() );
 }
 
-void RPL::ERR_USERNOTINCHANNEL( Client const & client, std::string & nickname, std::string & channelName ) {
+void RPL::ERR_USERNOTINCHANNEL( Client const & client, const  std::string & nickname, const std::string & channelName ) {
 
 	std::string msg = "@time=" + Get::Time() + ":" + client.getServname() + " 441 " + client.getNickname() + " " + nickname + " " + channelName + " :They aren't on that channel\r\n";
 	send_message( client.getSocket(), msg.c_str(), msg.size() );
@@ -474,4 +498,21 @@ void RPL::RPL_CAP( Client const &client ) {
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " CAP * LS :none\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+void RPL::ERR_INVALIDCAPCMD( Client const &client, const std::string &command ) {
+
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 410 " + client.getNickname() + " " + command + " :Invalid CAP subcommand\r\n";
+	send_message( client.getSocket(), message.c_str(), message.size() );
+}
+
+
+void RPL::QUIT( Client const & client, const std::set< int > & allClientsInChannel, const std::string & reason ) {
+
+	std::string msgto = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
+	std::string message = "@time=" + Get::Time() + ":" + msgto + " QUIT " + reason + "\r\n";
+	for ( std::set< int >::const_iterator it = allClientsInChannel.begin(); it != allClientsInChannel.end(); it++ )
+	{
+		send_message( *it, message.c_str(), message.size() );
+	}
 }

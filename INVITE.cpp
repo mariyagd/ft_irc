@@ -11,6 +11,12 @@ INVITE::~INVITE( void ) {
  */
 void INVITE::execute( std::vector< std::string > & command, Client & client, Server & server ) {
 
+	if ( !client.isRegistered() )
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Client not registered" << END << std::endl;
+		RPL::ERR_NOTREGISTERED( client );
+		return;
+	}
 	if ( command.size() < 3 )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Need more params: INVITE <nickname> <channel>" << END << std::endl;

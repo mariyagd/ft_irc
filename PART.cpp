@@ -19,6 +19,7 @@ void PART::execute( std::vector< std::string > & command, Client & client, Serve
 	if ( !client.isRegistered() )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Client not registered" << END << std::endl;
+		RPL::ERR_NOTREGISTERED( client );
 		return;
 	}
 	if ( command.size() < 2 )

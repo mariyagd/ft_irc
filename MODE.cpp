@@ -16,6 +16,7 @@ MODE::~MODE( void ) {
 void	MODE::execute( std::vector< std::string > & command, Client & client, Server & server ) {
 
 //	std::cout << Get::Time( ) << GREEN << " --- Processing MODE command" << END << std::endl;
+
 	if ( !client.isRegistered() )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Client not registered" << END << std::endl;
@@ -26,16 +27,20 @@ void	MODE::execute( std::vector< std::string > & command, Client & client, Serve
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Need more params: MODE <target> [<modestring> [<mode arguments>...]]" << END << std::endl;
 		RPL::ERR_NEEDMOREPARAMS( client, "MODE" );
+		return;
 	}
-	else if ( command[1].find_first_of( "&#+!" ) == 0 )  // if channel mode is requested
+
+	Channel * channel = server.getChannelByName( command[1] );
+	Client * client2 = server.getClientByNickname( command[1] );
+
+	if ( !channel  && !client2 )
 	{
-		Channel * channel = server.getChannelByName( command[1] );
-		if ( !channel )
-		{
-			std::cout << Get::Time() << RED_BOLD << " --- Channel " << command[1] << " doesn't exist in this server"  << END << std::endl;
-			RPL::ERR_NOSUCHCHANNEL( client, command[1] );
-		}
-		else if ( command.size( ) == 2 )
+		std::cout << Get::Time() << RED_BOLD << " --- Channel " << command[1] << " doesn't exist in this server"  << END << std::endl;
+		RPL::ERR_NOSUCHCHANNEL( client, command[1] );
+	}
+	else if ( channel && !client2 )  // if channel mode is requested
+	{
+		if ( command.size( ) == 2 )
 		{
 			std::cout << Get::Time( ) << GREEN_BOLD << " --- Send channel modes" << END << std::endl;
 			RPL::RPL_CHANNELMODEIS( client, command[1], channel->getCurrentChannelModes( ) );
@@ -55,10 +60,8 @@ void	MODE::execute( std::vector< std::string > & command, Client & client, Serve
 			else
 			{
 				names_exist( command, client, channel, server );
-				std::cout << CYAN_BG << "Here 3 " << END << std::endl;
 				channel->print_channel_modes();
 				setChannelMode( client, command, channel );
-				std::cout << CYAN_BG << "Here 4 " << END << std::endl;
 				if ( !command.empty() && !command[0].empty())
 				{
 					std::string new_modes;
@@ -71,7 +74,7 @@ void	MODE::execute( std::vector< std::string > & command, Client & client, Serve
 			}
 		}
 	}
-	else if ( command[1] == client.getNickname() && command.size() == 3)
+	else
 	{
 		std::cout << Get::Time() << BOLD << " --- Server doesn't support user modes " << END << std::endl;
 		RPL::ERR_UMODEUNKNOWNFLAG( client );
@@ -190,8 +193,6 @@ void MODE::setChannelMode( Client & client, std::vector< std::string > & command
 	size_t i = 0;
 	size_t j = 1;
 
-	std::cout << CYAN_BG << "Here 0 " << END << std::endl;
-
 	for ( ; i < mode.size() ; ++i)
 	{
 		if ( i >= mode.size() || i < 0 || !mode[i])
@@ -275,7 +276,6 @@ void MODE::setChannelMode( Client & client, std::vector< std::string > & command
 			}
 		}
 	}
-	std::cout << CYAN_BG << "Here 1 " << END << std::endl;
 	remove_signs( command );
 	remove_extras( command );
 }
@@ -437,7 +437,7 @@ void MODE::names_exist( std::vector< std::string > & command, Client & client, C
 			{
 				if ( command.size() >= j && server.getClientByNickname( command[j] ) == nullptr )
 				{
-					std::cout << Get::Time() << RED_BOLD << " --- " << command[j] << " doesn't exist1 j = " << j << END << std::endl;
+					std::cout << Get::Time() << RED_BOLD << " --- " << command[j] << " doesn't exist" << END << std::endl;
 					RPL::ERR_NOSUCHNICK( client, command[j] );
 					command.erase( command.begin() + j );
 					command[0].erase( command[0].begin() + i-- );
@@ -454,6 +454,5 @@ void MODE::names_exist( std::vector< std::string > & command, Client & client, C
 			}
 		}
 	}
-	std::cout << CYAN_BG << "Here 2 " << END << std::endl;
 	return;
 }

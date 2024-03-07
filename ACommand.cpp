@@ -36,4 +36,3 @@ void ACommand::printVector( std::vector< std::string > & tokens ) {
 	for ( size_t i = 0; i < tokens.size(); i++ )
 		std::cout << CYAN_BG << "[" << tokens[i] << "]" << END << std::endl;
 }
-

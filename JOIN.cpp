@@ -82,8 +82,8 @@ void JOIN::execute( std::vector< std::string > & command, Client & client, Serve
 void JOIN::join_and_send( Channel * channel, Client & client, const std::string & channelName ) {
 
 	std::cout << Get::Time() << GREEN_BOLD << " --- " << client.getNickname() << " joined in channel [" << channelName << "]" << END << std::endl;
-	RPL::RPL_JOIN( client, channel->getAllClientsSockets(), channelName );
 	channel->addClient( client );
+	RPL::RPL_JOIN( client, channel->getAllClientsSockets(), channelName );
 
 	if ( channel->isClientIsOperator( client.getNicknameId( ) ) != -1 )
 	{

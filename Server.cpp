@@ -118,9 +118,17 @@ void	Server::launch()
 	sig_handler();
 
 	socket();
+	std::cout << CYAN_BG << "Here 1" << END << std::endl;
+
 	socket_options();
+	std::cout << CYAN_BG << "Here 2 " << END << std::endl;
+
 	bind();
+	std::cout << CYAN_BG << "Here 3 " << END << std::endl;
+
 	listen();
+	std::cout << CYAN_BG << "Here 4 " << END << std::endl;
+
 	loop();
 }
 
@@ -182,7 +190,7 @@ void	Server::socket_options()
 
 void	Server::bind()
 {
-	const int					_servSock = _connections[0].getSocket();
+	const int 					_servSock = _connections[0].getSocket();
 	struct sockaddr_in			_server_address;
 
 	memset( &_server_address, 0, sizeof( struct sockaddr_in ) );

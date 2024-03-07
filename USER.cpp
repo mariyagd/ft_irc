@@ -42,12 +42,9 @@ void USER::execute( std::vector< std::string > & command, Client & client, Serve
 		client.setUsername( command[1] );
 
 		std::string realname;
-		for ( size_t i = 4; i < command.size(); i++ )
-		{
-			realname += command[i];
-			if ( i != command.size() - 1 )
-				realname += " ";
-		}
+		concatenate( command, 4, realname );
+		if ( realname[0] != ':' )
+			realname = ":" + realname;
 		client.setRealname( realname );
 	}
 	return;

@@ -107,10 +107,17 @@ bool JOIN::modeRequirementsOK( const std::string & channelName, const std::vecto
 //	std::cout << CYAN_BG << "mode = " << ( channel->getLimitMode() == true ? "true" : "false" ) << END << std::endl;
 //	std::cout << CYAN_BG << "limit = " << channel->getLimit() << END << std::endl;
 //	std::cout << CYAN_BG << "current = " << channel->getAllClients().size() << END << std::endl;
+
 	if ( channel->getKeyMode() && ( keys.empty() ||  ( keys.size() > j && keys[j++] != channel->getKey() ) ) )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Key mode: wrong password" << END << std::endl;
 		RPL::RPL_BADCHANNELKEY( client, channelName );
+		return false;
+	}
+	else if ( channel->getLimitMode() && channel->getAllClients().size() >= static_cast< size_t >( channel->getLimit() ) && !channel->isClientInvited( client.getNicknameId() ))
+	{
+		std::cout << Get::Time() << RED_BOLD << " --- Limit mode: channel is full2" << END << std::endl;
+		RPL::ERR_CHANNELISFULL( client, channelName );
 		return false;
 	}
 	else if ( channel->getInviteMode() && !channel->isClientInvited( client.getNicknameId() ) )
@@ -125,12 +132,7 @@ bool JOIN::modeRequirementsOK( const std::string & channelName, const std::vecto
 //		RPL::ERR_CHANNELISFULL( client, channelName );
 //		return false;
 //	}
-	else if ( channel->getLimitMode() && channel->getAllClients().size() >= static_cast< size_t >( channel->getLimit() ) && !channel->isClientInvited( client.getNicknameId() ))
-	{
-		std::cout << Get::Time() << RED_BOLD << " --- Limit mode: channel is full2" << END << std::endl;
-		RPL::ERR_CHANNELISFULL( client, channelName );
-		return false;
-	}
+
 
 	return true;
 }

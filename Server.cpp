@@ -118,17 +118,9 @@ void	Server::launch()
 	sig_handler();
 
 	socket();
-	std::cout << CYAN_BG << "Here 1" << END << std::endl;
-
 	socket_options();
-	std::cout << CYAN_BG << "Here 2 " << END << std::endl;
-
 	bind();
-	std::cout << CYAN_BG << "Here 3 " << END << std::endl;
-
 	listen();
-	std::cout << CYAN_BG << "Here 4 " << END << std::endl;
-
 	loop();
 }
 
@@ -492,18 +484,23 @@ void	Server::process_command( const std::string & msg, Client & client )
 void Server::print_all_info( void ) {
 
 
-//	std::cout << std::endl << BLUE_BG << " --- Clients: " << END << std::endl;
+	int count = 0;
+
 	for (size_t i = 0; i < _connections.size(); ++i)
 	{
 		if ( _connections[i].getSocket() == _connections[i].getServerSocket() )
 			continue;
 		if (_connections[i].getSocket() >= 0)
 		{
-//			std::cout << " --- " << i << std::endl;
 			_connections[i].printInfo( );
+			count++;
 		}
 	}
-//	std::cout << std::endl << BLUE_BG << " --- Channels: " << END << std::endl;
+	if ( count == 0 )
+		std::cout << std::endl << BLUE_BG << " --- No Clients " << END << std::endl;
+
+	if ( _channels.size() == 0 )
+		std::cout << std::endl << BLUE_BG << " --- No Channels " << END << std::endl;
 	for (size_t i = 0; i < _channels.size(); ++i)
 	{
 		if (_channels[i] != nullptr)

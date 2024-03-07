@@ -412,17 +412,15 @@ bool MODE::errorsInModeCommand( std::vector< std::string > & command, Client & c
 
 	return false;
 }
-/*
-command[0] -
-command[j] mariya
- */
+
 void MODE::names_exist( std::vector< std::string > & command, Client & client, Channel * channel, Server & server )
 {
 	(void)channel;
 	bool status = true;
 	size_t j = 1;
 
-	printVector(command);
+	if (command[0][0] != '+' && command[0][0] != '-') //for nc, treat MODE #channelname i
+		command[0] = "+" + command[0];
 	for ( size_t i = 0; i < command[0].size(); ++i )
 	{
 		if (command[0][i] == '+')

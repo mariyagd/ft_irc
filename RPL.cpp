@@ -496,7 +496,7 @@ void RPL::RPL_PART( const Client & client, const std::set< int > & allClientsInC
 
 void RPL::RPL_CAP( Client const &client ) {
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " CAP * LS :none\r\n";
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " CAP * LS : \r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 

@@ -484,6 +484,8 @@ void	Server::process_command( const std::string & msg, Client & client )
 void Server::print_all_info( void ) {
 
 
+	std::cout << std::endl << BLUE_BG << " --- CURRENT STATE OF SERVER --- " << END << std::endl;
+
 	int count = 0;
 
 	for (size_t i = 0; i < _connections.size(); ++i)

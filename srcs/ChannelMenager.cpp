@@ -50,6 +50,7 @@ void	ChannelMenager::deleteChannel( Channel * rhs ) {
 
 		_channels.erase(it);
 		delete rhs;
+		rhs = nullptr;
 	}
 	else
 	{

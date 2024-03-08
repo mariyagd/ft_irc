@@ -74,7 +74,7 @@ void	RPL::RPL_CREATED( Client const & client ) {
 
 void	RPL::RPL_MYINFO( Client const & client ) {
 
-	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 004 " + client.getNickname() + " " + client.getServname() + " v1.0 user modes: [none] channel modes: [itklo]\r\n";
+	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 004 " + client.getNickname() + " server name: [" + client.getServname() + "] version: [v1.0] user modes: [none] channel modes: [itklo]\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 
@@ -83,7 +83,10 @@ void RPL::RPL_ISUPPORT( Client const & client ) {
 
 	std::string message = "@time=" + Get::Time() + ":" + client.getServname() + " 005 " + client.getNickname();
 	message +=  " CHANMODES=itlko PREFIX=@ MAXNICKLEN=" + std::to_string(MAXNICKLEN) + " MAXUSERNAMELEN=" + std::to_string(MAXUSERLEN);
-	message += " CHANNELLEN=" + std::to_string(MAXCHANNELLEN) + " TOPICLEN=" + std::to_string(MAXTOPICLEN) + " CHANLIMIT=#:" + std::to_string(CHANLIMIT) + " :are supported by this server\r\n";
+	message += " CHANNELLEN=" + std::to_string(MAXCHANNELLEN);
+	message += " TOPICLEN=" + std::to_string(MAXTOPICLEN);
+	message += " CHANLIMIT=#:" + std::to_string(CHANLIMIT);
+	message += " MAXCONNECTIONS=" + std::to_string( MAX_CONNECTIONS ) + ":are supported by this server\r\n";
 	send_message( client.getSocket(), message.c_str(), message.size() );
 }
 

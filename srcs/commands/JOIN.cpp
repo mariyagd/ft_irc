@@ -116,7 +116,7 @@ bool JOIN::modeRequirementsOK( const std::string & channelName, const std::vecto
 	}
 	else if ( channel->getLimitMode() && channel->getAllClients().size() >= static_cast< size_t >( channel->getLimit() ) && !channel->isClientInvited( client.getNicknameId() ))
 	{
-		std::cout << Get::Time() << RED_BOLD << " --- Limit mode: channel is full2" << END << std::endl;
+		std::cout << Get::Time() << RED_BOLD << " --- Limit mode: channel is full" << END << std::endl;
 		RPL::ERR_CHANNELISFULL( client, channelName );
 		return false;
 	}

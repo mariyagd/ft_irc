@@ -11,7 +11,7 @@ int	main( int ac, char **av )
 	}
 	std::string port=av[1];
 
-	if (port.find_first_not_of("0123456789", 0) != port.npos || std::atoi(av[1]) < 1024 || std::atoi(av[1]) > 65535)
+	if (port.find_first_not_of("0123456789", 0) != port.npos || std::atoi(av[1]) < 1024 || std::atoi(av[1]) > 49151 )
 	{
 		std::cerr << "Error: port must be a number between 0 and 65535" << std::endl;
 		return (1);

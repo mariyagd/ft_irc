@@ -34,7 +34,11 @@ void TOPIC::execute( std::vector< std::string > & command, Client & client, Serv
 	std::string topic;
 
 	if ( command.size() > 2 )
+	{
 		concatenate(command, 2, topic );
+		if ( topic[0] != ':' )
+			topic = ":" + topic;
+	}
 	if ( channelName.find_first_of("&#+!") != 0 )
 	{
 		std::cout << Get::Time() << RED_BOLD << " --- Bad channel prefix" << END << std::endl;

@@ -13,25 +13,25 @@ QUIT::~QUIT( void ) {
  */
 void QUIT::execute(std::vector<std::string> & command, Client & client, Server & server) {
 
+
 	std::string reason;
 
 	if ( command.size() > 1 )
 		concatenate( command, 1, reason );
 	RPL::QUIT( client, client.getAllClientsInAllChannels(), reason );
 
-	for ( size_t i = 0; i < client.getAllChannels().size(); i++ )
+	size_t nb_channels = client.getAllChannels().size();
+	for ( size_t i = 0; i < nb_channels; i++ )
 	{
-		Channel *channel = client.getAllChannels()[i];
-
-		channel->removeClient( client.getNickname() );
-		if (channel->getAllClients().size() == 0 )
+		for ( size_t j = 0; j < client.getAllChannels().size(); j++ )
 		{
-			server.deleteChannel(channel);
-			server.print_all_info();
+			Channel *channel = client.getAllChannels()[j];
+			channel->removeClient(client.getNickname());
+			if (channel->getAllClients().size() == 0)
+				server.deleteChannel(channel);
 		}
-		else
-			channel->print_channels_info();
 	}
 	client.closeSocket();
+	server.print_all_info();
 	return;
 }

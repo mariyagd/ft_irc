@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="ircserv"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/mdanchev/Desktop/ft_irc/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ircserv">
+				<Option output="/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/ircserv" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/mdanchev/Desktop/ft_irc/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/mdanchev/Desktop/ft_irc/./srcs/,"/>
+					<Add directory="/Users/mdanchev/Desktop/ft_irc/./srcs/commands"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 ircserv"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ircserv/fast">
+				<Option output="/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/ircserv" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/mdanchev/Desktop/ft_irc/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/mdanchev/Desktop/ft_irc/./srcs/,"/>
+					<Add directory="/Users/mdanchev/Desktop/ft_irc/./srcs/commands"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 ircserv/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/mdanchev/Desktop/ft_irc/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/mdanchev/Desktop/ft_irc/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/mdanchev/Desktop/ft_irc/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/Channel.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/Channel.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/ChannelMenager.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/ChannelMenager.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/Client.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/Client.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/Colors.h">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/Get.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/Get.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/Irc.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/RPL.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/RPL.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/Server.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/Server.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/ACommand.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/ACommand.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/CAP.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/CAP.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/INVITE.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/INVITE.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/JOIN.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/JOIN.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/KICK.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/KICK.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/MODE.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/MODE.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/NICK.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/NICK.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/PART.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/PART.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/PASS.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/PASS.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/PING.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/PING.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/PRIVMSG.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/PRIVMSG.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/QUIT.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/QUIT.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/SQUIT.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/SQUIT.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/TOPIC.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/TOPIC.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/USER.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/USER.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/WHO.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/WHO.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/WHOIS.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/commands/WHOIS.hpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/srcs/main.cpp">
+			<Option target="ircserv"/>
+		</Unit>
+		<Unit filename="/Users/mdanchev/Desktop/ft_irc/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
